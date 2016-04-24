@@ -1,0 +1,108 @@
+{
+  "data": {
+    "job": [],
+    "register": [],
+    "user": [
+      {
+        "email": "alinehlavorato@gmail.com",
+        "password": "123123",
+        "createdAt": "2016-04-24T03:51:51.588Z",
+        "updatedAt": "2016-04-24T03:51:51.588Z",
+        "id": 1
+      },
+      {
+        "email": "alinehlavorato3@gmail.com",
+        "password": "$2a$10$lc7JX2.l23hJOaOpmBYRqOvNqOtZv6XxLGQGlPDG1XbEMBiXg6MDe",
+        "createdAt": "2016-04-24T03:58:22.073Z",
+        "updatedAt": "2016-04-24T03:58:22.073Z",
+        "id": 2
+      },
+      {
+        "email": "alinehlavorato1@gmail.com",
+        "password": "$2a$10$AJAyOvwmGGJeNP8A402tmOoCJXYlXxCWUb0gKYJ2WtAsH4RLNejFu",
+        "createdAt": "2016-04-24T04:35:53.818Z",
+        "updatedAt": "2016-04-24T04:35:53.818Z",
+        "id": 3
+      },
+      {
+        "email": "rcsmatsumoto@gmail.com",
+        "password": "$2a$10$adRbEArIZ/HIO6zTETBUQeBxcd40lWFtw/r6prReW1GPAz8u3ULgu",
+        "createdAt": "2016-04-24T20:12:12.582Z",
+        "updatedAt": "2016-04-24T20:12:12.582Z",
+        "id": 4
+      },
+      {
+        "email": "rcsmatsumoto@gmail123.com",
+        "password": "$2a$10$mbp3yIIMmJjSLcbTnrNqPOiN7.0pdLixquKe9wyzUdk6THt5ScwIe",
+        "createdAt": "2016-04-24T20:22:00.281Z",
+        "updatedAt": "2016-04-24T20:22:00.281Z",
+        "id": 5
+      },
+      {
+        "email": "rcsmatsumot123o@gmail.com",
+        "password": "$2a$10$RKcQDIL7e7meSSoe9V1FI.NR9.qIXN2scFgxnnQPR.gnFN0t8TNGS",
+        "createdAt": "2016-04-24T20:36:44.744Z",
+        "updatedAt": "2016-04-24T20:36:44.744Z",
+        "id": 6
+      }
+    ]
+  },
+  "schema": {
+    "job": {
+      "id": {
+        "type": "integer",
+        "autoIncrement": true,
+        "primaryKey": true,
+        "unique": true
+      },
+      "createdAt": {
+        "type": "datetime"
+      },
+      "updatedAt": {
+        "type": "datetime"
+      }
+    },
+    "register": {
+      "id": {
+        "type": "integer",
+        "autoIncrement": true,
+        "primaryKey": true,
+        "unique": true
+      },
+      "createdAt": {
+        "type": "datetime"
+      },
+      "updatedAt": {
+        "type": "datetime"
+      }
+    },
+    "user": {
+      "email": {
+        "type": "string",
+        "unique": true
+      },
+      "password": {
+        "type": "string"
+      },
+      "id": {
+        "type": "integer",
+        "autoIncrement": true,
+        "primaryKey": true,
+        "unique": true
+      },
+      "createdAt": {
+        "type": "datetime"
+      },
+      "updatedAt": {
+        "type": "datetime"
+      }
+    }
+  },
+  "counters": {
+    "user": {
+      "id": 6
+    },
+    "job": {},
+    "register": {}
+  }
+}
