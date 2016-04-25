@@ -1,0 +1,22 @@
+<div ng-controller="HeaderCtrl" class="header">
+  <div class="navbar navbar-default" role="navigation">
+    <div class="container">
+      <div class="collapse navbar-collapse" id="js-navbar-collapse">
+        <ul class="nav navbar-nav">
+         
+          <li ng-hide="!isAuthenticated()" ui-sref-active="active">
+            <a ui-sref="register">Cadastrar Usuário</a>
+          </li>
+
+          <li ng-hide="isAuthenticated()" ui-sref-active="active">
+            <a ui-sref="login">Login</a>
+          </li>
+
+          <li ng-show="isAuthenticated()" ui-sref-active="active">
+            <a ui-sref="logout">Desconectar</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

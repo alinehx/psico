@@ -12,6 +12,8 @@ module.exports = function (user, res) {
   var secret = sails.config.session.secret; 
   var token = jwt.encode(payload, secret);
   
+  delete user.password;
+
   res.status(200).send({
     user: user.toJSON(),
     token:token
