@@ -20,7 +20,6 @@ angular
         controller: 'RegisterCtrl'
     });
 
-   
     $stateProvider.state('logout', {
       url: '/logout',
       controller: 'LogoutCtrl'
