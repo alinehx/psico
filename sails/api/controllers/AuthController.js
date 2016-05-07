@@ -1,6 +1,6 @@
 'use strict';
 var findUserByEmail = function(email, sendPassword, callback) {
-  User.findOneByEmail(email, function(err, foundUser) {
+  Users.findOneByEmail(email, function(err, foundUser) {
     if (!foundUser) {
       var error = {
         status: 401,
@@ -42,7 +42,11 @@ module.exports = {
         });
       }
       findUserByEmail(email, sendPassword, function(err, user) {
-        if (err) {
+        if(user.active === false){
+          return res.status(401).send({
+            message: 'Usuário desativado'
+          });
+        } else if (err) {
           return res.status(err.status).send({
             message: err.message
           });
@@ -50,34 +54,5 @@ module.exports = {
           createSendToken(user, res);
         }
       });
-    },
-    register: function(req, res) {
-      var email = req.body.email;
-      var password = req.body.password;
-      if (!email || !password) {
-        return res.status(401).send({
-          message: 'Email e senha não obrigatórios'
-        });
-      } else {
-        findUserByEmail(email, null, function(err, user) {
-          if (err && err.message === 'Usuário não encontrado') {
-              User.create({
-                email: email,
-                password: password
-              }).exec(function(err, user) {
-                if (err) {
-                  return res.status(403);
-                } else {
-                  createSendToken(user, res);
-                }
-              });
-          }else {
-            return res.status(409).send({
-              message: 'Email já cadastrado'
-            });
-          }
-          
-        })
-      }
     }
 }

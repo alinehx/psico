@@ -31,12 +31,18 @@ module.exports.routes = {
   * `assets` directory)                                                      *
   *                                                                          *
   ***************************************************************************/
-  '/*' : 'SessionController.disable',
-  '/': {
-    view: 'homepage'
-  },
-  'post /register': 'AuthController.register',
-  'post /login': 'AuthController.login'
+  '/*' : 'SessionController.disable',  
+  
+  'post /login': 'AuthController.login',
+  'post /user': 'UserController.create',
+  'delete /user/:email': 'UserController.disable',
+  'put /user/:email': 'UserController.update',
+  'get /user': 'UserController.getAll',
+  'get /user/:email': 'UserController.getUser',
+  'post /member': 'MemberController.create',
+  'delete /member/:email': 'MemberController.disable',
+  'put /member/:email': 'MemberController.update'
+
 
   /***************************************************************************
   *                                                                          *

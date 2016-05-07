@@ -11,9 +11,12 @@ module.exports = function (req, res, next) {
     });
   } else {
     token = req.headers.authorization; 
+    
     try {
-      var secret = sails.config.session.secret; 
-      payload = jwt.decode(token, secret);     
+      var secret = sails.config.session.secret;
+            
+      payload = jwt.decode(token, secret);
+           
       if(!payload.sub) {
         return res.status(401).send({
           message: 'Autenticação Falhou!'

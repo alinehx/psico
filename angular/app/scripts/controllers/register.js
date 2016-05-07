@@ -14,6 +14,9 @@ angular.module('psico2App')
         alert('success','Ok!', 'Usuário registrado com sucesso');         
       })
       .error(function (err) {
+        console.log('\n\n\n\n\n');
+        console.log('err', err);
+        console.log('\n\n\n\n\n');
         if(err.message === 'Autenticação falhou') {
           alert('warning', 'Erro!', 'Você precisa estar autenticado para cadastrar um usuário');
         } else {

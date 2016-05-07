@@ -1,12 +1,9 @@
 'use strict';
 var bcrypt = require('bcrypt-nodejs');
 
-function comparePassword(passwordSend, passwordUser, callback) {
-  console.log('passwordSend', passwordSend);
-  console.log('passwordUser', passwordUser);
-  console.log('/n/n/n/');
+function comparePassword(passwordSend, passwordUser, callback) {  
   bcrypt.compare(passwordSend, passwordUser, function (err, valid) {
-    console.log('error', err);
+    
     if(err) {
       var error = {
         status: 403,
