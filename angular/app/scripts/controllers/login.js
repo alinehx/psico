@@ -8,7 +8,6 @@ angular.module('psico2App')
         email: $scope.email,
         password: $scope.password  
       };
-
       $http.post(url, user)
       .success(function (res) {
         alert('success','Ok!', 'Usuário conectado'); 

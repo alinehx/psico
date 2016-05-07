@@ -16,8 +16,5 @@ angular.module('psico2App')
       response: function (response) {
         return response;
       } 
-    }
-
-
-
+    };
   });

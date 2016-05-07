@@ -1,0 +1,56 @@
+<h3>Cadastro de usuários
+   <small>modulo para regristro de novos usuários</small>
+</h3>
+<!-- START panel-->
+<div data-ng-controller="FormInputController as form" class="container-fluid">
+   <div class="panel panel-default">
+      <h4 class="panel-heading">Dados do novo usuário</h4>
+      <div class="panel-body">
+         <form method="submit" action="/" novalidate="" class="form-horizontal">
+            <fieldset>
+               <div class="form-group">
+                  <label for="input-id-1" class="col-sm-2 control-label">Nome</label>
+                  <div class="col-sm-4">
+                     <input id="input-id-1" type="text" class="form-control" />
+                  </div>
+               </div>
+            </fieldset>
+            <fieldset>
+               <div class="form-group">
+                  <label for="input-id-2" class="col-sm-2 control-label">E-mail</label>
+                  <div class="col-sm-4">
+                     <input id="input-id-2" type="email" class="form-control" />
+                  </div>
+               </div>
+            </fieldset>
+            <fieldset>
+               <div class="form-group">
+                  <label for="input-id-3" class="col-sm-2 control-label">Telefone</label>
+                  <div class="col-sm-4">
+                     <input id="input-id-3" type="text" class="form-control" />
+                  </div>
+               </div>
+            </fieldset>
+            <fieldset>
+               <div class="form-group">
+                  <label for="input-id-4" class="col-sm-2 control-label">CEP</label>
+                  <div class="col-sm-4">
+                     <input id="input-id-4" type="text" class="form-control" />
+                  </div>
+               </div>
+            </fieldset>
+            <fieldset>
+               <div class="form-group">
+                  <label for="input-id-5" class="col-sm-2 control-label">CRP</label>
+                  <div class="col-sm-4">
+                     <input id="input-id-5" type="text" class="form-control" />
+                  </div>
+               </div>
+            </fieldset>
+         </form>
+      </div>
+      <div class="panel-footer">
+         <button type="submit" class="btn btn-md btn-success">Cadastrar</button>
+      </div>
+   </div>
+</div>
