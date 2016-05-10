@@ -2,13 +2,6 @@
 
  var validateUser = require ('../validate/User');
 
- function verifyUser(email, res) {
-   if (!email) {
-     return false;
-   } else {
-     return true;
-   }
- }
 
  function create(req, res) {
   var erro = validateUser.Register(req.body);
@@ -24,6 +17,11 @@
             message: err
           });
         }
+        if (user) {
+          return res.status(409).send({
+            message: 'Email já cadastrado'
+          });
+        }
         var userObject = UserService.userObject(req.body);
         Users.create(userObject).exec(function(err, user) {
           if (err) {
@@ -36,11 +34,7 @@
              });
            }
         });
-      } else {
-        return res.status(409).send({
-          message: 'Email já cadastrado'
-        });
-      }
+      } 
     });     
    }
  }
@@ -74,7 +68,7 @@
  function update(req, res) {
    var email = req.param('email');
    var user = req.body;
-   if (verifyUser(email, res)) {
+   if (validateUser.Email(email)) {
      UserService.updateUser(email, user, function(err, updateUser) {
        if (err) {
          return res.status(404).send({
@@ -94,7 +88,7 @@
 
  function disable(req, res) {
    var email = req.param('email');
-   if (verifyUser(email, res)) {
+   if (validateUser.Email(email)) {
      UserService.findUser(email, function(err, user) {
        if (err) {
          return res.status(503).send({

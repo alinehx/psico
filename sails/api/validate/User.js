@@ -23,8 +23,16 @@ function Register (user) {
   return errors;
 };
 
+function Email(email) {
+   if (!email) {
+     return false;
+   } else {
+     return true;
+   }
+ }
 
 
 module.exports = {
-  Register: Register
+  Register: Register,
+  Email: Email
 }

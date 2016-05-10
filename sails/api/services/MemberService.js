@@ -1,6 +1,6 @@
 'use strict';
 
-function memberObject(user) {
+function memberObject(member) {
   return {
     email: user.email,
     name: user.name,

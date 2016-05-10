@@ -23,11 +23,14 @@ module.exports = {
     description: {
       type: 'string',
       required: true,
+    },
+    active: {
+      type: 'boolean',
+      required: true,
+      defaultsTo: true
     }
   }
 }
 
 
 
-
-  //nome , localizacao, tipo, descricao, ocupacao max

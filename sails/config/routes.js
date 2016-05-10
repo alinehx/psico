@@ -41,7 +41,9 @@ module.exports.routes = {
   'get /user/:email': 'UserController.getUser',
   'post /member': 'MemberController.create',
   'delete /member/:email': 'MemberController.disable',
-  'put /member/:email': 'MemberController.update'
+  'put /member/:email': 'MemberController.update',
+  'post /class': 'ClassService.create',
+  'put /class/:name&:location': 'ClassService.update'
 
 
   /***************************************************************************

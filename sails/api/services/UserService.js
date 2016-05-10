@@ -2,51 +2,6 @@
 
 
 
-/*function callbackUser(err, user, callback) {
-  if (err) {
-    return callback(err);
-  }
-  if (!user) {
-    return callback('Usuário não encontrado');
-  }
-  return callback(null, user);
-}*/
-
-
-/*
- email: {
-      type: 'string',
-      required: true,
-      unique: true
-    },
-    password: {
-      type: 'string',
-      defaultsTo: '123'
-    },
-    name: {
-      type: 'string',
-      required: true
-    },
-    crp: {
-      type: 'string',
-      required: true,
-      unique: true
-    },
-    phone: {
-      type: 'string',
-      required: true
-    },
-    address: {
-      type: 'string'
-    },
-    active: {
-      type: 'boolean',
-      required: true,
-      defaultsTo: true
-    }
-
-*/
-
 
 function userObject(user) {
   return {
