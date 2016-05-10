@@ -33,7 +33,7 @@ module.exports.routes = {
   ***************************************************************************/
   '/*' : 'SessionController.disable',  
   
-  'get /login': 'AuthController.login',
+  'get /login/:email&:password': 'AuthController.login',
   'post /user': 'UserController.create',
   'delete /user/:email': 'UserController.disable',
   'put /user/:email': 'UserController.update',

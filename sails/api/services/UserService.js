@@ -18,6 +18,8 @@ function userObject(user) {
 
 
 
+
+
 function findUser(email, callback) {
   Users.findOne({
     email: email

@@ -46,7 +46,7 @@ function update(req, res) {
 
   } else {
     return res.status(403).send({
-      message: 'Membro não enviado'
+      message: !validateMail ? 'Membro não enviado' : error
     });
   }
 }

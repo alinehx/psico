@@ -71,7 +71,6 @@ function removeMember(id, callback) {
 };
 
 module.exports = {
-  memberObject: memberObject,
   createMember: createMember,
   updateMember: updateMember,
   removeMember: removeMember,

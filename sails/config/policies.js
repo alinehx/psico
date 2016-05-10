@@ -25,7 +25,7 @@ module.exports.policies = {
   * access)                                                                  *
   *                                                                          *
   ***************************************************************************/
-  'AuthController': {
+  /*'AuthController': {
     register: 'jwtAuth'
   },
   'UserController': {
@@ -33,7 +33,7 @@ module.exports.policies = {
   },
   'MemberController': {
     create: 'jwtAuth'
-  }
+  }*/
 
 
 

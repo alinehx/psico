@@ -1,17 +1,14 @@
 'use strict';
 module.exports = {
   login: function(req, res) {
-    var allValues = req.params.id,
-      email, password;
+    var email = req.params.email,
+       passwordUser = req.params.password;
           
-    if (!allValues || allValues.indexOf('&') === -1) {
+    if (!email || !passwordUser) {
       return res.status(403).send({
         message: 'Email e Senha são obrigatórios'
       });
-    } else {
-      allValues = allValues.split('&');
-      email = allValues[0];
-      password = allValues[1];
+    } else {      
 
       UserService.findUser(email, function(err, user) {
         if (err) {
@@ -23,13 +20,9 @@ module.exports = {
             message: 'Usuário desativado'
           });
         }
-        password.comparePassword(sendPassword, user.password, function(err, success) {
-          if (err) {
-            var error = {
-              status: 503,
-              message: err.message
-            };
-            return callback(error);
+        password.comparePassword(passwordUser, user.password, function(err, success) {
+          if (err) {           
+            return res.status(503).send(err);
           } else {
             if (success) {
               createSendToken(user, res);

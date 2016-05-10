@@ -16,12 +16,7 @@
           return res.status(503).send({
             message: err
           });
-        }
-        if (user) {
-          return res.status(409).send({
-            message: 'Email já cadastrado'
-          });
-        }
+        }        
         var userObject = UserService.userObject(req.body);
         Users.create(userObject).exec(function(err, user) {
           if (err) {
@@ -33,6 +28,10 @@
                user: user.toJSON()
              });
            }
+        });
+      } else {
+        return res.status(409).send({
+          message: 'Email já cadastrado'
         });
       } 
     });     
