@@ -1,15 +1,6 @@
 'use strict';
 
-function memberObject(member) {
-  return {
-    email: user.email,
-    name: user.name,
-    gender: user.gender,
-    phone: user.phone,
-    zipCode: user.zipCode,
-    numberAddress: user.numberAddress
-  };
-};
+
 
 function createMember(memberSend, callback) {
   findMember(memberSend.email, function(err, success) {

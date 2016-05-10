@@ -20,8 +20,32 @@ function Register (user) {
   if(!user.zipCode) {
     errors.push('Cep é obrigatório');
   }
+  errors = valideStructUser(user, errors);
   return errors;
 };
+
+var propertiesUser = [
+  'email',
+  'password',
+  'name',
+  'crp',
+  'phone',
+  'zipCode',
+  'active'
+]
+
+
+function valideStructUser(obj, error) { 
+  Object.keys(obj).forEach(function(key) {    
+    if( propertiesUser.indexOf(key) === -1) {
+      error.push('Propriedade ' +key+ ' não faz parte dos atributos de usuário');
+    }
+  });
+  return error;
+}
+
+
+
 
 function Email(email) {
    if (!email) {
@@ -34,5 +58,6 @@ function Email(email) {
 
 module.exports = {
   Register: Register,
-  Email: Email
+  Email: Email,
+  valideStructUser: valideStructUser
 }

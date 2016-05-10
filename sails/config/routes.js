@@ -33,7 +33,7 @@ module.exports.routes = {
   ***************************************************************************/
   '/*' : 'SessionController.disable',  
   
-  'post /login': 'AuthController.login',
+  'get /login': 'AuthController.login',
   'post /user': 'UserController.create',
   'delete /user/:email': 'UserController.disable',
   'put /user/:email': 'UserController.update',
@@ -43,7 +43,9 @@ module.exports.routes = {
   'delete /member/:email': 'MemberController.disable',
   'put /member/:email': 'MemberController.update',
   'post /class': 'ClassService.create',
-  'put /class/:name&:location': 'ClassService.update'
+  'put /class/:name&:location': 'ClassService.update',
+  'delete /class/:name&:location': 'ClassService.disable',
+  'get /address/:zipCode': 'AddressController.getAddress'
 
 
   /***************************************************************************

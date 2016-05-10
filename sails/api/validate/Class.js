@@ -1,6 +1,24 @@
 'use strict';
 
 
+
+var propertiesClass = [
+  'name',
+  'location',
+  'typeClass',
+  'size',
+  'description'
+];
+
+function validateStructClass(obj, error) { 
+  Object.keys(obj).forEach(function(key) {    
+    if( propertiesClass.indexOf(key) === -1) {
+      error.push('Propriedade ' +key+ ' não faz parte dos atributos de sala');
+    }
+  });
+  return error;
+}
+
 function verifyBody (classBody) {
   var error = [];
   if (!classBody.name) {
@@ -18,16 +36,15 @@ function verifyBody (classBody) {
   if(!classBody.description) {
     error.push('Descrição é obrigatório')
   }
+  error = validateStructClass(classBody, error);
   return error;
 };
 
-function update(allValues) {
-  
+function update(allValues) { 
   if(!allValues || allValues.indexOf('&') === -1) {
-    return false;
+    return false;    
   }
-  return allValues.split('&');
-  
+  return allValues.split('&');  
 }
 
 
@@ -35,7 +52,8 @@ function update(allValues) {
 
 module.exports = {
   verifyBody: verifyBody,
-  update: update
+  update: update,
+  validateStructClass: validateStructClass
 }
 
 

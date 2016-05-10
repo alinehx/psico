@@ -68,7 +68,11 @@
  function update(req, res) {
    var email = req.param('email');
    var user = req.body;
-   if (validateUser.Email(email)) {
+   var error = [];
+   var validate = validateUser.Email(email);
+   
+   error = validateUser.valideStructUser(user, error);
+   if (validate && error.length === 0) {
      UserService.updateUser(email, user, function(err, updateUser) {
        if (err) {
          return res.status(404).send({
@@ -81,7 +85,7 @@
      });
    } else {
      return res.status(403).send({
-       message: 'Usuário não enviado'
+       message: validate === false  ? 'Usuário não enviado' : error
      });
    }
  }

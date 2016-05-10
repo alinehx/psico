@@ -1,37 +1,39 @@
 'use strict';
 
-function verifyMember(member) {
-  if (!member) {
-    return false;
-  } else {
-    return true;
-  }
-};
+var validateMember = require ('../validate/Member');
+
 
 
 function create(req, res) {
-  var user = MemberService.memberObject(req.body);
-
-  MemberService.createMember(user, function(err, member) {
-    if (err) {
-      return res.status(401).send({
-        message: err
-      });
-    }
-    if (member) {
-      return res.status(200).send({
-        message: 'Membro criado com sucesso'
-      });
-    }
-  });
+  var user =req.body,  
+  error = validateMember.validateStructMember(user);
+  if(error.length === 0) {
+    MemberService.createMember(user, function(err, member) {
+      if (err) {
+        return res.status(401).send({
+          message: err
+        });
+      }
+      if (member) {
+        return res.status(200).send({
+          message: 'Membro criado com sucesso'
+        });
+      }
+    });  
+  } else {
+    return rest.status(403).send(error);
+  }
+  
 }
 
 function update(req, res) {
-  var email = req.param('email');
-
-  var member = req.body;
-  if (verifyMember) {
-    MemberService.updateMember(email, member, function(err, updateMember) {
+  var mail = req.param('email'),
+    member = req.body, error =  [];
+  error = validateMember.validateStructMember(member, error),
+  validateMail = validateMember.verifyEmail(mail);
+  
+  if (validateMail && error.length === 0) {
+    MemberService.updateMember(mail, member, function(err, updateMember) {
       if (err) {
         return res.status(404).send({
           message: err
@@ -52,7 +54,7 @@ function update(req, res) {
 function disable(req, res) {
   var email = req.param('email');
 
-  if (verifyMember(email)) {
+  if (validateMember.verifyEmail(email)) {
     MemberService.findMember(email, function(err, member) {
       if (err || member === 'Membro não encontrado') {
         return res.status(err ? 503 : 404).send({

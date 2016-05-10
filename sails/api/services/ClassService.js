@@ -43,6 +43,7 @@ function updateClass(name, location, classUpdate, callback) {
 
 
 
+
 function createClass(classObject, callback) {
   findClass(classObject.name, classObject.location, function (err, findClass) {
     if ( err && err !== 'Sala não encontrada') {
