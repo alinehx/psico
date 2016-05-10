@@ -7,7 +7,8 @@ var propertiesMember = [
   'gender',
   'phone',
   'zipCode',
-  'numberAddress'
+  'numberAddress',
+  'active'
 ];
 
 function verifyBody(member) {
@@ -29,7 +30,7 @@ function verifyBody(member) {
     errors.push('CEP é obrigatório');
   }
   if(!member.numberAddress) {
-    errors.push('Númedo do endereço é obrigatório');
+    errors.push('Número do endereço é obrigatório');
   }
   var errors = validateStructMember(member, errors);
   return errors;

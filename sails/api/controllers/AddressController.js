@@ -19,8 +19,7 @@ function getAddress (req, res) {
     return res.status(403).send({
        message:  !zipCode ? 'CEP é obrigatório' : 'CEP inválido'
      }); 
-  }  
- 
+  }   
 };
 
 

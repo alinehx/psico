@@ -5,8 +5,8 @@ var validateMember = require ('../validate/Member');
 
 
 function create(req, res) {
-  var user =req.body,  
-  error = validateMember.validateStructMember(user);
+  var user =req.body, error = []; 
+  error = validateMember.verifyBody(user);
   if(error.length === 0) {
     MemberService.createMember(user, function(err, member) {
       if (err) {
@@ -21,63 +21,54 @@ function create(req, res) {
       }
     });  
   } else {
-    return rest.status(403).send(error);
+    return res.status(403).send(error);
   }
   
 }
 
-function update(req, res) {
-  var mail = req.param('email'),
-    member = req.body, error =  [];
-  error = validateMember.validateStructMember(member, error),
-  validateMail = validateMember.verifyEmail(mail);
-  
-  if (validateMail && error.length === 0) {
-    MemberService.updateMember(mail, member, function(err, updateMember) {
-      if (err) {
-        return res.status(404).send({
-          message: err
-        });
-      }
-      return res.status(200).send({
-        message: 'Membro atualizado com sucesso'
-      });
-    });
-
-  } else {
-    return res.status(403).send({
-      message: !validateMail ? 'Membro não enviado' : error
-    });
-  }
-}
-
-function disable(req, res) {
-  var email = req.param('email');
-
+function updateMember(email, member, typeUpdate, req, res) {
   if (validateMember.verifyEmail(email)) {
-    MemberService.findMember(email, function(err, member) {
-      if (err || member === 'Membro não encontrado') {
-        return res.status(err ? 503 : 404).send({
-          message: err ? err : member
-        });
+    MemberService.updateMember(email, member, function (err, memberUpdated) {
+      if (err) {
+        return res.status(503).send(error);
+      } else if(memberUpdated) {
+        
+        var returnMember = typeUpdate === 'disable'? {message:'Membro excluído com sucesso'} : memberUpdated;
+        return res.status(200).send(returnMember)
       }
-      MemberService.removeMember(member.id, function(err, memberDelete) {
-        if (err) {
-          return res.status(503).send({
-            message: err
-          });
-        }
-        return res.status(200).send({
-          message: 'Membro excluido com sucesso'
-        });
-      });
-    })
+    })   
   } else {
     return res.status(403).send({
       message: 'Membro não enviado'
     });
   }
+};
+
+
+function update(req, res) {
+  var mail = req.param('email'),
+    member = req.body, error =  [];
+  error = validateMember.validateStructMember(member, error);
+    
+  if (error.length === 0) {
+     updateMember(mail, member, 'update', req, res);
+  } else {
+    return res.status(403).send({
+      message:  error
+    });
+  }
 }
+
+function disable(req, res) {
+  var mail = req.param('email');
+  var member = {
+    active: false
+  };
+  
+  updateMember(mail, member, 'disable', req, res);
+
+  
+};
 
 module.exports = {
   create: create,

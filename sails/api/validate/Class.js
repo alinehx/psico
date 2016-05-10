@@ -7,7 +7,8 @@ var propertiesClass = [
   'location',
   'typeClass',
   'size',
-  'description'
+  'description',
+  'active'
 ];
 
 function validateStructClass(obj, error) { 
