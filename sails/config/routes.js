@@ -42,9 +42,13 @@ module.exports.routes = {
   'post /member': 'MemberController.create',
   'delete /member/:email': 'MemberController.disable',
   'put /member/:email': 'MemberController.update',
-  'post /class': 'ClassService.create',
-  'put /class/:name&:location': 'ClassService.update',
-  'delete /class/:name&:location': 'ClassService.disable',
+  'get /member': 'MemberController.getAll',
+  'get /member/:email': 'MemberController.getMember',
+  'post /class': 'ClassController.create',
+  'put /class/:name&:location': 'ClassController.update',
+  'delete /class/:name&:location': 'ClassController.disable',
+  'get /class': 'ClassController.getAll',
+  'get /class/:name&:location': 'ClassController.getClass',
   'get /address/:zipCode': 'AddressController.getAddress'
 
 

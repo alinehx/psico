@@ -11,33 +11,36 @@ function classObject(classBody) {
   };
 };
 
+function callbackGet(err, findClass, callback) {
+  if (err) {
+    return callback(err);
+  } else if(!findClass){
+    return callback(null, 'Busca não retornou resultado');
+  }
+  return callback(null, findClass);
+}
+
+function getAll(callback) {
+  Class.find().exec(function (err, findClass) { callbackGet(err, findClass, callback);});
+}
 
 function findClass(name, location, callback) {
-  Class.findOne({name: name, location: location}, function (err, findClass) {
-    if (err) {
-      return callback(err);
-    } 
-    if(!findClass) {
-      return callback('Sala não encontrada');
-    } else {
-       return callback(undefined, findClass);
-    }
-  });
+  Class.findOne({name: name, location: location}).exec(function (err, findClass) { callbackGet(err, findClass, callback);});  
 }
 
 function updateClass(name, location, classUpdate, callback) {
   findClass(name, location, function (err, classFind) {
     if (err) {
       return callback(err);
-    } else {
-      Class.update({name: name, location: location}, classUpdate, function (err, classUpdate) {
+    } else if (classFind !== 'Busca não retornou resultado') {
+      Class.update({name: name, location: location}, classUpdate).exec(function (err, classUpdate) {
         if (err) {
           return callback(err);
         } else if (classUpdate) {
           return callback(null, classUpdate);
         }
       });
-    }
+    } return callback(null, classFind);
   });
 }
 
@@ -46,9 +49,9 @@ function updateClass(name, location, classUpdate, callback) {
 
 function createClass(classObject, callback) {
   findClass(classObject.name, classObject.location, function (err, findClass) {
-    if ( err && err !== 'Sala não encontrada') {
+    if ( err ) {
       return callback(err);
-    } else  if ( err && err === 'Sala não encontrada') {
+    } else  if (findClass === 'Busca não retornou resultado') {
       Class.create(classObject).exec(function(err, createClass) {
         if (err) {
           return callback(err);
@@ -57,13 +60,14 @@ function createClass(classObject, callback) {
           return callback(null, createClass);
         }
       });
-    } else if (findClass) {
-      return callback('Sala já cadastrada');
-    }  
+    } 
+    return callback('Sala já cadastrada');     
   });
 }
 module.exports = {
   classObject: classObject,
   createClass: createClass,
-  updateClass : updateClass
+  updateClass : updateClass,
+  findClass: findClass,
+  getAll: getAll
 };

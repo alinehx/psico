@@ -11,9 +11,7 @@ function create(req, res) {
   }
   var classObject = ClassService.classObject(req.body);
   
-  ClassService.createClass(classObject, function(err, classCreate) {
-    console.log('err', err);
-    console.log('classCreate', classCreate)
+  ClassService.createClass(classObject, function(err, classCreate) {    
     if (err) {
       return res.status(err === 'Sala já cadastrada' ? 409 : 503).send({
         message: err
@@ -34,12 +32,13 @@ function updateClass(allValues, typeUpdate, res, req) {
 
     ClassService.updateClass(name, location, classUpdate, function(err, data) {
       if (err) {
-        return res.status(err === 'Sala não encontrada' ? 404 : 503).send({
+        return res.status( 503).send({
           message: err
         });
-      } else if (data) {
-        return res.status(200).send(data);
-      }
+      } else if (data !==  'Busca não retornou resultado') {
+        return res.status(200).send(typeUpdate === 'disable' ? 'Usuário excluido com sucesso' : data);
+      } 
+      return res.status(404).send(data);
     });
   } else {
     return res.status(403).send({
@@ -64,10 +63,43 @@ function disable(req, res) {
   updateClass(req.params.id, 'disable', res, req);
 }
 
+function getClass(req, res) {
+  var  name, location;
+  name = req.params.name;
+  location = req.params.location;
+  
+  if(name && location) {    
+    ClassService.findClass(name, location, function (err, objectClass) {
+      if (err) {
+        return res.status(503).send({
+          message: err
+        }); 
+      }
+      return res.status(objectClass ===  'Busca não retornou resultado' ? 404 : 200).send(objectClass);
+    });
+  } else {
+    return res.status(403).send({
+      message: 'Nome e Localização são obrigatórios'
+    });
+  }
+};
 
+function getAll(req, res){
+  ClassService.getAll(function (err, objectClass) {
+    if (err) {
+      return res.status(503).send({
+        message: err
+      });
+    }
+    return res.status(200).send(objectClass);
+  });  
+}
 
 module.exports = {
   create: create,
   update: update,
-  disable: disable
+  disable: disable,
+  getClass: getClass,
+  getAll: getAll
+  
 };
