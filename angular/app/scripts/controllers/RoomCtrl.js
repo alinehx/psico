@@ -18,6 +18,7 @@ app.controller('RoomCtrl', function ($scope, $rootScope, $http, alert, authToken
     $http.post(vm.url, $scope.room)
     .success(function (res) {
       alert('success','Ok!', 'Sala registrada com sucesso');
+      $scope.openRoomDetail($scope.room.name, $scope.room.location);
     })
     .error(function (err) {
       if(err.message === 'Autenticação falhou') {
@@ -41,10 +42,8 @@ app.controller('RoomCtrl', function ($scope, $rootScope, $http, alert, authToken
         alert('warning',"Error! Cannot Get Rooms. Check your network connection.");
       });
   };
-
   $scope.getRoomByName = function (name, location){
     var newurl = vm.url + "/" + name + "&" + location;
-    console.log(newurl);
     $http.get(newurl)
       .success(function (res){
         vm.roomDetail = res;
@@ -83,7 +82,7 @@ app.controller('RoomCtrl', function ($scope, $rootScope, $http, alert, authToken
     $http.put(newurl, vm.newRoom)
       .success(function (res){
         alert('success',"Dados alterados com sucesso!");
-        $state.go('listofroomrooms');
+        $state.go('listofrooms');
       })
       .error(function(err){
         alert('warning', "Error! Cannot Update Room. Check your network connection.");
@@ -105,7 +104,7 @@ app.controller('RoomCtrl', function ($scope, $rootScope, $http, alert, authToken
   };
 
   vm.enableRoom = function(){
-    var newurl = vm.url + "/" + vm.roomName;
+    var newurl = vm.url + "/" + vm.roomName + "&" + vm.roomLocation;
     vm.newRoom = {
       active: true
     };

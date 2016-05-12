@@ -35,7 +35,7 @@
                   <div class="form-group">
                      <label for="inputTelp" class="col-lg-3 control-label">Telefone *</label>
                      <div class="col-lg-9">
-                        <input type="text" class="form-control" id="inputTel" placeholder="(11) 98765 4321" ng-pattern="" maxlength="15" ng-model="user.phone" required>
+                        <input type="text" class="form-control" id="inputTel" placeholder="11988887777" ng-pattern="" maxlength="11" ng-model="user.phone" required>
                      </div>
                   </div>
                </fieldset>
@@ -45,9 +45,9 @@
                      <div class="col-lg-3">
                         <input type="text" class="form-control" id="inputCEP" placeholder="04664020" required="" minlength="8" maxlength="8" ng-pattern="/^[0-9]*$/" ng-model="user.zipCode">
                      </div>
-                     <label for="inputComp" class="col-lg-2 control-label">Complemento</label>
+                     <label for="inputComp" class="col-lg-2 control-label">Nº Endereço</label>
                      <div class="col-lg-4">
-                        <input type="text" class="form-control" id="inputComp" placeholder="B3 AP11" ng-model="user.comp">
+                        <input type="text" class="form-control" id="inputComp" placeholder="512" maxlength="5" minlength="1" required>
                      </div>
                   </div>
                </fieldset>

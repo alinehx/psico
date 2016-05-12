@@ -20,7 +20,7 @@ app.controller('UserCtrl', function ($scope, $rootScope, $http, alert, authToken
     $http.post(vm.url, $scope.user)
     .success(function (res) {
       alert('success','Ok!', 'Usuário cadastrado com sucesso');
-      $state.go('main');//@todo enviar para a tela de visualização do usuário 
+      $scope.openUserDetail($scope.user.email);
     })
     .error(function (err) {
       if(err.message === 'Autenticação falhou') {

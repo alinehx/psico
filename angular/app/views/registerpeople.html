@@ -27,7 +27,7 @@
                   <div class="form-group">
                      <label for="inputTelp" class="col-lg-3 control-label">Telefone *</label>
                      <div class="col-lg-9">
-                        <input type="text" class="form-control" id="inputTel" placeholder="(11) 98765 4321" ng-pattern="" maxlength="15" ng-model="member.phone" required>
+                        <input type="text" class="form-control" id="inputTel" placeholder="11988887777" ng-pattern="member.phone" maxlength="11" ng-model="member.phone" required>
                      </div>
                   </div>
                </fieldset>
@@ -46,11 +46,11 @@
                   <div class="form-group">
                      <label for="inputEnd" class="col-lg-3 control-label">CEP *</label>
                      <div class="col-lg-3">
-                        <input type="text" class="form-control" id="inputCEP" placeholder="04664020" required maxlength="8" ng-pattern="/^[0-9]+$/" ng-model="member.zipCode">
+                        <input type="text" class="form-control" id="inputCEP" placeholder="04664020" required maxlength="8" minlength="8" ng-pattern="/^[0-9]*$/" ng-model="member.zipCode">
                      </div>
                      <label for="inputEnd" class="col-lg-2 control-label">Numero Endereço</label>
                      <div class="col-lg-4">
-                        <input type="text" class="form-control" id="inputComp" placeholder="512" ng-model="member.numberAddress" ng-pattern="/^[0-9]+$/" required>
+                        <input type="text" class="form-control" id="inputComp" placeholder="512" ng-model="member.numberAddress" ng-pattern="/^[0-9]+$/" minlength="1"maxlength="5" required>
                      </div>
                   </div>
                </fieldset>

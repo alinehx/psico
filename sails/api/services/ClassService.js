@@ -39,7 +39,9 @@ function updateClass(name, location, classUpdate, callback) {
           return callback(null, classUpdate);
         }
       });
-    } return callback(null, classFind);
+    } else {
+      return callback(null, classFind);
+    }
   });
 }
 

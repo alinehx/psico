@@ -5,19 +5,6 @@ app.controller('PeopleCtrl', function ($scope, $rootScope, $http, alert, authTok
   vm.state = $state;
   vm.url = 'http://localhost:1337/member';
 
-
-  /*
-  $scope.member = {
-      name: null,
-      email: null,
-      password: "alterar123",
-      phone: null,
-      cep: null,
-      comp: null,
-      contactName: null,
-      contactPhone: null
-  };*/ // Utilizar apenas depois, com estes complementos de contactname e phone.
-
   $scope.member = {
     email : null,
     name : null,
@@ -35,6 +22,7 @@ app.controller('PeopleCtrl', function ($scope, $rootScope, $http, alert, authTok
     $http.post(vm.url, $scope.member)
     .success(function (res) {
       alert('success','Ok!', 'Participante registrado com sucesso');
+      $scope.openMemberDetail($scope.member.email);
     })
     .error(function (err) {
       if(err.message === 'Autenticação falhou') {

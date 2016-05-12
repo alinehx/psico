@@ -18,30 +18,27 @@ function create(req, res) {
     } else {
       return res.status(201).send(classCreate); 
     }
-     
-   
   });
 }
 
-function updateClass(typeUpdate, res, req) {
-  var  name, location;
-   
-   name = req.param('name');
-    location = req.param('location');
-
-  if (name && location) {
-    
+function updateClass(allValues, typeUpdate, res, req) {
+  //var returnValidate = validateClass.update(allValues),
+  var name, location;
+  if (allValues.name !== undefined && allValues.location !== undefined) {
+    name = allValues.name;
+    location = allValues.location;
     var classUpdate = typeUpdate === 'disable' ? { active: false  } : req.body;
 
     ClassService.updateClass(name, location, classUpdate, function(err, data) {
       if (err) {
-        return res.status( 503).send({
+        return res.status(503).send({
           message: err
         });
       } else if (data !==  'Busca não retornou resultado') {
         return res.status(200).send(typeUpdate === 'disable' ? 'Usuário excluido com sucesso' : data);
-      } 
-      return res.status(404).send(data);
+      } else {
+        return res.status(404).send(data);
+      }
     });
   } else {
     return res.status(403).send({
@@ -50,28 +47,25 @@ function updateClass(typeUpdate, res, req) {
   }
 }
 
-
-
 function update(req, res) {
   var error = [];
   error = validateClass.validateStructClass(req.body, error);
   if(error.length > 0 ) {
     return res.status(409).send(error);
   } else {
-    updateClass('update', res, req);
+    updateClass(req.params, 'update', res, req);
   }
 }
 
-function disable(req, res) {
-  updateClass('disable', res, req);
+function disable(req, res) {  
+  updateClass(req.params, 'disable', res, req);
 }
 
 function getClass(req, res) {
   var  name, location;
   name = req.params.name;
   location = req.params.location;
-  
-  if(name && location) {    
+    if(name && location) {    
     ClassService.findClass(name, location, function (err, objectClass) {
       if (err) {
         return res.status(503).send({
