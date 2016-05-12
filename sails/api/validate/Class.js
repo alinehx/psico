@@ -41,19 +41,12 @@ function verifyBody (classBody) {
   return error;
 };
 
-function update(allValues) { 
-  if(!allValues || allValues.indexOf('&') === -1) {
-    return false;    
-  }
-  return allValues.split('&');  
-}
 
 
 
 
 module.exports = {
-  verifyBody: verifyBody,
-  update: update,
+  verifyBody: verifyBody, 
   validateStructClass: validateStructClass
 }
 

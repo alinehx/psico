@@ -23,13 +23,14 @@ function create(req, res) {
   });
 }
 
-function updateClass(allValues, typeUpdate, res, req) {
-  var returnValidate = validateClass.update(allValues),
-   name, location;
+function updateClass(typeUpdate, res, req) {
+  var  name, location;
+   
+   name = req.param('name');
+    location = req.param('location');
 
-  if (returnValidate.length === 2) {
-    name = returnValidate[0];
-    location = returnValidate[1];
+  if (name && location) {
+    
     var classUpdate = typeUpdate === 'disable' ? { active: false  } : req.body;
 
     ClassService.updateClass(name, location, classUpdate, function(err, data) {
@@ -57,12 +58,12 @@ function update(req, res) {
   if(error.length > 0 ) {
     return res.status(409).send(error);
   } else {
-    updateClass(req.params.id, 'update', res, req);
+    updateClass('update', res, req);
   }
 }
 
-function disable(req, res) {  
-  updateClass(req.params.id, 'disable', res, req);
+function disable(req, res) {
+  updateClass('disable', res, req);
 }
 
 function getClass(req, res) {
