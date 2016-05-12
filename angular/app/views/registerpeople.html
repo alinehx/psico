@@ -1,64 +1,69 @@
-<h3>Cadastro de participantes
-   <small>modulo para regristro de novos participantes</small>
-</h3>
-<!-- START panel-->
-<div data-ng-controller="FormInputController as form" class="container-fluid">
-   <div class="panel panel-default">
-      <h4 class="panel-heading">Dados do novo participante</h4>
-      <div class="panel-body">
-         <form method="submit" action="/" novalidate="" class="form-horizontal">
-            <fieldset>
-               <div class="form-group">
-                  <label for="input-id-1" class="col-sm-2 control-label">Nome</label>
-                  <div class="col-sm-4">
-                     <input id="input-id-1" type="text" class="form-control" />
+<div class="panel panel-default">
+   <form role="form" class="form-horizontal" ng-submit="submit()" name="criarparticipante">
+      <div class="panel panel-body">
+         <div class="panel panel-info">
+           <div class="panel-heading">
+             <h3 class="panel-title">Cadastro de Participantes</h3>
+           </div>
+           <div class="panel-body">
+               <legend>Dados do Participante</legend>
+               <fieldset>
+                  <div class="form-group">
+                     <label for="inputNomeP" class="col-lg-3 control-label">Nome Completo *</label>
+                     <div class="col-lg-9">
+                        <input type="text" class="form-control" id="inputNomeP" placeholder="Bruno Freitas" ng-model="member.name" ng-pattern="/^[A-Za-z \s]*$/" required>
+                     </div>
                   </div>
-               </div>
-            </fieldset>
-            <fieldset>
-               <div class="form-group">
-                  <label for="input-id-2" class="col-sm-2 control-label">E-mail</label>
-                  <div class="col-sm-4">
-                     <input id="input-id-2" type="email" class="form-control" />
+               </fieldset>
+               <fieldset>
+                  <div class="form-group">
+                     <label for="inputEmail" class="col-lg-3 control-label">Email *</label>
+                     <div class="col-lg-9">
+                        <input type="email" class="form-control" id="inputEmail" placeholder="felipe.ishida@gmail.com" ng-model="member.email" required>
+                     </div>
                   </div>
-               </div>
-            </fieldset>
-            <fieldset>
-               <div class="form-group">
-                  <label for="input-id-3" class="col-sm-2 control-label">Telefone</label>
-                  <div class="col-sm-4">
-                     <input id="input-id-3" type="text" class="form-control" />
+               </fieldset>
+               <fieldset>
+                  <div class="form-group">
+                     <label for="inputTelp" class="col-lg-3 control-label">Telefone *</label>
+                     <div class="col-lg-9">
+                        <input type="text" class="form-control" id="inputTel" placeholder="(11) 98765 4321" ng-pattern="" maxlength="15" ng-model="member.phone" required>
+                     </div>
                   </div>
-               </div>
-            </fieldset>
-            <fieldset>
-               <div class="form-group">
-                  <label for="input-id-4" class="col-sm-2 control-label">CEP</label>
-                  <div class="col-sm-4">
-                     <input id="input-id-4" type="text" class="form-control" />
+               </fieldset>
+               <fieldset>
+                  <div class="form-group">
+                     <label class="col-lg-3 control-label">Sexo *</label>
+                     <div class="col-lg-9">
+                        <select name="gender" ng-model="member.gender" class="form-control m-b" required>
+                           <option>Masculino</option>
+                           <option>Feminino</option>
+                        </select>
+                     </div>
                   </div>
-               </div>
-            </fieldset>
-            <fieldset>
-               <div class="form-group">
-                  <label for="input-id-5" class="col-sm-2 control-label">Nome Contato</label>
-                  <div class="col-sm-4">
-                     <input id="input-id-5" type="text" class="form-control" />
+               </fieldset>
+               <fieldset>
+                  <div class="form-group">
+                     <label for="inputEnd" class="col-lg-3 control-label">CEP *</label>
+                     <div class="col-lg-3">
+                        <input type="text" class="form-control" id="inputCEP" placeholder="04664020" required maxlength="8" ng-pattern="/^[0-9]+$/" ng-model="member.zipCode">
+                     </div>
+                     <label for="inputEnd" class="col-lg-2 control-label">Numero Endereço</label>
+                     <div class="col-lg-4">
+                        <input type="text" class="form-control" id="inputComp" placeholder="512" ng-model="member.numberAddress" ng-pattern="/^[0-9]+$/" required>
+                     </div>
                   </div>
+               </fieldset>
+               <div class="text-right">
+                  <small class="text-right">Os campos marcados com * são obrigatórios. </small>
                </div>
-            </fieldset>
-            <fieldset>
-               <div class="form-group">
-                  <label for="input-id-6" class="col-sm-2 control-label">Telefone Contato</label>
-                  <div class="col-sm-4">
-                     <input id="input-id-6" type="text" class="form-control" />
-                  </div>
-               </div>
-            </fieldset>
-         </form>
+            </div>
+         </div>
       </div>
-      <div class="panel-footer">
-         <button type="submit" class="btn btn-md btn-success">Cadastrar</button>
+      <div class="panel panel-footer">
+         <button type="button" class="btn btn-default" ng-click="backToMain()">Voltar</button>
+         <button type="submit" class="btn btn-success" ng-disabled="criarparticipante.$invalid">Enviar</button>
       </div>
-   </div>
+   </form>
 </div>
+

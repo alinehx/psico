@@ -1,6 +1,6 @@
 'use strict';
 
-
+//é o que pe aceito no body acho q se ta passando algo q n tem ai vamos ver  OH DEIXA EU MOSTRA :d
 var propertiesMember = [
   'email',
   'name',
@@ -10,6 +10,8 @@ var propertiesMember = [
   'numberAddress',
   'active'
 ];
+
+
 
 function verifyBody(member) {
   var errors = [];

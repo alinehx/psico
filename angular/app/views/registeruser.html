@@ -1,56 +1,66 @@
-<h3>Cadastro de usuários
-   <small>modulo para regristro de novos usuários</small>
-</h3>
-<!-- START panel-->
-<div data-ng-controller="FormInputController as form" class="container-fluid">
-   <div class="panel panel-default">
-      <h4 class="panel-heading">Dados do novo usuário</h4>
-      <div class="panel-body">
-         <form method="submit" action="/" novalidate="" class="form-horizontal">
-            <fieldset>
-               <div class="form-group">
-                  <label for="input-id-1" class="col-sm-2 control-label">Nome</label>
-                  <div class="col-sm-4">
-                     <input id="input-id-1" type="text" class="form-control" />
+<div class="panel panel-default">
+   <form role="form" class="form-horizontal" ng-submit="submit()" name="criaruser">
+      <div class="panel panel-body">
+         <div class="panel panel-info">
+           <div class="panel-heading">
+             <h3 class="panel-title">Cadastro de Usuários</h3>
+           </div>
+           <div class="panel-body">
+               <legend>Dados do Usuário</legend>
+               <fieldset>
+                  <div class="form-group">
+                     <label for="inputNomeP" class="col-lg-3 control-label">CRP *</label>
+                     <div class="col-lg-9">
+                        <input type="text" class="form-control" id="inputCRP" placeholder="0000000" ng-model="user.crp" minlength="7" maxlength="7" ng-pattern="/^[0-9]+$/" required>
+                     </div>
                   </div>
-               </div>
-            </fieldset>
-            <fieldset>
-               <div class="form-group">
-                  <label for="input-id-2" class="col-sm-2 control-label">E-mail</label>
-                  <div class="col-sm-4">
-                     <input id="input-id-2" type="email" class="form-control" />
+               </fieldset>
+               <fieldset>
+                  <div class="form-group">
+                     <label for="inputNomeP" class="col-lg-3 control-label">Nome Completo *</label>
+                     <div class="col-lg-9">
+                        <input type="text" class="form-control" id="inputNome" placeholder="Bruno Freitas" ng-model="user.name" ng-pattern="/^[A-Za-z \s]*$/" required>
+                     </div>
                   </div>
-               </div>
-            </fieldset>
-            <fieldset>
-               <div class="form-group">
-                  <label for="input-id-3" class="col-sm-2 control-label">Telefone</label>
-                  <div class="col-sm-4">
-                     <input id="input-id-3" type="text" class="form-control" />
+               </fieldset>
+               <fieldset>
+                  <div class="form-group">
+                     <label for="inputEmail" class="col-lg-3 control-label">Email *</label>
+                     <div class="col-lg-9">
+                        <input type="email" class="form-control" id="inputEmail" placeholder="felipe.ishida@gmail.com" ng-model="user.email" required>
+                     </div>
                   </div>
-               </div>
-            </fieldset>
-            <fieldset>
-               <div class="form-group">
-                  <label for="input-id-4" class="col-sm-2 control-label">CEP</label>
-                  <div class="col-sm-4">
-                     <input id="input-id-4" type="text" class="form-control" />
+               </fieldset>
+               <fieldset>
+                  <div class="form-group">
+                     <label for="inputTelp" class="col-lg-3 control-label">Telefone *</label>
+                     <div class="col-lg-9">
+                        <input type="text" class="form-control" id="inputTel" placeholder="(11) 98765 4321" ng-pattern="" maxlength="15" ng-model="user.phone" required>
+                     </div>
                   </div>
-               </div>
-            </fieldset>
-            <fieldset>
-               <div class="form-group">
-                  <label for="input-id-5" class="col-sm-2 control-label">CRP</label>
-                  <div class="col-sm-4">
-                     <input id="input-id-5" type="text" class="form-control" />
+               </fieldset>
+               <fieldset>
+                  <div class="form-group">
+                     <label for="inputCEP" class="col-lg-3 control-label">CEP *</label>
+                     <div class="col-lg-3">
+                        <input type="text" class="form-control" id="inputCEP" placeholder="04664020" required="" minlength="8" maxlength="8" ng-pattern="/^[0-9]*$/" ng-model="user.zipCode">
+                     </div>
+                     <label for="inputComp" class="col-lg-2 control-label">Complemento</label>
+                     <div class="col-lg-4">
+                        <input type="text" class="form-control" id="inputComp" placeholder="B3 AP11" ng-model="user.comp">
+                     </div>
                   </div>
+               </fieldset>
+               <div class="text-right">
+                  <small class="text-right">Os campos marcados com * são obrigatórios. </small>
                </div>
-            </fieldset>
-         </form>
+            </div>
+         </div>
       </div>
-      <div class="panel-footer">
-         <button type="submit" class="btn btn-md btn-success">Cadastrar</button>
+      <div class="panel panel-footer">
+         <button type="button" class="btn btn-default" ng-click="backToMain()">Voltar</button>
+         <button type="submit" class="btn btn-success" ng-disabled="criaruser.$invalid">Enviar</button>
       </div>
-   </div>
+   </form>
 </div>
+

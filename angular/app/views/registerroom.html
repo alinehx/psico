@@ -1,56 +1,64 @@
-<h3>Cadastro de Salas
-   <small>modulo para regristro de novas salas</small>
-</h3>
-<!-- START panel-->
-<div data-ng-controller="FormInputController as form" class="container-fluid">
-   <div class="panel panel-default">
-      <h4 class="panel-heading">Informações nova sala</h4>
-      <div class="panel-body">
-         <form method="submit" action="/" novalidate="" class="form-horizontal">
-            <fieldset>
-               <div class="form-group">
-                  <label for="input-id-1" class="col-sm-2 control-label">Nome da sala</label>
-                  <div class="col-sm-4">
-                     <input id="input-id-1" type="text" class="form-control" />
+<div class="panel panel-default">
+   <form role="form" class="form-horizontal" ng-submit="submit()" name="criasala">
+      <div class="panel panel-body">
+         <div class="panel panel-info">
+           <div class="panel-heading">
+             <h3 class="panel-title">Cadastro de Salas</h3>
+           </div>
+           <div class="panel-body">
+               <legend>Dados da Sala</legend>
+               <fieldset>
+                  <div class="form-group">
+                     <label for="inputSala" class="col-lg-3 control-label">Apelido Sala</label>
+                     <div class="col-lg-9">
+                        <input type="text" class="form-control" id="inputSala" placeholder="Sala Azul" ng-model="room.name" maxlength="25" ng-pattern="/^[A-Za-z \s]*$/" required>
+                     </div>
                   </div>
-               </div>
-            </fieldset>
-            <fieldset>
-               <div class="form-group">
-                  <label for="input-id-2" class="col-sm-2 control-label">Localização da Sala</label>
-                  <div class="col-sm-4">
-                     <input id="input-id-2" type="email" class="form-control" />
+               </fieldset>
+               <fieldset>
+                  <div class="form-group">
+                     <label for="inputLocal" class="col-lg-3 control-label">Localização *</label>
+                     <div class="col-lg-9">
+                        <input type="text" class="form-control" id="inputLocal" placeholder="Prédio São José. Conjunto 12" minlength="4" ng-model="room.location" required>
+                     </div>
                   </div>
-               </div>
-            </fieldset>
-            <fieldset>
-               <div class="form-group">
-                  <label for="input-id-3" class="col-sm-2 control-label">Tipo de sala</label>
-                  <div class="col-sm-4">
-                     <input id="input-id-3" type="text" class="form-control" />
+               </fieldset>
+               <fieldset>
+                  <div class="form-group">
+                     <label class="col-lg-3 control-label">Tipo *</label>
+                     <div class="col-lg-9">
+                        <select name="roomType" ng-model="room.typeClass" class="form-control m-b">
+                           <option data-ng-repeat="value in tiposSala">{{value}}</option>
+                        </select>
+                     </div>
                   </div>
-               </div>
-            </fieldset>
-            <fieldset>
-               <div class="form-group">
-                  <label for="input-id-4" class="col-sm-2 control-label">Descrição</label>
-                  <div class="col-sm-4">
-                     <input id="input-id-4" type="text" class="form-control" />
+               </fieldset>
+               <fieldset>
+                  <div class="form-group">
+                     <label for="inputDesc" class="col-lg-3 control-label">Descrição Tecnica *</label>
+                     <div class="col-lg-9">
+                        <textarea type="text" class="form-control" id="inputDesc" placeholder="Sala contem 1 Mesa, 2 Poltronas, 1 Frigobar, Ar Condicionado. Possúi Tranca" ng-model="room.description" required>
+                        </textarea>
+                     </div>
                   </div>
-               </div>
-            </fieldset>
-            <fieldset>
-               <div class="form-group">
-                  <label for="input-id-5" class="col-sm-2 control-label">Ocupação Maxima</label>
-                  <div class="col-sm-4">
-                     <input id="input-id-5" type="text" class="form-control" />
+               </fieldset>
+               <fieldset>
+                  <div class="form-group">
+                     <label for="inputMax" class="col-lg-3 control-label">Capacidade Maxima *</label>
+                     <div class="col-lg-2">
+                        <input type="text" class="form-control" id="inputMax" placeholder="35" required maxlength="3" ng-model="room.size" ng-pattern="/^[0-9]+$/">
+                     </div>
                   </div>
+               </fieldset>
+               <div class="text-right">
+                  <small class="text-right">Os campos marcados com * são obrigatórios. </small>
                </div>
-            </fieldset>
-         </form>
+            </div>
+         </div>
       </div>
-      <div class="panel-footer">
-         <button type="submit" class="btn btn-md btn-success">Cadastrar</button>
+      <div class="panel panel-footer">
+         <button type="button" class="btn btn-default" ng-click="backToMain()">Voltar</button>
+         <button type="submit" class="btn btn-success" ng-disabled="criasala.$invalid">Enviar</button>
       </div>
-   </div>
+   </form>
 </div>

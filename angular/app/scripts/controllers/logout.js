@@ -7,8 +7,7 @@
  * # LogoutCtrl
  * Controller of the psico2App
  */
-angular.module('psico2App')
-  .controller('LogoutCtrl', function (authToken, $state) {
+app.controller('LogoutCtrl', function (authToken, $state) {
     authToken.removeToken();
-    $state.go('main');
+    $state.go('login');
   });

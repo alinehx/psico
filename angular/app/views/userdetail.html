@@ -1,0 +1,173 @@
+<div class="panel panel-success" data-ng-init="getUserByEmail(vm.state.params.email)">
+  <div class="panel-heading">{{vm.userDetail.name}}</div>
+  <div class="panel-body">
+  	<p>Dados informativos sobre o usuário:</p>
+  		<form ng-hide="vm.isEdt" role="form" class="form-horizontal">
+  			<div class="panel panel-default">
+  			<div class="panel-body">
+				<fieldset>
+		          <div class="form-group">
+		             <label for="inputNomeP" class="col-lg-3 control-label">CRP</label>
+		             <div class="col-lg-8">
+		                <input type="text" class="form-control" id="focusedInput" value="{{vm.userDetail.crp}}" disabled>
+		             </div>
+		          </div>
+				</fieldset>
+				<fieldset>
+		          <div class="form-group">
+		             <label for="inputNomeP" class="col-lg-3 control-label">Email</label>
+		             <div class="col-lg-8">
+		                <input type="text" class="form-control" id="focusedInput" value="{{vm.userDetail.email}}" disabled>
+		             </div>
+		          </div>
+				</fieldset>
+				<fieldset>
+		          <div class="form-group">
+		             <label for="inputNomeP" class="col-lg-3 control-label">Phone</label>
+		             <div class="col-lg-8">
+		                <input type="text" class="form-control" id="focusedInput" value="{{vm.userDetail.phone}}" disabled>
+		             </div>
+		          </div>
+				</fieldset>
+				<fieldset>
+		          <div class="form-group">
+		             <label for="inputNomeP" class="col-lg-3 control-label">CEP</label>
+		             <div class="col-lg-8">
+		                <input type="text" class="form-control" id="focusedInput" value="{{vm.userDetail.zipCode}}" disabled>
+		             </div>
+		          </div>
+				</fieldset>
+				<fieldset>
+		          <div class="form-group">
+		             <label for="inputNomeP" class="col-lg-3 control-label">Ulltima Modificação</label>
+		             <div class="col-lg-8">
+		                <input type="text" class="form-control" id="focusedInput" value="{{vm.userDetail.updatedAt}}" disabled>
+		             </div>
+		          </div>
+				</fieldset>
+				<fieldset>
+		          <div class="form-group">
+		             <label for="inputNomeP" class="col-lg-3 control-label">Cadastrado Em</label>
+		             <div class="col-lg-8">
+		                <input type="text" class="form-control" id="focusedInput" value="{{vm.userDetail.createdAt}}" disabled>
+		             </div>
+		          </div>
+				</fieldset>
+				<fieldset>
+		          <div class="form-group">
+		             <label for="inputNomeP" class="col-lg-3 control-label">Está ativo?</label>
+		             <div class="col-lg-8">
+		                <input type="text" class="form-control" id="focusedInput" value="{{vm.userDetail.active}}" disabled>
+		             </div>
+		          </div>
+				</fieldset>
+			</div>
+			</div>
+  		</form>
+
+  		<!-- Form para envio da edição! -->
+  		<form ng-show="vm.isEdt" role="form" class="form-horizontal" name="updateuser">
+  			<div class="panel panel-default">
+  			<div class="panel-body">
+				<fieldset>
+		          <div class="form-group">
+		             <label for="inputNomeP" class="col-lg-3 control-label">CRP</label>
+		             <div class="col-lg-8">
+		                <input type="text" ng-model="vm.userDetail.crp" class="form-control" id="focusedInput" value="{{vm.userDetail.crp}}" minlength="7" maxlength="7" ng-pattern="/^[0-9]+$/" required>
+		             </div>
+		          </div>
+				</fieldset>
+				<fieldset>
+		          <div class="form-group">
+		             <label for="inputNomeP" class="col-lg-3 control-label">Email</label>
+		             <div class="col-lg-8">
+		                <input type="email" ng-model="vm.userDetail.email" class="form-control" value="{{vm.userDetail.email}}" required>
+		             </div>
+		          </div>
+				</fieldset>
+				<fieldset>
+		          <div class="form-group">
+		             <label for="inputNomeP"  class="col-lg-3 control-label">Phone</label>
+		             <div class="col-lg-8">
+		                <input type="text" ng-model="vm.userDetail.phone" class="form-control" id="focusedInput" value="{{vm.userDetail.phone}}" maxlength="15" required>
+		             </div>
+		          </div>
+				</fieldset>
+				<fieldset>
+		          <div class="form-group">
+		             <label for="inputNomeP" class="col-lg-3 control-label">CEP</label>
+		             <div class="col-lg-8">
+		                <input type="text" ng-model="vm.userDetail.zipCode" class="form-control" id="focusedInput" value="{{vm.userDetail.zipCode}}" minlength="8" maxlength="8" ng-pattern="/^[0-9]*$/" required>
+		             </div>
+		          </div>
+				</fieldset>
+				<fieldset>
+		          <div class="form-group">
+		             <label for="inputNomeP" class="col-lg-3 control-label">Ulltima Modificação</label>
+		             <div class="col-lg-8">
+		                <input type="text" class="form-control" id="focusedInput" value="{{vm.userDetail.updatedAt}}" disabled>
+		             </div>
+		          </div>
+				</fieldset>
+				<fieldset>
+		          <div class="form-group">
+		             <label for="inputNomeP" class="col-lg-3 control-label">Cadastrado Em</label>
+		             <div class="col-lg-8">
+		                <input type="text" class="form-control" id="focusedInput" value="{{vm.userDetail.createdAt}}" disabled>
+		             </div>
+		          </div>
+				</fieldset>
+
+				<!-- Activate User Form Section. note on the ng-show -->
+				<fieldset ng-show="vm.userDetail.active" name="paraUserAtivo">
+		          <div class="form-group">
+		             <label for="inputNomeP" class="col-lg-3 control-label">Está ativo?</label>
+		             <div class="col-lg-8">
+		                <input type="text" class="form-control" id="focusedInput" value="{{vm.userDetail.active}}" disabled>
+		             </div>
+		          </div>
+		          <div class="panel panel-footer">
+					<p>para desativar o usuário, favor selecionar o check para confirmar.</p>
+					<ul class="nav nav-pills">
+	  					<li class="active">
+	  					<span class="badge">
+	  						<input type="checkbox" ng-model="vm.killConfirm"> Confirmar
+	  					</span>
+	  					</li>
+  					</ul>
+					<p></p>
+					<button ng-show="vm.isEdt" type="button" class="btn btn-danger" ng-click="vm.disableUser()" ng-disabled="!vm.killConfirm" >DESATIVAR</button>
+				</div>
+				</fieldset>
+
+				<fieldset ng-show="!vm.userDetail.active" name="paraUserInativo">
+		          <div class="form-group">
+		             <label for="inputNomeP" class="col-lg-3 control-label">Está ativo?</label>
+		             <div class="col-lg-8">
+		                <input type="text" class="form-control" id="focusedInput" value="{{vm.userDetail.active}}" disabled>
+		             </div>
+		          </div>
+		          <div class="panel panel-footer">
+					<p>para ativar o usuário, favor selecionar o check para confirmar.</p>
+					<ul class="nav nav-pills">
+	  					<li class="active">
+	  					<span class="badge">
+	  						<input type="checkbox" ng-model="vm.killConfirm"> Confirmar
+	  					</span>
+	  					</li>
+  					</ul>
+					<p></p>
+					<button ng-show="vm.isEdt" type="button" class="btn btn-success" ng-click="vm.enableUser()" ng-disabled="!vm.killConfirm" >ATIVAR</button>
+				</div>
+				</fieldset>
+
+			</div>
+			</div>
+  		</form>
+	</div>
+	<div class="panel panel-footer">
+		<button type="button" class="btn btn-default" ng-click="backToMain()">Voltar</button>
+		<button ng-hide="vm.isEdt" type="button" class="btn btn-warning" ng-click="vm.editUser()">Editar</button>
+		<button ng-show="vm.isEdt" ng-disabled="updateuser.$invalid" type="button" class="btn btn-success" ng-click="vm.updateUser()">Salvar</button>
+	</div>
+</div>

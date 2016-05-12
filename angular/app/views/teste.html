@@ -1,0 +1,176 @@
+<div class="panel panel-success" data-ng-init="getRoomByEmail(vm.state.params.email)">
+  <div class="panel-heading">{{vm.roomDetail.name}}</div>
+  <div class="panel-body">
+  	<p>Dados informativos sobre a sala:</p>
+  		<form ng-hide="vm.isEdt" role="form" class="form-horizontal">
+  			<div class="panel panel-default">
+  			<div class="panel-body">
+				<fieldset>
+		          <div class="form-group">
+		             <label for="inputNomeP" class="col-lg-3 control-label">Nome da Sala</label>
+		             <div class="col-lg-8">
+		                <input type="text" class="form-control" id="focusedInput" value="{{vm.roomDetail.name}}" disabled>
+		             </div>
+		          </div>
+				</fieldset>
+				<fieldset>
+		          <div class="form-group">
+		             <label for="inputNomeP" class="col-lg-3 control-label">Localização</label>
+		             <div class="col-lg-8">
+		                <input type="text" class="form-control" id="focusedInput" value="{{vm.roomDetail.location}}" disabled>
+		             </div>
+		          </div>
+				</fieldset>
+				<fieldset>
+                  <div class="form-group">
+                     <label for="inputEnd" class="col-lg-3 control-label">Tipo</label>
+                     <div class="col-lg-8">
+                        <input type="text" class="form-control" id="inputType" required ng-model="roomDetail.typeClass" disabled>
+                     </div>
+                  </div>
+               </fieldset>
+               <fieldset>
+                  <div class="form-group">
+                     <label for="inputEnd" class="col-lg-3 control-label">Descrição Técnica</label>
+                     <div class="col-lg-8">
+                        <textarea type="text" class="form-control" id="inputDesc" placeholder="Sala contem 1 Mesa, 2 Poltronas, 1 Frigobar, Ar Condicionado. Possúi Tranca" ng-model="roomDetail.description" value="roomDetail.description" disabled>
+                        </textarea>
+                     </div>
+                  </div>
+               </fieldset>
+				<fieldset>
+		          <div class="form-group">
+		             <label for="inputNomeP" class="col-lg-3 control-label">Ultima Modificação</label>
+		             <div class="col-lg-8">
+		                <input type="text" class="form-control" id="focusedInput" value="{{vm.roomDetail.updatedAt}}" disabled>
+		             </div>
+		          </div>
+				</fieldset>
+				<fieldset>
+		          <div class="form-group">
+		             <label for="inputNomeP" class="col-lg-3 control-label">Cadastrado Em</label>
+		             <div class="col-lg-8">
+		                <input type="text" class="form-control" id="focusedInput" value="{{vm.roomDetail.createdAt}}" disabled>
+		             </div>
+		          </div>
+				</fieldset>
+				<fieldset>
+		          <div class="form-group">
+		             <label for="inputNomeP" class="col-lg-3 control-label">Está ativo?</label>
+		             <div class="col-lg-8">
+		                <input type="text" class="form-control" id="focusedInput" value="{{vm.roomDetail.active}}" disabled>
+		             </div>
+		          </div>
+				</fieldset>
+			</div>
+			</div>
+  		</form>
+
+  		<!-- Form para envio da edição! -->
+  		<form ng-show="vm.isEdt" role="form" class="form-horizontal" name="updateroom">
+  			<div class="panel panel-default">
+  			<div class="panel-body">
+				<fieldset>
+		          <div class="form-group">
+		             <label for="inputNomeP" class="col-lg-3 control-label">Nome da Sala</label>
+		             <div class="col-lg-8">
+		                <input type="email" ng-model="vm.roomDetail.name" class="form-control" value="{{vm.roomDetail.name}}" required>
+		             </div>
+		          </div>
+				</fieldset>
+				<fieldset>
+		          <div class="form-group">
+		             <label for="inputNomeP"  class="col-lg-3 control-label">Localização</label>
+		             <div class="col-lg-8">
+		                <input type="text" ng-model="vm.roomDetail.phone" class="form-control" id="focusedInput" value="{{vm.roomDetail.location}}" maxlength="15" required>
+		             </div>
+		          </div>
+				</fieldset>
+				<fieldset>
+		          <div class="form-group">
+		             <label for="inputEnd" class="col-lg-3 control-label">Tipo</label>
+                     <div class="col-lg-8">
+		                <select name="roomType" ng-model="roomDetail.typeClass" class="form-control m-b">
+                           <option data-ng-repeat="value in tiposSala">{{value}}</option>
+                        </select>
+		             </div>
+		          </div>
+				</fieldset>
+				<fieldset>
+                  <div class="form-group">
+                     <label for="inputEnd" class="col-lg-3 control-label">Descrição Técnica</label>
+                     <div class="col-lg-8">
+                        <textarea type="text" class="form-control" id="inputDesc" placeholder="Sala contem 1 Mesa, 2 Poltronas, 1 Frigobar, Ar Condicionado. Possúi Tranca" ng-model="roomDetail.description" value="roomDetail.description">
+                        </textarea>
+                     </div>
+                  </div>
+               </fieldset>
+				<fieldset>
+		          <div class="form-group">
+		             <label for="inputNomeP" class="col-lg-3 control-label">Ultima Modificação</label>
+		             <div class="col-lg-8">
+		                <input type="text" class="form-control" id="focusedInput" value="{{vm.roomDetail.updatedAt}}" disabled>
+		             </div>
+		          </div>
+				</fieldset>
+				<fieldset>
+		          <div class="form-group">
+		             <label for="inputNomeP" class="col-lg-3 control-label">Cadastrado Em</label>
+		             <div class="col-lg-8">
+		                <input type="text" class="form-control" id="focusedInput" value="{{vm.roomDetail.createdAt}}" disabled>
+		             </div>
+		          </div>
+				</fieldset>
+
+				<!-- Activate room Form Section. note on the ng-show -->
+				<fieldset ng-show="vm.roomDetail.active" name="paraRoomAtivo">
+		          <div class="form-group">
+		             <label for="inputNomeP" class="col-lg-3 control-label">Está ativo?</label>
+		             <div class="col-lg-8">
+		                <input type="text" class="form-control" id="focusedInput" value="{{vm.roomDetail.active}}" disabled>
+		             </div>
+		          </div>
+		          <div class="panel panel-footer">
+					<p>para desativar a sala, favor selecionar o check para confirmar.</p>
+					<ul class="nav nav-pills">
+	  					<li class="active">
+	  					<span class="badge">
+	  						<input type="checkbox" ng-model="vm.killConfirm"> Confirmar
+	  					</span>
+	  					</li>
+  					</ul>
+					<p></p>
+					<button ng-show="vm.isEdt" type="button" class="btn btn-danger" ng-click="vm.disableRoom()" ng-disabled="!vm.killConfirm" >DESATIVAR</button>
+				</div>
+				</fieldset>
+
+				<fieldset ng-show="!vm.roomDetail.active" name="paraRoomInativo">
+		          <div class="form-group">
+		             <label for="inputNomeP" class="col-lg-3 control-label">Está ativo?</label>
+		             <div class="col-lg-8">
+		                <input type="text" class="form-control" id="focusedInput" value="{{vm.roomDetail.active}}" disabled>
+		             </div>
+		          </div>
+		          <div class="panel panel-footer">
+					<p>para ativar a sala, favor selecionar o check para confirmar.</p>
+					<ul class="nav nav-pills">
+	  					<li class="active">
+	  					<span class="badge">
+	  						<input type="checkbox" ng-model="vm.killConfirm"> Confirmar
+	  					</span>
+	  					</li>
+  					</ul>
+					<p></p>
+					<button ng-show="vm.isEdt" type="button" class="btn btn-success" ng-click="vm.enableRoom()" ng-disabled="!vm.killConfirm" >ATIVAR</button>
+				</div>
+				</fieldset>
+			</div>
+			</div>
+  		</form>
+	</div>
+	<div class="panel panel-footer">
+		<button type="button" class="btn btn-default" ng-click="backToMain()">Voltar</button>
+		<button ng-hide="vm.isEdt" type="button" class="btn btn-warning" ng-click="vm.editRoom()">Editar</button>
+		<button ng-show="vm.isEdt" ng-disabled="updateroom.$invalid" type="button" class="btn btn-success" ng-click="vm.updateRoom()">Salvar</button>
+	</div>
+</div>

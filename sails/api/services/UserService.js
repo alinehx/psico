@@ -12,13 +12,7 @@ function userObject(user) {
     phone: user.phone,
     zipCode: user.zipCode
   };
-};
-
-
-
-
-
-
+}
 
 function findUser(email, callback) {
   Users.findOne({

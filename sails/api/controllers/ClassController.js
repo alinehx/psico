@@ -10,14 +10,16 @@ function create(req, res) {
     });
   }
   var classObject = ClassService.classObject(req.body);
-  
-  ClassService.createClass(classObject, function(err, classCreate) {    
+    ClassService.createClass(classObject, function(err, classCreate) {    
     if (err) {
       return res.status(err === 'Sala já cadastrada' ? 409 : 503).send({
         message: err
       });
+    } else {
+      return res.status(201).send(classCreate); 
     }
-    return res.status(201).send(classCreate);
+     
+   
   });
 }
 

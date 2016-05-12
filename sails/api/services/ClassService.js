@@ -14,10 +14,9 @@ function classObject(classBody) {
 function callbackGet(err, findClass, callback) {
   if (err) {
     return callback(err);
-  } else if(!findClass){
-    return callback(null, 'Busca não retornou resultado');
-  }
-  return callback(null, findClass);
+  } else {
+    return callback(null, !findClass ?'Busca não retornou resultado' : findClass);
+  }     
 }
 
 function getAll(callback) {
@@ -56,12 +55,13 @@ function createClass(classObject, callback) {
         if (err) {
           return callback(err);
         }
-        if(createClass) {
+        else if(createClass) {
           return callback(null, createClass);
         }
       });
-    } 
-    return callback('Sala já cadastrada');     
+    } else {
+      return callback('Sala já cadastrada');
+    }    
   });
 }
 module.exports = {
