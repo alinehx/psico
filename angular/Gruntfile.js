@@ -199,7 +199,8 @@ module.exports = function (grunt) {
     },
 
     // Automatically inject Bower components into the app
-    wiredep: {
+    /*wiredep: {
+      
       app: {
         src: ['<%= yeoman.app %>/index.html'],
         ignorePath:  /\.\.\//
@@ -220,7 +221,8 @@ module.exports = function (grunt) {
             }
           }
       }
-    }, 
+    },*/
+  
 
     // Renames files for browser caching purposes
     filerev: {
@@ -434,7 +436,6 @@ module.exports = function (grunt) {
 
     grunt.task.run([
       'clean:server',
-      'wiredep',
       'concurrent:server',
       'postcss:server',
       'connect:livereload',
