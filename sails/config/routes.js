@@ -49,7 +49,16 @@ module.exports.routes = {
   'delete /class/:name&:location': 'ClassController.disable',
   'get /class': 'ClassController.getAll',
   'get /class/:name&:location': 'ClassController.getClass',
-  'get /address/:zipCode': 'AddressController.getAddress'
+  'get /address/:zipCode': 'AddressController.getAddress',
+
+  'post /agenda': 'AgendaController.createAgenda',
+  'get /agenda/': 'AgendaController.getAll',
+  'put /agenda/:id': 'AgendaController.updateAgenda',
+  'get /agenda/:id': 'AgendaController.getAgenda',
+  'post /guest/': 'GuestController.create',
+  'put /guest/:agenda&:guest': 'GuestController.update',
+  'delete /guest/:agenda&:guest': 'GuestController.deleteGuest',
+  'get /guest/:agenda': 'GuestController.get'
 
 
   /***************************************************************************

@@ -2,7 +2,8 @@
 
  var validateGuest = require ('../validate/Guests');
 
- function addGuest(req, res){
+ //Add Guest
+ function create(req, res){
    var erro = validateGuest.Register(req.body);
    if (erro.length > 0) {
      return res.status(403).send({
@@ -37,7 +38,8 @@
    }
  }
 
- function getGuestFromAgenda(req, res) {
+ //getGuestFromAgenda
+ function get(req, res) {
    var idAgenda = req.param('agenda');
    GuestsService.findGuestForAgenda(idAgenda, function(err, guests) { // busca um deste objeto na base.
      if (err) { // caso nao encontre.
@@ -51,13 +53,13 @@
    });
  }
 
- function updateGuestFromAgenda(req, res) {
-   var id = req.param('id');
+ //updateGuestFromAgenda
+ function update(req, res) {
    var idAgenda = req.param('agenda');
    var idGuest = req.param('guest');
    var guest = req.body;
    var error = [];
-   var validate = validateGuest.ID(id);
+   var validate = validateGuest.ID(idAgenda);
    
    error = validateGuest.valideStructGuest(guest, error); //Verifica se há erros ao validar o objeto.
    if (validate && error.length === 0) {
@@ -77,12 +79,12 @@
      });
    }
  }
-
- function deleteGuestFromAgenda(req, res) {
-   var id = req.param('id');
+ 
+ //deleteGuestFromAgenda
+ function deleteGuest(req, res) {
    var idAgenda = req.param('agenda');
    var idGuest = req.param('guest');
-   if (validateGuest.ID(id)) {
+   if (validateGuest.ID(idAgenda)) {
      GuestsService.findGuest(idAgenda, idGuest, function(err, guest) {
        if (err) {
          return res.status(503).send({
@@ -109,8 +111,8 @@
 
 
 module.exports = {
-   deleteGuestFromAgenda: deleteGuestFromAgenda,
-   updateGuestFromAgenda: updateGuestFromAgenda,
-   getGuestFromAgenda: getGuestFromAgenda,
-   addGuest: addGuest
+   deleteGuest: deleteGuest,
+   update: update,
+   get: get,
+   create: create
  }
