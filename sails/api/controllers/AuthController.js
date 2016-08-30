@@ -21,7 +21,8 @@ module.exports = {
           });
         }
         password.comparePassword(passwordUser, user.password, function(err, success) {
-          if (err) {           
+          if (err) {
+            console.log('Wrong Password.');
             return res.status(503).send(err);
           } else {
             if (success) {

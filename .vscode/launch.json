@@ -5,10 +5,10 @@
 			"name": "Launch",
 			"type": "node",
 			"request": "launch",
-			"program": "${workspaceRoot}/app.js",
+			"program": "C:\\Users\\marcel.tavares\\Documents\\Personal\\FITeTCC\\psico\\sails\\app.js",
 			"stopOnEntry": false,
 			"args": [],
-			"cwd": "${workspaceRoot}",
+			"cwd": "C:\\Users\\marcel.tavares\\Documents\\Personal\\FITeTCC\\psico\\sails",
 			"preLaunchTask": null,
 			"runtimeExecutable": null,
 			"runtimeArgs": [
@@ -30,7 +30,7 @@
 			"restart": false,
 			"sourceMaps": false,
 			"outDir": null,
-			"localRoot": "${workspaceRoot}",
+			"localRoot": "C:\\Users\\marcel.tavares\\Documents\\Personal\\FITeTCC\\psico\\sails",
 			"remoteRoot": null
 		}
 	]

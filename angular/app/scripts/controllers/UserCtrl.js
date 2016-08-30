@@ -6,15 +6,15 @@ app.controller('UserCtrl', function ($scope, $rootScope, $http, alert, authToken
   vm.url = 'http://localhost:1337/user';
   vm.isEdt = false;
 
+  $scope.comp = null;
   $scope.user = {
     email: null,
-    password: "a123",
+    password: "teste",
     name: null,
     crp: null,
     phone: null,
     zipCode: null,
   };
-  $scope.comp = null;
 
   $scope.submit = function () {
     $http.post(vm.url, $scope.user)

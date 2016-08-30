@@ -20,11 +20,15 @@ function callbackGet(err, findClass, callback) {
 }
 
 function getAll(callback) {
-  Class.find().exec(function (err, findClass) { callbackGet(err, findClass, callback);});
+  Class.find().exec(function (err, findClass) { 
+    callbackGet(err, findClass, callback);
+  });
 }
 
 function findClass(name, location, callback) {
-  Class.findOne({name: name, location: location}).exec(function (err, findClass) { callbackGet(err, findClass, callback);});  
+  Class.findOne({name: name, location: location}).exec(function (err, findClass) { 
+    callbackGet(err, findClass, callback);
+  });  
 }
 
 function updateClass(name, location, classUpdate, callback) {
