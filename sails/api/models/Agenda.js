@@ -12,6 +12,10 @@ module.exports = {
       required: true,
       unique: true
     },
+    type: {
+      type: 'string',
+      required: true
+    },
     responsable: {
       type: 'string',
       required: true

@@ -1,0 +1,107 @@
+<div class="panel panel-default" data-ng-init="vm.setUpPage()">
+  <form role="form" class="form-horizontal" ng-submit="vm.submit()" name="criaragenda">
+    <div class="panel panel-body">
+      <div class="panel panel-warning">
+        <div class="panel-heading">
+          <div class="panel-title">Agendamento de Horarios</div>
+        </div>
+        <br>
+        <legend>Detalhes</legend>
+        <fieldset>
+          <div class="form-group">
+            <label for="inputNomeP" class="col-lg-2 control-label">Responsavel</label>
+            <div class="col-lg-8">
+              <input type="text" class="form-control" id="inputNomeP" value="{{vm.loggedUser.name}}" ng-disabled="true" disabled="">
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <div class="form-group">
+            <label class="col-lg-2 control-label">Sala</label>
+            <div class="col-lg-8">
+              <select name="room" ng-class="vm.fieldNotEmpty(vm.agenda.room) ? 'has-success' : 'has-error'" ng-model="vm.agenda.room" class="form-control m-b" required>
+                  <option data-ng-repeat="val in vm.roomList">{{val.name}}</option>
+              </select>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <div class="form-group">
+            <label class="col-lg-2 control-label">Proposito</label>
+            <div class="col-lg-8">
+              <select name="type" ng-class="vm.fieldNotEmpty(vm.agenda.type) ? 'has-success' : 'has-error'" ng-model="vm.agenda.type" class="form-control m-b" required>
+                  <option data-ng-repeat="val in vm.typeList">{{val}}</option>
+              </select>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <div class="form-group">
+              <label for="diaAgendamento" class="col-sm-2 control-label">Dia</label>
+              <div class="col-lg-8">
+                <input type="datetime-local" class="form-control" id="diaAgendamento" ng-model="vm.agenda.date" required>
+              </div>
+          </div>
+        </fieldset>
+        
+        <fieldset>
+          <div class="form-group">
+            <label for="inicioAgendamento" class="col-sm-2 control-label">Inicio</label>
+            <div class="col-lg-3">
+              <input type="time" class="form-control" id="inicioAgendamento" required>
+            </div>
+
+            <label for="finalAgendamento" class="col-sm-2 control-label">Fim</label>
+            <div class="col-lg-3">
+              <input type="time" class="form-control" id="finalAgendamento" required>
+            </div>
+          </div>
+        </fieldset>
+        
+        <fieldset>
+          <div class="form-group">
+            <label for="inicioAgendamento" class="col-sm-2 control-label">Disponibilidade</label>
+            <div class="col-lg-2">
+              <input type="text" ng-show="!vm.isAvailable" class="form-control" id="isAvailable" ng-disabled="true" value="Não">
+              <input type="text" ng-show="vm.isAvailable" class="form-control" id="isAvailable" ng-disabled="true" value="Sim">
+            </div>
+        </fieldset>
+
+        <legend>Lista de Convidados</legend>
+        <fieldset>
+          <div class="form-group">
+              <div class="col-lg-2">
+                <button type="button" class="btn btn-warning" ng-click="vm.addToGuestList()">Adicionar</button>
+              </div>
+              <div class="col-lg-8">
+                <input type="text" ng-class="vm.validateGuestMail() ? 'has-success' : 'has-error'" class="form-control has-error" id="guestMail" ng-model="vm.guestMail.email">
+              </div>
+          </div>
+        </fieldset>
+
+
+        <fieldset id="generatedGuest" data-ng-repeat="item in vm.guestList track by $index">
+          <div class="form-group">
+            <div class="input-group col-sm-12">
+              <label for="finalAgendamento" class="col-sm-2 control-label">Convidado</label>
+              <div class="col-lg-8">
+                <input class="form-control"  id="guestMails" value="{{item}}" ng-disabled="true" required>
+              </div>
+              <span class="input-group-btn col-sm-1">
+                <button class="btn btn-danger" type="button" ng-click="vm.removeGuestFromList(item)">X</button>
+              </span>
+            </div>
+          </div>
+        </fieldset>
+
+      </div>  
+    </div>
+    <div class="panel panel-footer">
+      <button type="button" class="btn btn-default" ng-click="backToMain()">Cancelar</button>
+      <button type="submit" class="btn btn-success" ng-disabled="criaragenda.$invalid">Agendar</button>
+    </div>
+  </form>
+</div>

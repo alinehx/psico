@@ -5,13 +5,27 @@ function agendaObject(agenda) {
     data: agenda.data,
     timestamp: agenda.timestamp,
     responsable: agenda.responsable,
-    room: agenda.room
+    room: agenda.room,
+    type: agenda.type
   };
 }
 
 function findAgenda(id, callback) {
   Agenda.findOne({
     id: id
+  }).exec(function(err, agenda) {
+    if (err) {
+      return callback(err);
+    } else if (!agenda) {
+      return callback('Agenda não encontrada');
+    } 
+    return callback(null, agenda);
+  });
+};
+
+function findAgendaByResponsable(responsable, callback) {
+  Agenda.find({
+    responsable: responsable
   }).exec(function(err, agenda) {
     if (err) {
       return callback(err);
@@ -61,6 +75,7 @@ module.exports = {
   findAgenda: findAgenda,
   removeAgenda: removeAgenda,
   updateAgenda: updateAgenda,
+  findAgendaByResponsable: findAgendaByResponsable,
   getAll: getAll,
   agendaObject: agendaObject
 };

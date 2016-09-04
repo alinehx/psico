@@ -52,6 +52,17 @@
    });
  }
 
+ function getAgendaByResponsable() {
+   AgendaService.findAgendaByResponsable(function(err, agendas) {
+     if (err) {
+       return res.status(503).send({
+         message: err
+       });
+     }
+     return res.status(200).send(agendas);
+   });
+ }
+
  function getAll(req, res) { // tenta buscar todos esses objetos na base.
    AgendaService.getAll(function(err, agendas) {
      if (err) {

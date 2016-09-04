@@ -14,6 +14,9 @@ function Register (agenda) {
   if (!agenda.room) {
     errors.push('Room é obrigatória');
   }
+  if (!agenda.type) {
+    errors.push('Type é obrigatório');
+  }
   errors = valideStructAgenda(agenda, errors);
   return errors;
 };
@@ -22,9 +25,9 @@ var propertiesAgenda = [
   'date',
   'timestamp',
   'responsable',
-  'room'
+  'room',
+  'type'
 ]
-
 
 function valideStructAgenda(obj, error) { 
   Object.keys(obj).forEach(function(key) {    

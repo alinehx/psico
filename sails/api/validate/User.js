@@ -44,9 +44,6 @@ function valideStructUser(obj, error) {
   return error;
 }
 
-
-
-
 function Email(email) {
    if (!email) {
      return false;
@@ -54,7 +51,6 @@ function Email(email) {
      return true;
    }
  }
-
 
 module.exports = {
   Register: Register,

@@ -7,7 +7,9 @@
  * # LogoutCtrl
  * Controller of the psico2App
  */
-app.controller('LogoutCtrl', function (authToken, $state) {
+app.controller('LogoutCtrl', function (authToken, $state, $cookies) {
     authToken.removeToken();
+    $cookies.remove('loggedUserMail');
+    $cookies.remove('loggedUserName');
     $state.go('login');
   });
