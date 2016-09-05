@@ -26,6 +26,30 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     return response;
   }
 
+  vm.valiDate = function(){
+    //if nulls, FALSE!
+    if(vm.init.day == null || vm.end.day == null || vm.init.hour == null || vm.init.min == null || vm.end.hour == null || vm.end.min == null){
+      return false;
+    }
+    
+    var response = false;
+    var iDate = vm.init.day;
+    var eDate = vm.end.day;
+
+    iDate.setHours(vm.init.hour, vm.init.min, 0);
+    eDate.setHours(vm.end.hour, vm.end.min, 0);
+
+    console.log("init: ", iDate.getTime());
+    console.log("end: ", eDate.getTime());
+    
+    if(vm.initDay != null && vm.endDay != null){
+      if(eDate.getTime() - iDate.getTime() > 0){
+        response = true;
+      }
+    }
+    return response;
+  }
+
   //Configs
   vm.submitAgenda = submit;
   vm.isAvailable = false;
@@ -56,9 +80,11 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
       });
   };
 
+  vm.agendaHours = ['06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23'];
+  vm.agendaMinutes = ['00','15','30','45'];
 
   vm.typeList = ["", "Consulta", "Palestra", "Reuniao", "Treinamento"];
-  vm.roomList = ["", "201-A", "202-A", "203-B", "301-A"];
+  vm.roomList = [];
   
   //Guest Section
   vm.guestList = [];
@@ -150,6 +176,17 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
   }
 
   //Agenda Section
+  vm.init = {
+    day: null,
+    hour: null,
+    min: null
+  }
+  
+  vm.end = {
+    day: null,
+    hour: null,
+    min: null
+  }
 
   vm.agendaDetail = {};
   
