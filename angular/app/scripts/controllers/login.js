@@ -18,7 +18,6 @@ app.controller('LoginCtrl', function ($scope, $rootScope, $http, alert, authToke
     .success(function (res) {
       alert('success','Ok!', 'Usuário conectado'); 
       authToken.setToken(res.token);
-
       setGlobalVars($scope.user.email);
       $state.go('main');
     })
@@ -38,6 +37,7 @@ app.controller('LoginCtrl', function ($scope, $rootScope, $http, alert, authToke
       .success(function (res){
         $cookies.put('loggedUserMail', res.email);
         $cookies.put('loggedUserName', res.name);
+        $cookies.put('isMaster', res.isMaster);
       })
       .error(function(err){
         alert('warning',"Error! Cannot Get Users. Check your network connection.");

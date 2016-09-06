@@ -31,6 +31,7 @@ var propertiesUser = [
   'crp',
   'phone',
   'zipCode',
+  'isMaster',
   'active'
 ]
 

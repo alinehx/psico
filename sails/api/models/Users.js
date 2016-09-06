@@ -30,6 +30,11 @@ module.exports = {
       type: 'string',
       required: true
     },
+    isMaster: {
+      type: 'boolean',
+      required: true,
+      defaultsTo: false
+    },
     active: {
       type: 'boolean',
       required: true,

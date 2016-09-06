@@ -11,5 +11,6 @@ app.controller('LogoutCtrl', function (authToken, $state, $cookies) {
     authToken.removeToken();
     $cookies.remove('loggedUserMail');
     $cookies.remove('loggedUserName');
+    $cookies.remove('isMaster');
     $state.go('login');
   });

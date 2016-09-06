@@ -10,4 +10,10 @@ app.controller('HeaderCtrl', function ($scope, authToken, $cookies) {
 		if($cookies.get('loggedUserName') != undefined)
 			return loggedName;
 	}
+
+	$scope.isAllowed = function(){
+		if($scope.isAuthenticated){
+			return $cookies.get('isMaster');
+		}
+	}
 });
