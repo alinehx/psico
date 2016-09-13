@@ -17,6 +17,12 @@ function Register (agenda) {
   if (!agenda.type) {
     errors.push('Type é obrigatório');
   }
+  if (!agenda.subject) {
+    errors.push('Assunto é obrigatório');
+  }
+  if (!agenda.description) {
+    errors.push('Descrição é obrigatória');
+  }
   errors = valideStructAgenda(agenda, errors);
   return errors;
 };
@@ -26,7 +32,9 @@ var propertiesAgenda = [
   'timestamp',
   'responsable',
   'room',
-  'type'
+  'type',
+  'subject',
+  'description'
 ]
 
 function valideStructAgenda(obj, error) { 

@@ -11,7 +11,8 @@ angular
     });
     $stateProvider.state('main', {
       url: '/index',
-      templateUrl: '/views/index.html'
+      templateUrl: '/views/index.html',
+      controller:"AgendaCtrl as vm"
     });
 
     //User Control
@@ -30,6 +31,7 @@ angular
       templateUrl: '/views/userdetail.html',
       controller: 'UserCtrl as vm',
     });
+    
 
     //Room Controler
     $stateProvider.state('registerroom', {
@@ -46,6 +48,18 @@ angular
       url: '/rom/:name &:location',
       templateUrl: '/views/roomdetail.html',
       controller: 'RoomCtrl as vm',
+    });
+
+    //Building New Agenda
+    $stateProvider.state('roomselection', {
+      url: '/roomselection/',
+      templateUrl: '/views/roomselection.html',
+      controller: 'RoomCtrl as vm',
+    });
+    $stateProvider.state('dateselection', {
+      url: '/dateselection/',
+      templateUrl: '/views/dateselection.html',
+      controller: 'AgendaCtrl as vm',
     });
 
     //Member Control
@@ -83,6 +97,11 @@ angular
     });
     $stateProvider.state('agendadetails', {
       url: '/agendadetails/:id',
+      templateUrl: '/views/agendadetails.html',
+        controller: 'AgendaCtrl as vm'
+    });
+    $stateProvider.state('slavedevice', {
+      url: '/slave/:id',
       templateUrl: '/views/agendadetails.html',
         controller: 'AgendaCtrl as vm'
     });

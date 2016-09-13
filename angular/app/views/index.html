@@ -1,5 +1,50 @@
-<div class="jumbotron">
+<div class="jumbotron" data-ng-init="vm.getAgendaForUser()">
   <h1>EasyMeet</h1>
   <p class="panel-footer">Mantendo a paz em ambientes compartilhados.</p>
-  <img src="img/opendoorlogo.png" alt="Image" class="center-block img-rounded" height="300px" width"300px"/>
+  <button type="button" class="btn btn-default" ng-click="vm.gotoRoomSelection()">
+    <img src="img/opendoorlogo.png" alt="Image" class="center-block img-rounded" height="100px"/>
+    AGENDAR
+  </button>
+</div>
+<div ng-hide="vm.userHasAgenda">
+  <div class="alert alert-dismissible alert-warning text-center">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <h4>Você não possuí nenhum agendamento!</h4>
+    
+    <p>Para agendar um novo compomisso, clique em 'AGENDAR'.</p>
+  </div>
+</div>
+<div ng-hide="!vm.userHasAgenda">
+  <h1 class="text-center">Meus Agendamentos</h1>
+  <br/>
+    <div class="panel">
+      <div class="panel-footer">
+        <div class="panel panel-success" ng-repeat="agenda in vm.agendaList" style="border: 2px solid black">
+          <div class="panel-heading col-lg-12" style="border-bottom: 2px solid black">
+            <div class="col-sm-6 text-left">
+              {{agenda.room | uppercase}}
+            </div>
+            <div class="col-sm-6 text-right" >
+              {{agenda.date | date : format : timezone}}
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="panel-body">
+            </div>
+            {{agenda.description | uppercase}}
+            <div class="form-group">
+              <br>
+              <div class="input-group">
+                <span class="input-group-addon">das</span>
+                <input type="text" class="form-control">
+                <span class="input-group-addon">às</span>
+                <input type="text" class="form-control">
+              </div>
+              <br>
+            </div>
+          </div>
+          <a ng-click="vm.gotoRoomSelection()" class="btn btn-default btn-lg btn-block" style="border-top: 2px solid black">Detalhes</a>
+        </div>
+      </div>
+    </div>
 </div>

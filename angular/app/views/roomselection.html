@@ -1,0 +1,32 @@
+<div class="panel panel-default" data-ng-init="getRoomList()">
+  <div class="panel-heading"><div class="text-center">
+	  {{"Selecione uma sala para fazer um agendamento" | uppercase}}
+  </div></div>
+  <div class="panel-body">
+	<div class="panel panel-warning" ng-repeat="room in vm.roomList" ng-show="room.active" style="border: 2px solid black">
+		<div class="panel-heading col-lg-12" style="border-bottom: 2px solid black">
+			<div class="col-lg-3 text-left">
+				{{"SALA " + room.name | uppercase}}
+			</div>
+			<div class="col-lg-6 text-center">
+				{{room.typeClass | uppercase}}
+			</div>
+			<div class="col-lg-3 text-right" >
+				{{"Capacidade [" + room.size + "]"}}
+			</div>
+		</div>
+		<div class="panel-body">
+            <div class="panel-body">
+            </div>
+			<p>Esta sala possuí:</p>
+            {{room.description | uppercase}}
+          </div>
+		<a href="#" class="btn btn-success btn-lg btn-block" style="border-top: 2px solid black">
+			Agendar Horario
+		</a>
+	</div>
+  </div>
+  <div class="panel panel-footer">
+	<button type="button" class="btn btn-default" ng-click="backToMain()">Voltar</button>
+  </div>
+</div>

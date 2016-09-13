@@ -25,7 +25,7 @@
             </li>
           </ul>
         </li>
-
+          
         <li class="dropdown" ng-hide="!isAuthenticated()">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Controle de Participantes<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
@@ -39,7 +39,7 @@
           </ul>
         </li>
 
-        <li class="dropdown" ng-hide="!isAuthenticated()">
+        <li class="dropdown" ng-hide="!isAllowed()">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Controle de Salas<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
             <li>

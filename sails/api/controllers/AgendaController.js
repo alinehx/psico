@@ -52,8 +52,9 @@
    });
  }
 
- function getAgendaByResponsable() {
-   AgendaService.findAgendaByResponsable(function(err, agendas) {
+ function getAgendaByResponsable(req, res) {
+   var email = req.param('email');
+   AgendaService.findAgendaByResponsable(email, function(err, agendas) {
      if (err) {
        return res.status(503).send({
          message: err
@@ -132,6 +133,7 @@
  module.exports = {
    deleteAgenda: deleteAgenda,
    updateAgenda: updateAgenda,
+   getAgendaByResponsable: getAgendaByResponsable,
    getAll: getAll,
    getAgenda: getAgenda,
    createAgenda: createAgenda

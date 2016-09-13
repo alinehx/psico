@@ -2,11 +2,13 @@
 
 function agendaObject(agenda) {
   return {
-    data: agenda.data,
+    date: agenda.date,
     timestamp: agenda.timestamp,
     responsable: agenda.responsable,
     room: agenda.room,
-    type: agenda.type
+    type: agenda.type,
+    subject: agenda.subject,
+    description: agenda.description
   };
 }
 
@@ -23,9 +25,9 @@ function findAgenda(id, callback) {
   });
 };
 
-function findAgendaByResponsable(responsable, callback) {
+function findAgendaByResponsable(email, callback) {
   Agenda.find({
-    responsable: responsable
+    responsable: email
   }).exec(function(err, agenda) {
     if (err) {
       return callback(err);

@@ -51,24 +51,31 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
   }
 
   //Configs
-  vm.submitAgenda = submit;
   vm.isAvailable = false;
-
   vm.setUpPage = function(){
     vm.getRoomList();
   }
+  vm.populateGuests = populateGuests;
+  vm.updateGuestStatus = updateGuestStatus;
+  vm.removeGuest = removeGuest;
+  vm.getGuestsByAgenda = getGuestsByAgenda;
 
   vm.loggedUser = {
     email: $cookies.get('loggedUserMail'),
     name: $cookies.get('loggedUserName')
   }
+
   vm.agenda = {
-    data: null,
+    date: null,
     timestamp: null,
     responsable: vm.loggedUser.email,
     room: null,
-    type: null
+    type: null,
+    subject: null,
+    description: null
   }
+
+  //Necessary Objects Load
   vm.getRoomList = function (){
     $http.get(vm.urlRoom)
       .success(function (res){
@@ -96,11 +103,6 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
   vm.guestMail = {
     email: null
   };
-
-  vm.populateGuests = populateGuests;
-  vm.updateGuestStatus = updateGuestStatus;
-  vm.removeGuest = removeGuest;
-  vm.getGuestsByAgenda = getGuestsByAgenda;
 
   vm.addToGuestList = function() {
     var res = vm.guestList.indexOf(vm.guestMail.email);
@@ -189,22 +191,22 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
   }
 
   vm.agendaDetail = {};
-  
-  var submit = function () {
+  vm.agendaList = [];
+
+  vm.submit = function () {
     $http.post(vm.urlAgenda, vm.agenda)
     .success(function (res) {
       alert('success','Sucesso!', 'Agendamento registrado com sucesso.');
       var agendaID = res.id;
       
-      populateGuests(guestList, agendaID);
-      
-      //Implementar openAgendaDetails
+      // populateGuests(guestList, agendaID);
+    //Implementar openAgendaDetails
     })
     .error(function (err) {
       if(err.message === 'Autenticação falhou') {
         alert('warning', 'Erro!', 'Para agendamentos é necessario estar atuenticado.');
       } else {
-        alert('warning', 'Erro!', 'Não foi possivel executar a requisição.');
+        alert('warning', 'Erro!', 'Não foi possivel executar a requisição. ' + err);
       }    
     }); 
   };
@@ -224,7 +226,7 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
       alert('warning',"Error!", "Não foi possivel executar a requisição." + err);
     });
   }
-
+  
   vm.getUserByEmail = function (email){
     var newurl = vm.urlUser + "/" + email;
     $http.get(newurl)
@@ -239,24 +241,31 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
       });
   };
   
-  $scope.openUserDetail = function(email){
-    $state.go('usr', { email:email });
+
+  vm.userHasAgenda = false;
+  vm.getAgendaForUser = function (){
+    var newurl = vm.urlAgenda + "/" + vm.loggedUser.email;
+    $http.get(newurl)
+      .success(function (res){
+        vm.agendaList = res;
+        if(vm.agendaList.length > 0){
+          vm.userHasAgenda = true;
+        }
+      })
+      .error(function(err){
+        alert('warning',"Error! Não foi possivel executar a requisição.");
+      });
   };
 
-  //Section ManipulateUserDetails
-  vm.userMail = null;
-
-  vm.editUser = function(){
-    vm.isEdt = true;
-  };
-
-  vm.updateUser = function(){
-    vm.newUser = {
-      email: vm.userDetail.email,
-      phone: vm.userDetail.phone,
-      zipCode: vm.userDetail.zipCode,
-      name: vm.userDetail.name,
-      crp: vm.userDetail.crp
+  vm.updateAgenda = function(){
+    vm.newAgenda = {
+      date: vm.agendaDetails.a,
+      timestamp: vm.agendaDetails.a,
+      responsable: vm.agendaDetails.a,
+      room: vm.agendaDetails.a,
+      type: vm.agendaDetails.a,
+      subject: vm.agendaDetails.a,
+      description: vm.agendaDetails.a
     };
     var newurl = vm.url + "/" + vm.userMail;
     $http.put(newurl, vm.newUser)
@@ -269,9 +278,8 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
       });
   };
 
-  //Section DisableUser and EnableUser
-  vm.killConfirm = false;
-  vm.disableUser = function(){
+  //FIX
+  vm.deleteAgenda = function(){
     var newurl = vm.url + "/" + vm.userMail;
     $http.delete(newurl, vm.userDetail)
       .success(function (res){
@@ -283,26 +291,37 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
       });
   };
 
-  vm.enableUser = function(){
-    var newurl = vm.url + "/" + vm.userMail;
-    vm.newUser = {
-      active: true
-    };
-    $http.put(newurl, vm.newUser)
-      .success(function (res){
-        alert('success',"O Usuário "+ vm.userDetail.name + " foi re-ativado com sucesso!");
-        $state.go('listofusers');
-      })
-      .error(function(err){
-        alert('warning', "Error! Não foi possivel executar a requisição.");
-      });
-  };
-
-  $scope.openAgendaDetails = function(id){
+  vm.openAgendaDetails = function(id){
     $state.go('agendadetails', { 
       id: id
     });
   };
+  
+  //Adicionar ao model do Agenda, inicio e fim da reuniao.
+  vm.populateAgenda = function(obj){
+    vm.agenda.date = obj.date;
+    vm.agenda.timestamp = obj.timestamp;
+    vm.agenda.responsable = vm.loggedUser.email;
+    vm.agenda.room = obj.room;
+    vm.agenda.type = obj.type;
+    vm.agenda.subject = obj.subject;
+    vm.agenda.description = obj.description;
+  }
+
+  //Redirection:
+  vm.gotoRoomSelection = function(){
+    $state.go('roomselection');
+  }
+
+  //This is used in the display of Agendas for SlaveDevice
+  vm.validateDateToShow = function(){
+
+  }
+
+  //DatePicker
+  $( function() {
+    $( "#datepicker" ).datepicker();
+  } );
 
 });
 app.$inject = ['$scope']; 

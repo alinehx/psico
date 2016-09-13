@@ -8,9 +8,16 @@ module.exports = {
       required: true
     },
     timestamp: {
-      type: 'timestamp',
-      required: true,
-      unique: true
+      type: 'string',
+      required: true
+    },
+    subject: {
+      type: 'string',
+      required: true
+    },
+    description: {
+      type: 'string',
+      required: true
     },
     type: {
       type: 'string',
