@@ -16,12 +16,12 @@
 			</div>
 		</div>
 		<div class="panel-body">
-            <div class="panel-body">
-            </div>
+			<div class="panel-body">
+			</div>
 			<p>Esta sala possuí:</p>
-            {{room.description | uppercase}}
-          </div>
-		<a href="#" class="btn btn-success btn-lg btn-block" style="border-top: 2px solid black">
+      {{room.description | uppercase}}
+    </div>
+		<a ng-click="startAgendaProcess(room.name, room.location)" class="btn btn-success btn-lg btn-block" style="border-top: 2px solid black">
 			Agendar Horario
 		</a>
 	</div>

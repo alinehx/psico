@@ -16,7 +16,7 @@ app.controller('LoginCtrl', function ($scope, $rootScope, $http, alert, authToke
     var newurl = vm.url+"/"+$scope.user.email+"&"+$scope.user.password;
     $http.get(newurl, $scope.user)
     .success(function (res) {
-      alert('success','Login Efetuado.', 'Seja Bem-vindo,' + $scope.user.email); 
+      alert('success','Login Efetuado.', 'Seja Bem-vindo, ' + $scope.user.email); 
       authToken.setToken(res.token);
       setGlobalVars($scope.user.email);
       $state.go('main');

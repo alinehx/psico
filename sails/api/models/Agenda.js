@@ -3,11 +3,23 @@
 module.exports = {
   tableName: 'Agenda',
   attributes: {
+    roomID: {
+      type: 'string',
+      required: true
+    },
     date: {
       type: 'date',
       required: true
     },
-    timestamp: {
+    initTime: {
+      type: 'string',
+      required: true
+    },
+    endTime: {
+      type: 'string',
+      required: true
+    },
+    responsable: {
       type: 'string',
       required: true
     },
@@ -23,13 +35,14 @@ module.exports = {
       type: 'string',
       required: true
     },
-    responsable: {
+    timecreation: {
       type: 'string',
       required: true
     },
-    room: {
-      type: 'string',
-      required: true
+    isAccepted:{
+      type: 'boolean',
+      required: true,
+      defaultsTo: false
     }
   }
 };

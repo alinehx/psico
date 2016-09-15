@@ -78,6 +78,7 @@ app.controller('RoomCtrl', function ($scope, $rootScope, $http, alert, authToken
       typeClass: vm.roomDetail.typeClass,
       description: vm.roomDetail.description
     };
+
     var newurl = vm.url + "/" + vm.roomName + "&" + vm.roomLocation;
     $http.put(newurl, vm.newRoom)
       .success(function (res){
@@ -121,5 +122,50 @@ app.controller('RoomCtrl', function ($scope, $rootScope, $http, alert, authToken
   $scope.backToMain = function(){
     $state.go('main');
   };
+
+  
+  //Prepare data for agenda SECTION:
+  vm.roomForAgenda = {};
+  
+  vm.getRoomForAgenda = function(name, location){
+    var newurl = vm.url + "/" + name + "&" + location;
+    $http.get(newurl)
+      .success(function (res){
+        vm.roomForAgenda = res;
+        console.log(vm.roomForAgenda);
+      })
+      .error(function(err){
+        alert('warning',"Error! Cannot Get Room. Check your network connection.");
+      });
+  };
+
+  $scope.startAgendaProcess = function(name, location){
+    console.log(name, location);
+    $state.go('dateselection', { 
+      name:name,
+      location:location
+    });
+  };
+  
+  vm.initAgenda = function(){
+    vm.getRoomForAgenda(vm.state.params.name, vm.state.params.location);
+  }
+
+  //DatePicker
+  $('#datepicker').datepicker({
+      altField: "#alternate",
+      altFormat: "DD, d MM, yy",
+      dateFormat: 'd/m/y',
+      onSelect: function(day) {
+          vm.setDate(day);
+      }
+  });
+  $('#datepicker').datepicker($.datepicker.regional["fr"]);
+
+  vm.setDate = function(day){
+    var date = day;
+    vm.agenda.date = date;
+  }
+
 });
 app.$inject = ['$scope']; 

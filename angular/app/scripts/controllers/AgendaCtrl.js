@@ -296,17 +296,6 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
       id: id
     });
   };
-  
-  //Adicionar ao model do Agenda, inicio e fim da reuniao.
-  vm.populateAgenda = function(obj){
-    vm.agenda.date = obj.date;
-    vm.agenda.timestamp = obj.timestamp;
-    vm.agenda.responsable = vm.loggedUser.email;
-    vm.agenda.room = obj.room;
-    vm.agenda.type = obj.type;
-    vm.agenda.subject = obj.subject;
-    vm.agenda.description = obj.description;
-  }
 
   //Redirection:
   vm.gotoRoomSelection = function(){
@@ -319,9 +308,19 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
   }
 
   //DatePicker
-  $( function() {
-    $( "#datepicker" ).datepicker();
-  } );
+  $('#datepicker').datepicker({
+      dateFormat: 'd/m/y',
+      onSelect: function(day) {
+          vm.setDate(day);
+      }
+  });
+
+  vm.setDate = function(day){
+    var date = day;
+    vm.agenda.date = date;
+    console.log(date+"d");
+    console.log(vm.agenda.date);
+  }
 
 });
 app.$inject = ['$scope']; 

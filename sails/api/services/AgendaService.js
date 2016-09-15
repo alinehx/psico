@@ -2,13 +2,15 @@
 
 function agendaObject(agenda) {
   return {
-    date: agenda.date,
-    timestamp: agenda.timestamp,
-    responsable: agenda.responsable,
-    room: agenda.room,
-    type: agenda.type,
-    subject: agenda.subject,
-    description: agenda.description
+    roomID : agenda.roomID,
+    date : agenda.date,
+    initTime : agenda.initTime,
+    endTime : agenda.endTime,
+    responsable : agenda.responsable,
+    subject : agenda.subject,
+    description : agenda.description,
+    type : agenda.type,
+    timecreation : agenda.timecreation
   };
 }
 

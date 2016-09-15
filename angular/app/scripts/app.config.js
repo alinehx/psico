@@ -52,14 +52,14 @@ angular
 
     //Building New Agenda
     $stateProvider.state('roomselection', {
-      url: '/roomselection/',
+      url: '/roomselection',
       templateUrl: '/views/roomselection.html',
       controller: 'RoomCtrl as vm',
     });
     $stateProvider.state('dateselection', {
-      url: '/dateselection/',
+      url: '/dateselection/:name &:location',
       templateUrl: '/views/dateselection.html',
-      controller: 'AgendaCtrl as vm',
+      controller: 'RoomCtrl as vm',
     });
 
     //Member Control

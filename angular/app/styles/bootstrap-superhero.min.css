@@ -17,3 +17,7 @@
 .has-success{
   border: 2px solid #0B1;
 }
+
+.ui-datepicker-inline{
+  width: 100%
+}

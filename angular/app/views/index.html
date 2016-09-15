@@ -1,4 +1,4 @@
-<div class="jumbotron" data-ng-init="vm.getAgendaForUser()">
+<div class="jumbotron">
   <h1>EasyMeet</h1>
   <p class="panel-footer">Mantendo a paz em ambientes compartilhados.</p>
   <button type="button" class="btn btn-default" ng-click="vm.gotoRoomSelection()">
@@ -14,7 +14,7 @@
     <p>Para agendar um novo compomisso, clique em 'AGENDAR'.</p>
   </div>
 </div>
-<div ng-hide="!vm.userHasAgenda">
+<div data-ng-init="vm.getAgendaForUser()" ng-hide="!vm.userHasAgenda">
   <h1 class="text-center">Meus Agendamentos</h1>
   <br/>
     <div class="panel">
