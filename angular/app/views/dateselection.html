@@ -1,34 +1,171 @@
 <div class="panel panel-default" data-ng-init="vm.initAgenda()">
-  <div class="panel-heading"><div class="text-center">
-	  {{"Preencha os dados para o agendamento" | uppercase}}
-  </div></div>
-  <div class="panel-body">
+	<div class="panel-heading">
+		<div class="text-center">
+			{{"Preencha os dados para o agendamento" | uppercase}}
+		</div>
+	</div>
+<!--<div class="panel-body" ng-show="vm.validateStep(0)">
 		<div class="panel panel-warning" style="border: 2px solid black">
 			<div class="panel-heading text-center" style="border-bottom: 2px solid black">
 				<h5> {{"Selecione uma data para a sala " + vm.roomForAgenda.name | uppercase}}</h5>
 			</div>
 			<div class="panel-body">
 				<div id="datepicker" ng-model="vm.agenda.date"></div>
+				<input type="text" id="alternate" ng-hide="true">
 			</div>
-			<a href="#" class="btn btn-success btn-lg btn-block" style="border-top: 2px solid black">
-				{{"Selecionar horario para o dia " + vm.agenda.date}}
-			</a>
+			<div class="btn-group btn-group-justified" style="border-top: 2px solid black">
+				<a ng-click="vm.agendaStepF()" class="btn btn-default disabled" ng-hide="vm.isDateSelected()">
+					<i class="fa fa-asterisk" aria-hidden="true"></i>
+						{{"Favor Escolher um dia" | uppercase}}
+					<i class="fa fa-asterisk" aria-hidden="true"></i>
+				</a>
+				<a ng-click="vm.agendaStepF()" class="btn btn-default" ng-show="vm.isDateSelected()">
+					{{"Escolher Dia" | uppercase}} <i class="fa fa-arrow-right" aria-hidden="true"></i>
+				</a>
+			</div>
 		</div>
-  </div>
+	</div>
 
-	<div class="panel-body">
+	<div class="panel-body" ng-show="vm.validateStep(1)">
 		<div class="panel panel-warning" style="border: 2px solid black">
+			<div class="panel-body text-center" style="border-bottom: 2px solid black">
+				<a class="btn btn-default disabled">
+						<i class="fa fa-calendar fa-lg" aria-hidden="true"></i> {{vm.timeInit.selectedDay}} 
+				</a>
+			</div>
 			<div class="panel-heading text-center" style="border-bottom: 2px solid black">
-				<h5> {{"O Horario desejado para o dia " + vm.agenda.date| uppercase}}</h5>
+				<h5> {{"Selecione o horario de inicio" | uppercase}}</h5>
 			</div>
+
+			<div class="panel-body text-center" style="border-bottom: 2px solid black">
+				<a class="btn btn-default disabled">
+						<i class="fa fa-calendar fa-lg" aria-hidden="true"></i> {{vm.timeInit.selectedDay}} 
+				</a>
+			</div>
+
 			<div class="panel-body">
-				<input type="text" id="alternate" size="30">
+				<div class="col-lg-6">
+					<select name="initHour" class="form-control" ng-model="vm.timeInit.hour">
+						<option ng-repeat="hour in vm.agendaHours">{{hour}}</option>
+					</select>
+				</div>
+				<div class="col-lg-6">
+					<select name="initMin" class="form-control" ng-model="vm.timeInit.min">
+						<option ng-repeat="min in vm.agendaMinutes">{{min}}</option>
+					</select>
+					<span class="label label-success" ng-show="vm.verifyDisp()">Horario Disponivel</span>
+					<span class="label label-danger" ng-hide="vm.verifyDisp()">Horario Indisponivel</span>
+				</div>
 			</div>
-			<a href="#" class="btn btn-success btn-lg btn-block" style="border-top: 2px solid black">
-				{{"Selecionar horario para o dia " + vm.agenda.date}}
-			</a>
+
+			</div>
+
+			<div class="btn-group btn-group-justified">
+				<a ng-click="vm.agendaStepB()" class="btn btn-default">
+					<i class="fa fa-arrow-left" aria-hidden="true"></i> Retornar
+				</a>
+				<a ng-click="vm.agendaStepF()" class="btn btn-default" ng-show="vm.verifyDisp()">
+					Prosseguir <i class="fa fa-arrow-right" aria-hidden="true"></i>
+				</a>
+			</div>
+			
 		</div>
-  </div>
+	</div>
+-->
+	
+	<div class="panel-body">
+		<div class="panel" style="border: 2px solid black">
+
+			<div class="BLOCK FOR ANY SHIT">
+				<!-- ROOM WHICH IS FIXED -->
+				<div class="panel-body text-center step-component done-step">
+					<a class="btn btn-default disabled done-step" ng-show="true">
+						<i class="fa fa-map-marker fa-lg" aria-hidden="true"></i> {{"SALA " + vm.state.params.name | uppercase}}
+					</a>
+				</div>
+			</div>
+
+			<div class="BLOCK FOR ANY SHIT">
+				<!-- DATE -->
+				<div class="panel-body text-center step-component" ng-class="vm.isActualStep(0) ? 'actual-step' : ''">
+					<a class="btn btn-default actual-step disabled" ng-hide="false">
+						<i class="fa fa-calendar fa-lg" aria-hidden="true"></i> {{vm.blockDate.labelText | uppercase}}
+					</a>
+					<a class="btn btn-default disabled" ng-show="flase">
+						<i class="fa fa-calendar fa-lg" aria-hidden="true"></i> {{vm.blockDate.labelValue | uppercase}}
+					</a>
+				</div>
+				<!-- FORM FOR THIS BLOCK -->
+				<!--<div class="panel-body text-center step-component" ng-class="vm.isActualStep(0) ? 'actual-step' : ''">
+					<div class="panel-body">
+						<div id="datepicker" ng-model="vm.agenda.date"></div>
+						<input type="text" id="alternate" ng-hide="true">
+					</div>
+					<div class="btn-group btn-group-justified">
+						<a ng-click="vm.agendaStepF()" class="btn btn-default disabled" ng-hide="vm.isDataSelected()">
+							<i class="fa fa-asterisk" aria-hidden="true"></i>
+								{{"Favor Escolher um dia" | uppercase}}
+							<i class="fa fa-asterisk" aria-hidden="true"></i>
+						</a>
+						<a ng-click="vm.agendaStepF()" class="btn btn-default" ng-show="vm.isDateSelected()">
+							{{"Escolher Dia" | uppercase}} <i class="fa fa-arrow-right" aria-hidden="true"></i>
+						</a>
+					</div>
+				</div>-->
+			</div>
+			
+			<div class="BLOCK FOR ANY SHIT">
+				<!-- INIT HOUR -->
+				<div class="panel-body text-center step-component">
+					<a class="btn btn-default disabled" ng-hide="true">
+						<i class="fa fa-clock-o fa-lg" aria-hidden="true"></i> TEXTO
+					</a>
+					<a class="btn btn-default disabled" ng-show="true">
+						<i class="fa fa-clock-o fa-lg" aria-hidden="true"></i> HORA DE INICIO
+					</a>
+				</div>
+			</div>
+
+			<div class="BLOCK FOR ANY SHIT">
+				<!-- END HOUR -->
+				<div class="panel-body text-center step-component">
+					<a class="btn btn-default disabled" ng-hide="true">
+						<i class="fa fa-times-circle-o fa-lg" aria-hidden="true"></i> TEXTO
+					</a>
+					<a class="btn btn-default disabled" ng-show="true">
+						<i class="fa fa-times-circle-o fa-lg" aria-hidden="true"></i> HORA DE FINAL
+					</a>
+				</div>
+			</div>
+
+			<div class="BLOCK FOR ANY SHIT">
+				<!-- DETAILS -->
+				<div class="panel-body text-center step-component">
+					<a class="btn btn-default disabled" ng-hide="true">
+						<i class="fa fa-asterisk fa-lg" aria-hidden="true"></i> TEXTO
+					</a>
+					<a class="btn btn-default disabled" ng-show="true">
+						<i class="fa fa-asterisk fa-lg" aria-hidden="true"></i> DETALHES
+					</a>
+				</div>
+			</div>
+
+			<div class="BLOCK FOR ANY SHIT">
+				<!-- GUESTS -->
+				<div class="panel-body text-center">
+					<a class="btn btn-default disabled" ng-hide="true">
+						<i class="fa fa-users fa-lg" aria-hidden="true"></i> TEXTO
+					</a>
+					<a class="btn btn-default disabled" ng-show="true">
+						<i class="fa fa-users fa-lg" aria-hidden="true"></i> CONVIDADOS
+					</a>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+
   <div class="panel panel-footer">
 		<button type="button" class="btn btn-default" ng-click="backToMain()">Voltar</button>
   </div>

@@ -59,7 +59,7 @@ angular
     $stateProvider.state('dateselection', {
       url: '/dateselection/:name &:location',
       templateUrl: '/views/dateselection.html',
-      controller: 'RoomCtrl as vm',
+      controller: 'AgendaCtrl as vm',
     });
 
     //Member Control

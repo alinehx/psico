@@ -21,3 +21,19 @@
 .ui-datepicker-inline{
   width: 100%
 }
+
+.step-component{
+  border-bottom: 2px solid black;
+}
+
+.step-header{
+  border-bottom: 1px solid #9B9B9B;
+}
+
+.actual-step{
+  background-color: #333333;
+}
+
+.done-step{
+  background-color: #449d44;
+}

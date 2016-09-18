@@ -66,13 +66,15 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
   }
 
   vm.agenda = {
-    date: null,
-    timestamp: null,
-    responsable: vm.loggedUser.email,
-    room: null,
-    type: null,
-    subject: null,
-    description: null
+    roomID : null,
+    date : null,
+    initTime : null,
+    endTime : null,
+    responsable : vm.loggedUser.email,
+    subject : null,
+    description : null,
+    type : null,
+    timecreation : null
   }
 
   //Necessary Objects Load
@@ -80,15 +82,13 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     $http.get(vm.urlRoom)
       .success(function (res){
         vm.roomList = res;
+        vm.roomID = res.id;
       })
       .error(function(err){
         alert('warning',"Error! Cannot Get RoomList. Check your network connection.");
         console.log(err);
       });
   };
-
-  vm.agendaHours = ['06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23'];
-  vm.agendaMinutes = ['00','15','30','45'];
 
   vm.typeList = ["", "Consulta", "Palestra", "Reuniao", "Treinamento"];
   vm.roomList = [];
@@ -199,7 +199,7 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
       alert('success','Sucesso!', 'Agendamento registrado com sucesso.');
       var agendaID = res.id;
       
-      // populateGuests(guestList, agendaID);
+    // populateGuests(guestList, agendaID);
     //Implementar openAgendaDetails
     })
     .error(function (err) {
@@ -297,6 +297,20 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     });
   };
 
+  //ROOM SETS
+  vm.roomForAgenda = {};
+  
+  vm.getRoomForAgenda = function(name, location){
+    var newurl = vm.urlRoom + "/" + name + "&" + location;
+    $http.get(newurl)
+      .success(function (res){
+        vm.roomForAgenda = res;
+      })
+      .error(function(err){
+        alert('warning',"Error! Cannot Get Room. Check your network connection.");
+      });
+  };
+
   //Redirection:
   vm.gotoRoomSelection = function(){
     $state.go('roomselection');
@@ -307,19 +321,88 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
 
   }
 
+  vm.initAgenda = function(){
+    vm.getRoomForAgenda(vm.state.params.name, vm.state.params.location);
+  }
+
   //DatePicker
   $('#datepicker').datepicker({
-      dateFormat: 'd/m/y',
-      onSelect: function(day) {
-          vm.setDate(day);
-      }
+      altField: "#alternate",
+      altFormat: "d/m/yy"
   });
 
-  vm.setDate = function(day){
-    var date = day;
-    vm.agenda.date = date;
-    console.log(date+"d");
-    console.log(vm.agenda.date);
+  vm.agendaHours = ['06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23'];
+  vm.agendaMinutes = ['00','30'];
+
+  //should be used to set 'next' button clickable.
+  vm.isDateSelected = function(){ 
+    var dt = document.getElementById('alternate').value;
+    vm.timeInit.selectedDay = dt;
+    if(vm.timeInit.selectedDay == null){
+      return false;
+    }
+    return true;
+  }
+
+  //NEW MODEL SECETION
+  vm.blockDate = {
+    labelText: "Selecione a Data",
+    labelValue: null,
+    isDataSelected: false,
+    isFinished: false
+  }
+  vm.blockHourInit = {
+    labelText: "Selecione a Hora de Inicio",
+    labelValue: null,
+    isDataSelected: false,
+    isFinished: false
+  }
+  vm.blockHourEnd = {
+    labelText: "Selecione a Hora de Termino",
+    labelValue: null,
+    isDataSelected: false,
+    isFinished: false
+  }
+  vm.blockDetail = {
+    labelText: "Preencha os detalhes",
+    labelValue: null,
+    isDataSelected: false,
+    isFinished: false
+  }
+  vm.blockGuest = {
+    labelText: "Adicione os Participantes",
+    labelValue: null,
+    isDataSelected: false,
+    isFinished: false
+  }
+
+  //VALIDATIONS
+  vm.isDataSelected = function(source){
+    if(source != null){
+      return true;
+    }
+    return false;
+  }
+
+  vm.step = 0;
+
+  vm.isActualStep = function(step){
+    if(vm.step == step){
+      return true;
+    }
+    return false;
+  }
+
+  vm.doFinish = function(source){
+    source = true;
+    vm.step++;
+  }
+
+  vm.unFinish = function(source){
+    if(vm.step >= 1){
+      source = false;
+      vm.step--;
+    }
   }
 
 });

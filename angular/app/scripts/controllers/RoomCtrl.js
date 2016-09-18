@@ -42,6 +42,7 @@ app.controller('RoomCtrl', function ($scope, $rootScope, $http, alert, authToken
         alert('warning',"Error! Cannot Get Rooms. Check your network connection.");
       });
   };
+
   $scope.getRoomByName = function (name, location){
     var newurl = vm.url + "/" + name + "&" + location;
     $http.get(newurl)
@@ -132,7 +133,7 @@ app.controller('RoomCtrl', function ($scope, $rootScope, $http, alert, authToken
     $http.get(newurl)
       .success(function (res){
         vm.roomForAgenda = res;
-        console.log(vm.roomForAgenda);
+        vm.infos.roomID = res.id;
       })
       .error(function(err){
         alert('warning',"Error! Cannot Get Room. Check your network connection.");
@@ -140,7 +141,6 @@ app.controller('RoomCtrl', function ($scope, $rootScope, $http, alert, authToken
   };
 
   $scope.startAgendaProcess = function(name, location){
-    console.log(name, location);
     $state.go('dateselection', { 
       name:name,
       location:location
@@ -154,17 +154,68 @@ app.controller('RoomCtrl', function ($scope, $rootScope, $http, alert, authToken
   //DatePicker
   $('#datepicker').datepicker({
       altField: "#alternate",
-      altFormat: "DD, d MM, yy",
-      dateFormat: 'd/m/y',
-      onSelect: function(day) {
-          vm.setDate(day);
-      }
+      altFormat: "d/m/yy"
   });
-  $('#datepicker').datepicker($.datepicker.regional["fr"]);
 
-  vm.setDate = function(day){
-    var date = day;
-    vm.agenda.date = date;
+  vm.agendaHours = ['06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23'];
+  vm.agendaMinutes = ['00','30'];
+
+  vm.timeInit = {
+    selectedDay: null,
+    hour: null,
+    min: null
+  }
+
+  vm.timeEnd = {
+    hour: null,
+    min: null
+  }
+
+  vm.isDateSelected = function(){
+    var dt = document.getElementById('alternate').value;
+    vm.timeInit.selectedDay = dt;
+    if(vm.timeInit.selectedDay == null){
+      return false;
+    }
+    return true;
+  }
+  vm.verifyDisp = function(){
+    if(vm.timeInit.hour != null && vm.timeInit.min != null){
+      return true;
+    }
+    return false;
+  }
+
+  //WizardControl
+  vm.flowStep = 0;
+  vm.validateStep = function(num){
+    if(vm.flowStep == num){
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  vm.agendaStepF = function(){
+      vm.flowStep++;
+  }
+
+  vm.agendaStepB = function(){
+    if(vm.flowStep >= 1){
+      vm.flowStep--;
+    }
+  }
+
+  vm.infos = {
+    roomID : null,
+    date : null,
+    initTime : null,
+    endTime : null,
+    responsable : null,
+    subject : null,
+    description : null,
+    type : null,
+    timecreation : null
   }
 
 });
