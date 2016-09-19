@@ -53,10 +53,10 @@ module.exports.routes = {
 
   'post /agenda': 'AgendaController.createAgenda',
   'get /agenda/:email': 'AgendaController.getAgendaByResponsable',
-  'get /agenda/': 'AgendaController.getAll',
+  'get /agenda': 'AgendaController.getAll',
   'put /agenda/:id': 'AgendaController.updateAgenda',
   
-  'post /guest/': 'GuestController.create',
+  'post /guest': 'GuestController.create',
   'put /guest/:agenda&:guest': 'GuestController.update',
   'delete /guest/:agenda&:guest': 'GuestController.deleteGuest',
   'get /guest/:agenda': 'GuestController.get'

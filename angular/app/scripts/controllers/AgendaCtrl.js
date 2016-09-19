@@ -5,8 +5,27 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
   vm.state = $state;
   vm.urlAgenda = 'http://localhost:1337/agenda';
   vm.urlGuest = 'http://localhost:1337/guest';
-  vm.urlUser = 'http://localhost:1337/member';
   vm.urlRoom = 'http://localhost:1337/class';
+
+  //SETTINGS SECTION
+  vm.agendaTypes = ['Treinamento', 'Consulta', 'Reunião'];
+  vm.agendaHours = ['06:00','06:30','07:00','07:30','08:00',
+    '08:30','09:00','09:30','10:00','10:30','11:00','11:30',
+    '12:00','12:30','13:00','13:30','14:00','14:30','15:00',
+    '15:30','16:00','16:30','17:00','17:30','18:00','18:30',
+    '19:00','19:30','20:00','20:30','21:00','21:30','22:00',
+    '22:30','23:00','23:30'];
+
+  //ALL VARIABLES
+  vm.step = 0;
+  vm.userHasAgenda = false;
+  vm.agendaDetail = {};
+  vm.roomForAgenda = {};
+  vm.agendaListForHour = {};
+  vm.agendaList = [];
+  vm.roomList = [];
+  vm.guestList = [];
+  vm.responseGuestList = [];
 
   //Validations
   vm.validateGuestMail = function(){
@@ -26,39 +45,10 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     return response;
   }
 
-  vm.valiDate = function(){
-    //if nulls, FALSE!
-    if(vm.init.day == null || vm.end.day == null || vm.init.hour == null || vm.init.min == null || vm.end.hour == null || vm.end.min == null){
-      return false;
-    }
-    
-    var response = false;
-    var iDate = vm.init.day;
-    var eDate = vm.end.day;
-
-    iDate.setHours(vm.init.hour, vm.init.min, 0);
-    eDate.setHours(vm.end.hour, vm.end.min, 0);
-
-    console.log("init: ", iDate.getTime());
-    console.log("end: ", eDate.getTime());
-    
-    if(vm.initDay != null && vm.endDay != null){
-      if(eDate.getTime() - iDate.getTime() > 0){
-        response = true;
-      }
-    }
-    return response;
-  }
-
   //Configs
-  vm.isAvailable = false;
   vm.setUpPage = function(){
     vm.getRoomList();
   }
-  vm.populateGuests = populateGuests;
-  vm.updateGuestStatus = updateGuestStatus;
-  vm.removeGuest = removeGuest;
-  vm.getGuestsByAgenda = getGuestsByAgenda;
 
   vm.loggedUser = {
     email: $cookies.get('loggedUserMail'),
@@ -82,20 +72,14 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     $http.get(vm.urlRoom)
       .success(function (res){
         vm.roomList = res;
-        vm.roomID = res.id;
       })
       .error(function(err){
         alert('warning',"Error! Cannot Get RoomList. Check your network connection.");
-        console.log(err);
       });
   };
 
-  vm.typeList = ["", "Consulta", "Palestra", "Reuniao", "Treinamento"];
-  vm.roomList = [];
-  
   //Guest Section
-  vm.guestList = [];
-  vm.responseGuestList = [];
+  
   vm.guest = {
     agenda: null,
     email: null
@@ -109,9 +93,17 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     var mailok = vm.validateGuestMail();
     if(res == -1 && mailok){
       vm.guestList.push(vm.guestMail.email);
+      
     }else{
       alert('warning', 'Erro!', "Email inválido: '" + vm.guestMail.email + "'.");
     }
+  }
+
+  vm.getListSize = function(){
+    if(vm.guestList.length > 0){
+      return true;
+    }
+    return false;
   }
 
   vm.removeGuestFromList = function(item) {
@@ -119,12 +111,15 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     vm.guestList.splice(pos, 1);
   }
 
-  var populateGuests = function(guestList, agendaID) { //Recieves the selected list of guests and insert it to db.
+  vm.populateGuests = function(guestList, agendaModel) { //Recieves the selected list of guests and insert it to db.
+    var agendaID = vm.submit(agendaModel);
+
     guestList.forEach(function(item){
       var guest = {
-        ageda: agendaID,
-        email: item
+        agenda: agendaID,
+        guest: item
       }
+      console.log(guest.agenda);//ARRUMAR ESSA MERDA DE RESPONSE DO METODO SUBMIT QUE NAO RETORNA NADA.
       $http.post(vm.urlGuest, guest)
       .success(function(res){
         console.log("Guest cadastrado com sucesso na agenda " + agendaID + ".");
@@ -139,7 +134,7 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     });
   }
 
-  var updateGuestStatus = function(guest){ //Udate a guest acceptance state for a agenda.
+  vm.updateGuestStatus = function(guest){ //Udate a guest acceptance state for a agenda.
     var preparedUrl = vm.urlGuest + "/" + guest.agenda + "&" + guest.email;
     var newGuestStatus = {
       accepted: !guest.accepted
@@ -154,7 +149,7 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     });
   }
 
-  var removeGuest = function(guest){ //Removes a guest from a agenda.
+  vm.removeGuest = function(guest){ //Removes a guest from a agenda.
     var preparedUrl = vm.urlGuest + "/" + guest.agenda + "&" + guest.email;
     
     $http.delete(preparedUrl, newGuestStatus)
@@ -166,7 +161,7 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     });
   }
 
-  var getGuestsByAgenda = function(agendaID){ //Get all guests in determined agenda.
+  vm.getGuestsByAgenda = function(agendaID){ //Get all guests in determined agenda.
     var newurl = vm.urlGuest + "/" + agendaID;
     $http.get(newurl)
     .success(function (res){
@@ -178,40 +173,41 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
   }
 
   //Agenda Section
-  vm.init = {
-    day: null,
-    hour: null,
-    min: null
-  }
-  
-  vm.end = {
-    day: null,
-    hour: null,
-    min: null
+  vm.configureAgendaAndSubmit = function(){
+    var configuredDate = Date(vm.agenda.date);
+    var agendaModel = {
+      roomID : vm.agenda.roomID,
+      date : configuredDate,
+      initTime : vm.agenda.initTime,
+      endTime : vm.agenda.endTime,
+      responsable : vm.loggedUser.email,
+      subject : vm.agenda.subject,
+      description : vm.agenda.description,
+      type : vm.agenda.type,
+      timecreation :  new Date().getTime()
+    }
+    vm.populateGuests(vm.guestList,  agendaModel);
   }
 
-  vm.agendaDetail = {};
-  vm.agendaList = [];
-
-  vm.submit = function () {
-    $http.post(vm.urlAgenda, vm.agenda)
+  vm.agendaResponse = {};
+  vm.submit = function (agenda) {
+    $http.post(vm.urlAgenda, agenda)
     .success(function (res) {
       alert('success','Sucesso!', 'Agendamento registrado com sucesso.');
-      var agendaID = res.id;
-      
-    // populateGuests(guestList, agendaID);
+      return res.id;
     //Implementar openAgendaDetails
     })
     .error(function (err) {
       if(err.message === 'Autenticação falhou') {
         alert('warning', 'Erro!', 'Para agendamentos é necessario estar atuenticado.');
       } else {
+        console.log(err);
         alert('warning', 'Erro!', 'Não foi possivel executar a requisição. ' + err);
       }    
     }); 
   };
 
-  var updateAgenda = function(agenda){
+  vm.updateAgenda = function(agenda){
     var preparedUrl = vm.urlAgenda + "/" + agenda.id;
     var newAgenda = {
       data: vm.agendaDetail.data,
@@ -241,8 +237,6 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
       });
   };
   
-
-  vm.userHasAgenda = false;
   vm.getAgendaForUser = function (){
     var newurl = vm.urlAgenda + "/" + vm.loggedUser.email;
     $http.get(newurl)
@@ -253,20 +247,11 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
         }
       })
       .error(function(err){
-        alert('warning',"Error! Não foi possivel executar a requisição.");
+        alert('warning',"Error! Não foi possivel executar a requisição. " + err);
       });
   };
 
   vm.updateAgenda = function(){
-    vm.newAgenda = {
-      date: vm.agendaDetails.a,
-      timestamp: vm.agendaDetails.a,
-      responsable: vm.agendaDetails.a,
-      room: vm.agendaDetails.a,
-      type: vm.agendaDetails.a,
-      subject: vm.agendaDetails.a,
-      description: vm.agendaDetails.a
-    };
     var newurl = vm.url + "/" + vm.userMail;
     $http.put(newurl, vm.newUser)
       .success(function (res){
@@ -298,13 +283,12 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
   };
 
   //ROOM SETS
-  vm.roomForAgenda = {};
-  
   vm.getRoomForAgenda = function(name, location){
     var newurl = vm.urlRoom + "/" + name + "&" + location;
     $http.get(newurl)
       .success(function (res){
         vm.roomForAgenda = res;
+        vm.agenda.roomID = res.id;
       })
       .error(function(err){
         alert('warning',"Error! Cannot Get Room. Check your network connection.");
@@ -323,68 +307,121 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
 
   vm.initAgenda = function(){
     vm.getRoomForAgenda(vm.state.params.name, vm.state.params.location);
+    vm.getHourForAgenda();
   }
+
+  vm.getHourForAgenda = function (hour){
+    console.log("succ");
+    $http.get(vm.urlAgenda)
+      .success(function (res){
+        vm.agendaListForHour = res;
+      })
+      .error(function(err){
+        alert('warning',"Error! Não foi possivel executar a requisição. " + err);
+      });
+  };
 
   //DatePicker
   $('#datepicker').datepicker({
       altField: "#alternate",
-      altFormat: "d/m/yy"
+      altFormat: "dd/mm/yy"
+      //altFormat: "d MM, yy" -> 18 SETEMBRO, 2016
   });
 
-  vm.agendaHours = ['06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23'];
-  vm.agendaMinutes = ['00','30'];
+  vm.selectEndHour = function(hr, source){
+    var goodHour = vm.verifyHourForRoom(hr);
+    if(goodHour == true){
+      vm.agenda.endTime = hr;
+      source.labelValue = hr;
+      vm.doFinish(source);
+    }
+  }
+
+  vm.selectHour = function(hr, source){
+    var goodHour = vm.verifyHourForRoom(hr);
+    if(goodHour == true){
+      vm.agenda.initTime = hr;
+      source.labelValue = hr;
+      vm.doFinish(source);
+    }
+  }
+
+  vm.verifyHourForRoom = function(hour, step){
+    var isStep = vm.isActualStep(step);
+    if(hour == vm.blockHourInit.labelValue){
+      return false;
+    }
+    if(vm.agendaListForHour.length < 1){
+      //Means no agenda is registered.
+      return true;
+    }
+    for(var item in vm.agendaListForHour){
+      if(item.roomID == vm.agenda.roomID && item.date == vm.agenda.date && item.initTime == hour) {
+        return false;
+      }
+      else{
+        return true;
+      }
+    }
+  }
 
   //should be used to set 'next' button clickable.
   vm.isDateSelected = function(){ 
     var dt = document.getElementById('alternate').value;
-    vm.timeInit.selectedDay = dt;
-    if(vm.timeInit.selectedDay == null){
+    vm.agenda.date = dt;
+    vm.blockDate.labelValue = dt;
+    if(vm.agenda.date == null){
       return false;
     }
     return true;
+  }
+
+  //Used for validation in details
+  vm.isDataFilled = function(){
+    if(vm.agenda.subject != null && vm.agenda.description != null && vm.agenda.type != null){
+      return true;
+    }
+    return false;
   }
 
   //NEW MODEL SECETION
   vm.blockDate = {
     labelText: "Selecione a Data",
     labelValue: null,
-    isDataSelected: false,
     isFinished: false
   }
   vm.blockHourInit = {
     labelText: "Selecione a Hora de Inicio",
     labelValue: null,
-    isDataSelected: false,
     isFinished: false
   }
   vm.blockHourEnd = {
     labelText: "Selecione a Hora de Termino",
     labelValue: null,
-    isDataSelected: false,
     isFinished: false
   }
   vm.blockDetail = {
     labelText: "Preencha os detalhes",
     labelValue: null,
-    isDataSelected: false,
     isFinished: false
   }
   vm.blockGuest = {
     labelText: "Adicione os Participantes",
     labelValue: null,
-    isDataSelected: false,
     isFinished: false
   }
 
   //VALIDATIONS
+  vm.checkFinished = function(source){
+    return source.isFinished;
+  }
+
   vm.isDataSelected = function(source){
     if(source != null){
       return true;
     }
     return false;
   }
-
-  vm.step = 0;
 
   vm.isActualStep = function(step){
     if(vm.step == step){
@@ -394,7 +431,7 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
   }
 
   vm.doFinish = function(source){
-    source = true;
+    source.isFinished = true;
     vm.step++;
   }
 
@@ -402,6 +439,12 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     if(vm.step >= 1){
       source = false;
       vm.step--;
+      if(vm.step == 2){
+        vm.blockHourEnd.labelValue = null;
+      }
+      if(vm.step == 1){
+        vm.blockHourInit.labelValue = null;
+      }
     }
   }
 

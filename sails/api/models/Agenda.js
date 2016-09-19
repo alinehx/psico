@@ -36,8 +36,9 @@ module.exports = {
       required: true
     },
     timecreation: {
-      type: 'string',
-      required: true
+      type: 'integer',
+      required: true,
+      unique: true
     },
     isAccepted:{
       type: 'boolean',

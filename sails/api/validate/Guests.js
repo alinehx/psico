@@ -8,21 +8,16 @@ function Register (guests) {
   if (!guests.guest) {
     errors.push('Convidado é obrigatória');
   }
-  if (!guests.accepted) {
-    errors.push('Aceite é obrigatório');
-  }
-  errors = valideStructUser(agenda, errors);
+  errors = validateStructGuest(guests, errors);
   return errors;
 };
 
 var propertiesGuests = [
   'agenda',
-  'guest',
-  'accepted'
+  'guest'
 ]
 
-
-function valideStructGuest(obj, error) { 
+function validateStructGuest(obj, error) { 
   Object.keys(obj).forEach(function(key) {    
     if(propertiesGuests.indexOf(key) === -1) {
       error.push('Propriedade ' +key+ ' não faz parte dos atributos do Guests');
@@ -42,5 +37,5 @@ function ID(id) {
 module.exports = {
   Register: Register,
   ID: ID,
-  valideStructGuest: valideStructGuest
+  validateStructGuest: validateStructGuest
 }
