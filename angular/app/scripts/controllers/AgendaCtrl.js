@@ -22,10 +22,10 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
   vm.agendaDetail = {};
   vm.roomForAgenda = {};
   vm.agendaListForHour = {};
+  vm.agendaDetails = {};
   vm.agendaList = [];
   vm.roomList = [];
   vm.guestList = [];
-  vm.responseGuestList = [];
 
   //Validations
   vm.validateGuestMail = function(){
@@ -88,13 +88,24 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     email: null
   };
 
+  vm.newGuests = [];
+  vm.addNewGuest = function(){
+    var res = vm.newGuests.indexOf(vm.guestMail.email);
+    var mailok = vm.validateGuestMail();
+    if(res == -1 && mailok){
+      vm.newGuests.push(vm.guestMail.email);
+    }else{
+      alert('warning', 'Erro!', "Email inválido: '" + vm.guestMail.email + "'.");
+    }
+  }
+
   vm.addToGuestList = function() {
     var res = vm.guestList.indexOf(vm.guestMail.email);
     var mailok = vm.validateGuestMail();
     if(res == -1 && mailok){
+      console.log(vm.guestMail.email);
       vm.guestList.push(vm.guestMail.email);
-      
-    }else{
+    } else {
       alert('warning', 'Erro!', "Email inválido: '" + vm.guestMail.email + "'.");
     }
   }
@@ -111,18 +122,16 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     vm.guestList.splice(pos, 1);
   }
 
-  vm.populateGuests = function(guestList, agendaModel) { //Recieves the selected list of guests and insert it to db.
-    var agendaID = vm.submit(agendaModel);
-
+  vm.populateGuests = function(guestList, agendaID) { //Recieves the selected list of guests and insert it to db.
+    var succ = null;
     guestList.forEach(function(item){
       var guest = {
         agenda: agendaID,
         guest: item
       }
-      console.log(guest.agenda);//ARRUMAR ESSA MERDA DE RESPONSE DO METODO SUBMIT QUE NAO RETORNA NADA.
       $http.post(vm.urlGuest, guest)
       .success(function(res){
-        console.log("Guest cadastrado com sucesso na agenda " + agendaID + ".");
+        succ = true;
       })
       .error(function(err){
         if(err.message === 'Autenticação falhou') {
@@ -132,6 +141,9 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
         }
       });
     });
+    if(succ){
+      alert('success','Concluido!', 'Agendamento efetuado com sucesso.');
+    }
   }
 
   vm.updateGuestStatus = function(guest){ //Udate a guest acceptance state for a agenda.
@@ -165,7 +177,10 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     var newurl = vm.urlGuest + "/" + agendaID;
     $http.get(newurl)
     .success(function (res){
-      vm.responseGuestList = res;
+      vm.guestList = res;
+      for(var i in res){
+        vm.newGuests.push(res[i].guest);
+      }
     })
     .error(function(err){
       alert('warning',"Error! Não foi possivel executar a requisição.");
@@ -186,16 +201,14 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
       type : vm.agenda.type,
       timecreation :  new Date().getTime()
     }
-    vm.populateGuests(vm.guestList,  agendaModel);
+    vm.submit(agendaModel);
   }
 
-  vm.agendaResponse = {};
   vm.submit = function (agenda) {
     $http.post(vm.urlAgenda, agenda)
     .success(function (res) {
-      alert('success','Sucesso!', 'Agendamento registrado com sucesso.');
-      return res.id;
-    //Implementar openAgendaDetails
+      vm.populateGuests(vm.guestList ,res.agenda.id);//Populate Guest list in DB
+      vm.openAgendaDetails(res.agenda.id);
     })
     .error(function (err) {
       if(err.message === 'Autenticação falhou') {
@@ -237,6 +250,20 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
       });
   };
   
+  vm.loadAgendaInfo = function(agendaID){
+    var newurl = vm.urlAgenda + "/a/" + agendaID;
+    $http.get(newurl)
+    .success(function (res){
+      vm.agendaDetails = res;
+      console.log("agnd", vm.agendaDetails);
+      vm.getGuestsByAgenda(agendaID);
+      vm.getRoom(vm.agendaDetail.roomID);
+    })
+    .error(function(err){
+      alert('warning',"Error! Não foi possivel executar a requisição. " + err);
+    });
+  }
+  
   vm.getAgendaForUser = function (){
     var newurl = vm.urlAgenda + "/" + vm.loggedUser.email;
     $http.get(newurl)
@@ -276,9 +303,9 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
       });
   };
 
-  vm.openAgendaDetails = function(id){
+  vm.openAgendaDetails = function(agendaID){
     $state.go('agendadetails', { 
-      id: id
+      agendaID: agendaID
     });
   };
 
@@ -293,6 +320,26 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
       .error(function(err){
         alert('warning',"Error! Cannot Get Room. Check your network connection.");
       });
+  };
+
+  vm.agendaRoom = {};
+  vm.getRoom = function(id, location){
+
+    $http.get(vm.urlRoom)
+      .success(function (res){
+        for(var item in res){
+          if (res[item].id == vm.agendaDetails.roomID){
+            vm.agendaRoom = res[item];
+            var dt = res[item].date;
+            
+          }
+        }
+
+      })
+      .error(function(err){
+        alert('warning',"Error! Cannot Get Room. Check your network connection.");
+      });
+
   };
 
   //Redirection:
@@ -311,7 +358,6 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
   }
 
   vm.getHourForAgenda = function (hour){
-    console.log("succ");
     $http.get(vm.urlAgenda)
       .success(function (res){
         vm.agendaListForHour = res;

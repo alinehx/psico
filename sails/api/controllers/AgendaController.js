@@ -38,17 +38,15 @@
    }
  }
 
- function getAgenda(req, res) {
-   var id = req.param('id'); // separa o atributo
-   AgendaService.findAgenda(id, function(err, agenda) { // busca um deste objeto na base.
-     if (err) { // caso nao encontre.
+ function getAgendaById(req, res) {
+   var id = req.params.agenda;
+   AgendaService.findAgenda(id, function(err, agenda) {
+     if (err) {
        return res.status(503).send({
          message: err
        });
      }
-     if (agenda) { // se for encontrado o mesmo é retornado
-       return res.status(200).send(agenda);
-     }
+    return res.status(200).send(agenda);
    });
  }
 
@@ -135,6 +133,6 @@
    updateAgenda: updateAgenda,
    getAgendaByResponsable: getAgendaByResponsable,
    getAll: getAll,
-   getAgenda: getAgenda,
+   getAgendaById: getAgendaById,
    createAgenda: createAgenda
  }

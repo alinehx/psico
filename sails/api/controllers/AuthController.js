@@ -22,7 +22,7 @@ module.exports = {
         }
         password.comparePassword(passwordUser, user.password, function(err, success) {
           if (err) {
-            console.log('Wrong Password.');
+            console.log('User entered a wrong password');
             return res.status(503).send(err);
           } else {
             if (success) {

@@ -1,15 +1,110 @@
-<div class="panel panel-default" data-ng-init="vm.initAgenda()">
+<div class="panel panel-default" data-ng-init="vm.loadAgendaInfo(vm.state.params.agendaID)">
 	<div class="panel-heading">
 		<div class="text-center">
-			{{"Preencha os dados para o agendamento" | uppercase}}
+			{{"Exibindo dados do agendamento de " + vm.loggedUser.name | uppercase}}
 		</div>
 	</div>
 	
 	<div class="panel-body">
-		<div class="panel" style="border: 2px solid black">
+		<div class="panel actual-step" style="border: 2px solid black">
+
+
 			
+			<div class="blockForstep">
+				<!-- ROOM WHICH IS FIXED -->
+				<div class="panel-body text-center step-component">
+					<a class="btn btn-default actual-step disabled " ng-show="true">
+						<i class="fa fa-map-marker fa-lg" aria-hidden="true"></i> {{"SALA " + vm.agendaRoom.name + " [" +vm.agendaRoom.location +"]" | uppercase}}
+					</a>
+				</div>
+			</div>
+			<div class="blockForstep">
+				<!-- ROOM WHICH IS FIXED -->
+				<div class="panel-body text-center step-component">
+					<a class="btn btn-default actual-step disabled " ng-show="true">
+						<i class="fa fa-calendar fa-lg" aria-hidden="true"></i> {{vm.agendaDetails.date| date : format : timezone}}
+					</a>
+				</div>
+			</div>
+			<div class="blockForstep">
+				<!-- ROOM WHICH IS FIXED -->
+				<div class="panel-body text-center step-component">
+					<a class="btn btn-default actual-step disabled " ng-show="true">
+						<i class="fa fa-clock-o fa-lg" aria-hidden="true"></i> {{"inicio " + vm.agendaDetails.initTime + "h" | uppercase}}
+					</a>
+				</div>
+			</div>
+			<div class="blockForstep">
+				<!-- ROOM WHICH IS FIXED -->
+				<div class="panel-body text-center step-component actual-step">
+					<a class="btn btn-default actual-step disabled " ng-show="true">
+						<i class="fa fa-times-circle-o fa-lg" aria-hidden="true"></i> {{"FIM " + vm.agendaDetails.endTime + "h" | uppercase}}
+					</a>
+				</div>
+			</div>
+			<div class="panel-body text-center step-component">
+				<!--DETALHES SECTION-->
+				<div class="panel-body">
+					<div class="form-group step-component">
+						<label class="control-label" for="inputLarge"><h5>ASSUNTO</h5></label>
+						<input class="form-control input-lg text-center" type="text" id="inputLarge" value="{{vm.agendaDetails.subject}}" disabled>
+					</div>
+					<div class="form-group">
+						<label class="control-label" for="inputLarge"><h5>DESCRIÇÃO</h5></label>
+						<textarea class="form-control text-center" rows="3" disabled>{{vm.agendaDetails.description}}</textarea>
+					</div>
+					<div class="form-group">
+						<label class="control-label" for="inputLarge"><h5>PROPOSITO</h5></label>
+						<input class="form-control input-lg text-center" type="text" id="inputLarge" value="{{vm.agendaDetails.type}}" disabled>
+					</div>
+				</div>
+			</div>
+
+			<div class="panel-body text-center actual-step">
+					<div class="panel-body">
+						<div class="panel-body">
+
+							<div class="step-header">{{"Adicione novos participantes"}}</div>
+
+							<div class="form-group">
+								<div class="input-group">
+									<span class="input-group-addon">Email</span>
+									<input type="text" ng-class="vm.validateGuestMail() ? 'has-success' : 'has-error'" class="form-control has-error" id="guestMail" ng-model="vm.guestMail.email">
+									<span class="input-group-btn">
+									<button class="btn btn-success" type="button" ng-click="vm.addNewGuest()">+</button>
+								</span>
+								</div>
+							</div>
+
+							<table class="table table-striped table-hover" style="border:1px solid #666">
+								<tr data-ng-repeat="item in vm.newGuests track by $index">
+									<td>{{item}}</td>
+									<td ng-show="item.accepted">Confirmado</td> <!-- CORRIGIR PARA VERIFICAR SE ESTA CONFIRMADO -->
+									<td ng-hide="item.accepted">Não Confirmado</td> <!-- TALVEZ FAZER UMA NOVA PAGINA APENAS PARA MANIPULAR OS GUESTS-->
+									<td ng-click="vm.removeGuestFromList(item)">x</td>
+								</tr>
+							</table>
+
+							<a class="btn btn-success btn-block " ng-show="true">
+								<i class="fa fa-download fa-lg" aria-hidden="true"></i> Adicionar
+							</a>
+
+						</div>
+					</div>
+				</div>
+
+				<div class="blockForstep">
+				<!-- ROOM WHICH IS FIXED -->
+				<div class="panel-body danger text-center">
+					<a class="btn btn-danger btn-block " ng-show="true">
+						<i class="fa fa-warning fa-lg" aria-hidden="true"></i> CANCELAR RESERVA
+					</a>
+				</div>
+			</div>
+
 		</div>
 	</div>
+
 
   <div class="panel panel-footer">
 		<button type="button" class="btn btn-default" ng-click="backToMain()">Voltar</button>

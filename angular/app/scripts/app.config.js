@@ -96,14 +96,14 @@ angular
         controller: 'AgendaCtrl as vm'
     });
     $stateProvider.state('agendadetails', {
-      url: '/agendadetails/:id',
+      url: '/agendadetails/:agendaID',
       templateUrl: '/views/agendadetails.html',
         controller: 'AgendaCtrl as vm'
     });
     $stateProvider.state('slavedevice', {
-      url: '/slave/:id',
-      templateUrl: '/views/agendadetails.html',
-        controller: 'AgendaCtrl as vm'
+      url: '/slave/:roomID',
+      templateUrl: '/views/slaveagenda.html',
+        controller: 'SlaveCtrl as vm'
     });
 
 

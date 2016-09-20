@@ -52,9 +52,10 @@ module.exports.routes = {
   'get /address/:zipCode': 'AddressController.getAddress',
 
   'post /agenda': 'AgendaController.createAgenda',
+  'put /agenda/:id': 'AgendaController.updateAgenda',
   'get /agenda/:email': 'AgendaController.getAgendaByResponsable',
   'get /agenda': 'AgendaController.getAll',
-  'put /agenda/:id': 'AgendaController.updateAgenda',
+  'get /agenda/a/:agenda': 'AgendaController.getAgendaById',
   
   'post /guest': 'GuestController.create',
   'put /guest/:agenda&:guest': 'GuestController.update',

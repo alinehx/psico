@@ -71,7 +71,7 @@ function updateGuest (guestID, agendaID, guest, callback) {
 };
 
 module.exports = {
-  findGuestsFromRoom: findGuestForAgenda,
+  findGuestForAgenda: findGuestForAgenda,
   findGuest: findGuest,
   removeGuest: removeGuest,
   updateGuest: updateGuest,
