@@ -10,6 +10,7 @@ function agendaObject(agenda) {
     subject : agenda.subject,
     description : agenda.description,
     type : agenda.type,
+    guestQuantity: agenda.guestQuantity,
     timecreation : agenda.timecreation
   };
 }

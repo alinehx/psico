@@ -40,6 +40,10 @@ module.exports = {
       required: true,
       unique: true
     },
+    guestQuantity: {
+      type: 'integer',
+      required: true
+    },
     isAccepted:{
       type: 'boolean',
       required: true,

@@ -29,7 +29,7 @@ angular
     $stateProvider.state('usr', {
       url: '/usr/:email',
       templateUrl: '/views/userdetail.html',
-      controller: 'UserCtrl as vm',
+       controller: 'UserCtrl as vm',
     });
     
 
@@ -37,12 +37,12 @@ angular
     $stateProvider.state('registerroom', {
       url: '/registerroom',
       templateUrl: '/views/registerroom.html',
-        controller: 'RoomCtrl as vm'
+       controller: 'RoomCtrl as vm'
     });
     $stateProvider.state('listofrooms', {
       url: '/listofrooms',
       templateUrl: '/views/listofrooms.html',
-        controller: 'RoomCtrl as vm'
+       controller: 'RoomCtrl as vm'
     });
     $stateProvider.state('rom', {
       url: '/rom/:name &:location',
@@ -54,24 +54,24 @@ angular
     $stateProvider.state('roomselection', {
       url: '/roomselection',
       templateUrl: '/views/roomselection.html',
-      controller: 'RoomCtrl as vm',
+       controller: 'RoomCtrl as vm',
     });
     $stateProvider.state('dateselection', {
       url: '/dateselection/:name &:location',
       templateUrl: '/views/dateselection.html',
-      controller: 'AgendaCtrl as vm',
+       controller: 'AgendaCtrl as vm',
     });
 
     //Member Control
     $stateProvider.state('registerpeople', {
       url: '/registerpeople',
       templateUrl: '/views/registerpeople.html',
-        controller: 'PeopleCtrl as vm'
+       controller: 'PeopleCtrl as vm'
     });
     $stateProvider.state('listofmembers', {//All Members.
       url: '/listofmembers',
       templateUrl: '/views/listofmembers.html',
-        controller: 'PeopleCtrl as vm'
+       controller: 'PeopleCtrl as vm'
     });
     $stateProvider.state('membr', {//Unitary Member Details
       url: '/membr/:email',
@@ -88,22 +88,27 @@ angular
     $stateProvider.state('registeragenda', {
       url: '/registeragenda',
       templateUrl: '/views/registeragenda.html',
-        controller: 'AgendaCtrl as vm'
+       controller: 'AgendaCtrl as vm'
     });
     $stateProvider.state('agendalist', {
       url: '/agendalist',
       templateUrl: '/views/agendalist.html',
-        controller: 'AgendaCtrl as vm'
+       controller: 'AgendaCtrl as vm'
     });
     $stateProvider.state('agendadetails', {
       url: '/agendadetails/:agendaID',
       templateUrl: '/views/agendadetails.html',
-        controller: 'AgendaCtrl as vm'
+       controller: 'AgendaCtrl as vm'
     });
     $stateProvider.state('slavedevice', {
       url: '/slave/:roomID',
       templateUrl: '/views/slaveagenda.html',
-        controller: 'SlaveCtrl as vm'
+       controller: 'SlaveCtrl as vm'
+    });
+    $stateProvider.state('acceptpage', {
+      url: '/acceptpage/:guest &:agenda',
+      templateUrl: '/views/acceptpage.html',
+       controller: 'SlaveCtrl as vm'
     });
 
 

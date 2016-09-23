@@ -14,7 +14,8 @@ function Register (guests) {
 
 var propertiesGuests = [
   'agenda',
-  'guest'
+  'guest',
+  'accepted'
 ]
 
 function validateStructGuest(obj, error) { 

@@ -28,9 +28,16 @@
             </div>
             <h4 class="text-center">{{agenda.subject | uppercase}}</h4>
             <p>{{agenda.description | uppercase}}</p>
-            <h5>
-              <h4><i class="fa fa-user fa-lg" aria-hidden="true"></i> 5 {{"/" + "20 confirmados"}}</h4>
-						</h5>
+            <div ng-show="agenda.guestQuantity <= 1">
+              <h4>
+                <i class="fa fa-user fa-lg" aria-hidden="true"></i> {{agenda.guestQuantity + " convidado"}}
+              </h4>
+            </div>
+            <div ng-show="agenda.guestQuantity > 1">
+              <h4>
+                <i class="fa fa-user fa-lg" aria-hidden="true"></i> {{agenda.guestQuantity + " convidados"}}
+              </h4>
+            </div>
           </div>
           <a ng-click="vm.openAgendaDetails(agenda.id)" class="btn btn-default btn-lg btn-block" style="border-top: 2px solid black">Detalhes</a>
         </div>

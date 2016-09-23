@@ -22,6 +22,20 @@ function findGuest(guest, agendaID, callback) {
   });
 };
 
+function findAndDelete(guest, agendaID, callback) {
+  Guests.find({
+    guest: guest,
+    agenda: agendaID
+  }).exec(function(err, guest) {
+    if (err) {
+      return callback(err);
+    } else if (!guest) {
+      return callback('Convidado não encontrado');
+    } 
+    return callback(null, guest);
+  });
+};
+
 // Retorna todos os guests de uma agenda.
 function findGuestForAgenda(agendaID, callback) {
   Guests.find({
@@ -37,10 +51,9 @@ function findGuestForAgenda(agendaID, callback) {
 };
 
 // Remove um guest de uma agenda.
-function removeGuest(guest, agendaID, callback) {
-  Guests.remove({
-    guest: guest,
-    agenda: agendaID
+function removeGuest(id, callback) {
+  Guests.destroy({
+    id: id
   }).exec(function(err, guest) {
     if (err) {
       return callback(err);
@@ -72,6 +85,7 @@ function updateGuest (guestID, agendaID, guest, callback) {
 
 module.exports = {
   findGuestForAgenda: findGuestForAgenda,
+  findAndDelete: findAndDelete,
   findGuest: findGuest,
   removeGuest: removeGuest,
   updateGuest: updateGuest,

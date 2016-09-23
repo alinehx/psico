@@ -64,6 +64,7 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     subject : null,
     description : null,
     type : null,
+    guestQuantity: null,
     timecreation : null
   }
 
@@ -103,7 +104,6 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     var res = vm.guestList.indexOf(vm.guestMail.email);
     var mailok = vm.validateGuestMail();
     if(res == -1 && mailok){
-      console.log(vm.guestMail.email);
       vm.guestList.push(vm.guestMail.email);
     } else {
       alert('warning', 'Erro!', "Email inválido: '" + vm.guestMail.email + "'.");
@@ -120,6 +120,16 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
   vm.removeGuestFromList = function(item) {
     var pos = vm.guestList.indexOf(item);
     vm.guestList.splice(pos, 1);
+  }
+
+  vm.openGuestConfirmPage = function(item){
+    vm.auxArray = vm.guestList;
+    var pos = vm.guestList.indexOf(item);
+    var guestObj = vm.guestList.splice(pos, 1);
+    $state.go('acceptpage', { 
+      guest: guestObj[0].guest,
+      agenda: guestObj[0].agenda
+    });
   }
 
   vm.populateGuests = function(guestList, agendaID) { //Recieves the selected list of guests and insert it to db.
@@ -162,9 +172,8 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
   }
 
   vm.removeGuest = function(guest){ //Removes a guest from a agenda.
-    var preparedUrl = vm.urlGuest + "/" + guest.agenda + "&" + guest.email;
-    
-    $http.delete(preparedUrl, newGuestStatus)
+    var preparedUrl = vm.urlGuest + "/" + guest.agenda + "&" + guest.guest;
+    $http.delete(preparedUrl)
     .success(function(res){
       alert('success','Sucesso!', 'Agendamento registrado com sucesso.');
     })
@@ -199,6 +208,7 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
       subject : vm.agenda.subject,
       description : vm.agenda.description,
       type : vm.agenda.type,
+      guestQuantity: vm.guestList.length,
       timecreation :  new Date().getTime()
     }
     vm.submit(agendaModel);
@@ -214,10 +224,9 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
       if(err.message === 'Autenticação falhou') {
         alert('warning', 'Erro!', 'Para agendamentos é necessario estar atuenticado.');
       } else {
-        console.log(err);
         alert('warning', 'Erro!', 'Não foi possivel executar a requisição. ' + err);
-      }    
-    }); 
+      }
+    });
   };
 
   vm.updateAgenda = function(agenda){
@@ -255,7 +264,6 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     $http.get(newurl)
     .success(function (res){
       vm.agendaDetails = res;
-      console.log("agnd", vm.agendaDetails);
       vm.getGuestsByAgenda(agendaID);
       vm.getRoom(vm.agendaDetail.roomID);
     })
@@ -283,23 +291,33 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     $http.put(newurl, vm.newUser)
       .success(function (res){
         alert('success',"Dados alterados com sucesso!");
-        $state.go('listofusers');
       })
       .error(function(err){
         alert('warning', "Error! Cannot Update User. Check your network connection.");
       });
   };
 
+
+  vm.deleteAgendaInfo = function(id){
+    //TODO ENVIAR EMAIL PARA TODOS OS PARTICIPANTES E PARA O RESPONSAVEL.
+    //Deleting guests first.
+    vm.guestList.forEach(function(guest){
+      vm.removeGuest(guest);
+    });
+
+    vm.deleteAgenda(id);
+  };
+
   //FIX
-  vm.deleteAgenda = function(){
-    var newurl = vm.url + "/" + vm.userMail;
-    $http.delete(newurl, vm.userDetail)
+  vm.deleteAgenda = function(id){
+    var newurl = vm.urlAgenda + "/" + id;
+    $http.delete(newurl)
       .success(function (res){
-        alert('success',"O Usuário "+ vm.userDetail.name + " foi desativado com sucesso!");
-        $state.go('listofusers');
+        alert('success',"Agendamento cancelado!");
+        $state.go('main');
       })
       .error(function(err){
-        alert('warning', "Error! Não foi possivel executar a requisição.");
+        alert('warning', "Error! Não foi possivel cancelar o agendamento, tente novamente mais tarde");
       });
   };
 
