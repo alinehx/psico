@@ -273,17 +273,12 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
   }
   
   vm.getAgendaForUser = function (){
-    var newurl = vm.urlAgenda + "/" + vm.loggedUser.email;
-    $http.get(newurl)
-      .success(function (res){
-        vm.agendaList = res;
-        if(vm.agendaList.length > 0){
-          vm.userHasAgenda = true;
-        }
-      })
-      .error(function(err){
-        alert('warning',"Error! Não foi possivel executar a requisição. " + err);
-      });
+    vm.agendaList = $cookies.getObject('userAgendas');
+    if(vm.agendaList.length > 0){
+      vm.userHasAgenda = true;
+    } else {
+      vm.userHasAgenda = false;
+    }
   };
 
   vm.updateAgenda = function(){

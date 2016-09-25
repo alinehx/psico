@@ -3,28 +3,22 @@
 	  {{"Selecione uma sala para fazer um agendamento" | uppercase}}
   </div></div>
   <div class="panel-body">
-	<div class="panel panel-warning" ng-repeat="room in vm.roomList" ng-show="room.active" style="border: 2px solid black">
-		<div class="panel-heading col-lg-12" style="border-bottom: 2px solid black">
-			<div class="col-lg-3 text-left">
-				{{"SALA " + room.name | uppercase}}
+		<div class="panel panel-default" ng-repeat="room in vm.roomList" ng-show="room.active" style="border: 2px solid black">
+			<div class="panel-heading col-lg-12" style="border-bottom: 2px solid black">
+				<div class="text-center">
+					{{"SALA PARA "+ room.typeClass + ", " + room.name | uppercase}}
+				</div>
 			</div>
-			<div class="col-lg-6 text-center">
-				{{room.typeClass | uppercase}}
+			<div class="panel-body" class="text-center">
+				<div class="panel-body">
+				</div>
+				<p>Localizada em {{room.location}}</p>
+				Com capacidade maxima de {{room.size | lowercase}} pessoas, esta sala possuí {{room.description | lowercase}}
 			</div>
-			<div class="col-lg-3 text-right" >
-				{{"Capacidade [" + room.size + "]"}}
-			</div>
+			<a ng-click="startAgendaProcess(room.name, room.location)" class="btn btn-default btn-lg btn-block actual-step" style="border-top: 2px solid black">
+				Agendar Horario
+			</a>
 		</div>
-		<div class="panel-body">
-			<div class="panel-body">
-			</div>
-			<p>Esta sala possuí:</p>
-      {{room.description | uppercase}}
-    </div>
-		<a ng-click="startAgendaProcess(room.name, room.location)" class="btn btn-default btn-lg btn-block" style="border-top: 2px solid black">
-			Agendar Horario
-		</a>
-	</div>
   </div>
   <div class="panel panel-footer">
 	<button type="button" class="btn btn-default" ng-click="backToMain()">Voltar</button>

@@ -1,4 +1,4 @@
-<div class="jumbotron">
+<div class="jumbotron" data-ng-init="vm.getAgendaForUser()">
   <h1>EasyMeet</h1>
   <p class="panel-footer">Mantendo a paz em ambientes compartilhados.</p>
   <button type="button" class="btn btn-default" ng-click="vm.gotoRoomSelection()">
@@ -14,12 +14,12 @@
     <p>Para agendar um novo compomisso, clique em 'AGENDAR'.</p>
   </div>
 </div>
-<div data-ng-init="vm.getAgendaForUser()" ng-hide="!vm.userHasAgenda">
+<div ng-hide="!vm.userHasAgenda">
   <h1 class="text-center">Meus Agendamentos</h1>
   <br/>
     <div class="panel">
       <div class="panel-footer">
-        <div class="panel panel-success" ng-repeat="agenda in vm.agendaList" style="border: 2px solid black">
+        <div class="panel panel-success" ng-repeat="agenda in vm.agendaList track by $index" style="border: 2px solid black">
           <div class="panel-heading col-lg-12 text-center" style="border-bottom: 2px solid black">
               {{agenda.date | date : format : timezone}}, das {{agenda.initTime + "h"}} às {{agenda.endTime + "h"}}
           </div>

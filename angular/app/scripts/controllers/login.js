@@ -6,20 +6,34 @@ app.controller('LoginCtrl', function ($scope, $rootScope, $http, alert, authToke
   var vm = this;
   vm.url = 'http://localhost:1337/login';
   vm.urlUser = 'http://localhost:1337/user';
+  vm.urlAgenda = 'http://localhost:1337/agenda';
 
+  vm.agendaList = {};
   $scope.user = {
     email: null,
     password: null
+  };
+
+  vm.getAgendaForUser = function (email){
+    var newurl = vm.urlAgenda + "/" + email;
+    $http.get(newurl)
+      .success(function (res){
+        $cookies.putObject('userAgendas', res);
+        $state.go('main');
+      })
+      .error(function(err){
+        alert('warning',"Error! Não foi possivel executar a requisição. " + err);
+      });
   };
 
   $scope.submit = function() {
     var newurl = vm.url+"/"+$scope.user.email+"&"+$scope.user.password;
     $http.get(newurl, $scope.user)
     .success(function (res) {
-      alert('success','Login Efetuado.', 'Seja Bem-vindo, ' + $scope.user.email); 
       authToken.setToken(res.token);
+      alert('success','Login Efetuado.', 'Seja Bem-vindo, ' + $scope.user.email); 
+      vm.getAgendaForUser($scope.user.email);
       setGlobalVars($scope.user.email);
-      $state.go('main');
     })
     .error(function (err) {
       if(err.message === 'Usuário ou senha inválidos') {
