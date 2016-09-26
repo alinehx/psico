@@ -10,8 +10,14 @@ function remanejaObject(remaneja) {
   };
 }
 
+function findAll(callback) {
+  Remaneja.find().exec(function (err, findRemaneja) { 
+    callbackGet(err, findRemaneja, callback);
+  });
+}
+
 function findByAgenda(id, callback) {
-  Remaneja.findOne({
+  Remaneja.find({
     agenda: id
   }).exec(function(err, remaneja) {
     if (err) {
@@ -23,23 +29,8 @@ function findByAgenda(id, callback) {
   });
 };
 
-function findRemaneja(agenda, target, owner, callback) {
-  Remaneja.findOne({
-    agenda: agenda,
-    target: target,
-    owner: owner
-  }).exec(function(err, remaneja) {
-    if (err) {
-      return callback(err);
-    } else if (!remaneja) {
-      return callback('Remanejamento não encontrado');
-    } 
-    return callback(null, remaneja);
-  });
-};
-
 function findByTarget(id, callback) {
-  Remaneja.findOne({
+  Remaneja.find({
     target: id
   }).exec(function(err, remaneja) {
     if (err) {
@@ -52,7 +43,7 @@ function findByTarget(id, callback) {
 };
 
 function findByOwner(id, callback) {
-  Remaneja.findOne({
+  Remaneja.find({
     target: id
   }).exec(function(err, remaneja) {
     if (err) {
@@ -64,27 +55,40 @@ function findByOwner(id, callback) {
   });
 };
 
-function updateRemaneja (remanejaID, agendaID, remaneja, callback) {
-  remanejas.update({
-    remaneja: remanejaID,
-    agenda: agendaID
-  },
-  remaneja,
+function findRemaneja(idAgenda, idTarget, idOwner, callback) {
+  Remaneja.findOne({
+    agenda: idAgenda,
+    target: idTarget,
+    owner: idOwner
+  }).exec(function(err, remaneja) {
+    if (err) {
+      return callback(err);
+    } else if (!remaneja) {
+      return callback('Remanejamento não encontrado');
+    } 
+    return callback(null, remaneja);
+  });
+};
+
+function updateRemaneja(remanejaID, remanejaObject, callback) {
+  Remaneja.update({remaneja: remanejaID}, remanejaObject,
   function (err, remaneja) {
    if (err) {
       return callback(err);
     }
     if (!remaneja) {
-      return callback('Convidado não encontrado');
+      return callback('Remanejamento não encontrado');
     }    
     return callback(null, remaneja);	
   }); 
 };
 
 module.exports = {
+  findAll: findAll,
   findByAgenda: findByAgenda,
   findByTarget: findByTarget,
   findByOwner: findByOwner,
+  findRemaneja: findRemaneja,
   updateRemaneja: updateRemaneja,
   remanejaObject: remanejaObject
 };

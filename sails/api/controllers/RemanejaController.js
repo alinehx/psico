@@ -3,7 +3,7 @@
  var validateRemaneja = require ('../validate/Remaneja');
 
  //Add Guest
- function create(req, res){
+ function createRemaneja(req, res){
    var erro = validateRemaneja.Register(req.body);
    if (erro.length > 0) {
      return res.status(403).send({
@@ -12,124 +12,133 @@
    } else {
      RemanejaService.findRemaneja(req.body.agenda, req.body.target, req.body.owner, function(err, guest){
        if(err){
-         if (err !== 'Convidado não encontrado') { 
+         if (err !== 'Remanejamento não encontrado') { 
           return res.status(404).send({
             message: err
           });
          }
-          var guestObject = RemanejaService.guestObject(req.body); // Verificar se o accepted inicia como false
-          Guests.create(guestObject).exec(function(err, guest){
+          var remanejaObject = RemanejaService.RemanejaObject(req.body); // Verificar se o accepted inicia como false
+          Remaneja.create(remanejaObject).exec(function(err, remaneja){
           if (err) {
           return res.status(503).send({
             message: err
           });
           } else {
             return res.status(200).send({
-              guest: guest.toJSON()
+              remaneja: remaneja.toJSON()
             });
           }
          });
        } else {
         return res.status(409).send({
-          message: 'Convidado já cadastrado'
+          message: 'Remanejamento já Existe'
         });
        }
      });
    }
  }
 
- //getGuestsFromAgenda
- function get(req, res) {
-   var idAgenda = req.param('agenda');
-   RemanejaService.findGuestForAgenda(idAgenda, function(err, guests) { // busca um deste objeto na base.
-     if (err) { // caso nao encontre.
-       return res.status(503).send({
-         message: err
-       });
-     }
-     if (guests) { // se for encontrado o mesmo é retornado
-       return res.status(200).send(guests);
-     }
-   });
- }
-
- //one guest only
- function getOne(req, res) {
-    var idAgenda = req.param('agenda');
-    var guest = req.param('guest');
-    RemanejaService.findGuest(guest, idAgenda, function(err, guests) { // busca um deste objeto na base.
-      if (err) { // caso nao encontre.
+  function getAll(req, res){
+    RemanejaService.findAll(function (err, remanejaObject) {
+      if (err) {
         return res.status(503).send({
           message: err
         });
       }
-      if (guests) { // se for encontrado o mesmo é retornado
-        return res.status(200).send(guests);
+      return res.status(200).send(remanejaObject);
+    });
+  }
+
+  function getRemaneja(req, res) {
+    var idAgenda = req.param('agenda');
+    var idTarget = req.param('target');
+    var idOwner = req.param('owner');
+    RemanejaService.findRemaneja(idAgenda, idTarget, idOwner, function(err, remanejaObject) {
+      if (err) {
+        return res.status(503).send({
+          message: err
+        });
+      }
+      if (remanejaObject) { 
+        return res.status(200).send(remanejaObject);
+      }
+    });
+ }
+
+ function getForTarget(req, res) {
+    var target = req.param('target');
+    RemanejaService.findByTarget(target, function(err, remanejaList) {
+      if (err) {
+        return res.status(503).send({
+          message: err
+        });
+      }
+      if (remanejaList) { 
+        return res.status(200).send(remanejaList);
+      }
+    });
+ }
+
+  function getForOwner(req, res) {
+    var owner = req.param('owner');
+    RemanejaService.findByOwner(owner, function(err, remanejaList) {
+      if (err) {
+        return res.status(503).send({
+          message: err
+        });
+      }
+      if (remanejaList) { 
+        return res.status(200).send(remanejaList);
+      }
+    });
+ }
+
+  function getForAgenda(req, res) {
+    var agenda = req.param('agenda');
+    RemanejaService.findByAgenda(agenda, function(err, remanejaList) {
+      if (err) {
+        return res.status(503).send({
+          message: err
+        });
+      }
+      if (remanejaList) { 
+        return res.status(200).send(remanejaList);
       }
     });
  }
 
  //updateGuestFromAgenda
- function update(req, res) {
-   var idAgenda = req.param('agenda');
-   var idGuest = req.param('guest');
-   var guest = req.body;
+ function updateRemaneja(req, res) {
+   var idRemaneja = req.param('id');
+   var remaneja = req.body;
    var error = [];
-   var validate = validateRemaneja.ID(idAgenda);
+   var validate = validateRemaneja.ID(idRemaneja);
    
-   error = validateRemaneja.validateStructGuest(guest, error); //Verifica se há erros ao validar o objeto.
+   error = validateRemaneja.validateStructRemaneja(remaneja, error);
    if (validate && error.length === 0) {
-     RemanejaService.updateGuest(idGuest, idAgenda, guest, function(err, updateGuest) { // Quando nao houver erros ele executa o update.
-       if (err) {
-         return res.status(404).send({ //Em caso de erros.
-           message: err
-         });
-       }
-       return res.status(200).send({ //Em caso de sucesso a mensagem é disparada.
-         message: 'Convidado atualizado com sucesso'
-       });
-     });
-   } else { // Quando encontrado erros na estrutura do objeto, nao é feito o update.
-     return res.status(403).send({
-       message: validate === false  ? 'Convidado inconsistente' : error
-     });
-   }
- }
- 
- //deleteGuestFromAgenda
- function deleteGuest(req, res) {
-   var idAgenda = req.param('agenda');
-   var idGuest = req.param('guest');
-   if (validateRemaneja.ID(idAgenda)) {
-     RemanejaService.findAndDelete(idAgenda, idGuest, function(err, guest) {
+     RemanejaService.updateRemaneja(idRemaneja, remaneja, function(err, updateRemaneja) {
        if (err) {
          return res.status(404).send({
            message: err
          });
        }
-       RemanejaService.removeGuest(guest.id, function(err, guestDelete) {
-         if (err) {
-           return res.status(503).send({
-             message: err
-           });
-         }
-         return res.status(200).send({
-           message: 'Agenda excluida com sucesso'
-         });
+       return res.status(200).send({
+         message: 'Remanejamento atualizado com sucesso'
        });
      });
    } else {
      return res.status(403).send({
-       message: 'Agenda inconsistente.'
+       message: validate === false  ? 'Remanejamento inconsistente' : error
      });
    }
  }
 
-
 module.exports = {
-   deleteGuest: deleteGuest,
-   update: update,
-   get: get,
-   getOne: getOne,
-   create: create
+   createRemaneja: createRemaneja,
+   getAll: getAll,
+   getRemaneja: getRemaneja,
+   getForTarget: getForTarget,
+   getForOwner: getForOwner,
+   getForAgenda: getForAgenda,
+   updateRemaneja: updateRemaneja
  }
