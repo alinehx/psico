@@ -1,0 +1,37 @@
+<div class="center-block mt-xl wd-xl">
+    <div class="panel panel-inverse">
+        <div class="panel-heading text-center">
+            <h4>REMANEJAMENTOS SOLICITADOS</h4>
+        </div>
+        <div class="panel-body ">
+            <div class="btn-group btn-group-justified">
+                <a class="btn btn-success btn-block " ng-click="vm.setMine = true">
+                    <i class="fa fa-diamond fa-lg" aria-hidden="true"></i> POR MIM
+                </a>
+                <a class="btn btn-success btn-block " ng-click="vm.setMine = false">
+                    <i class="fa fa-cube fa-lg" aria-hidden="true"></i> PARA MIM
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- REMANEJAMENTOS FEITOS PELO USER -->
+<div class="panel panel-inverse" ng-show="vm.setMine">
+    <div class="panel-heading text-center">
+        <h5>REMANEJAMENTOS SOLICITADOS POR MIM</h5>
+    </div>
+    <div class="panel-body ">
+        
+    </div>
+</div>
+
+<!-- REMANEJAMENTOS FEITOS PARA O USER -->
+<div class="panel panel-inverse" ng-hide="vm.setMine">
+    <div class="panel-heading text-center">
+        <h5>MINHAS RESPOSTAS PENDENTES</h5>
+    </div>
+    <div class="panel-body ">
+        
+    </div>
+</div>

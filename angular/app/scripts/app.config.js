@@ -21,7 +21,7 @@ angular
       templateUrl: '/views/registeruser.html',
         controller: 'UserCtrl as vm'
     });
-    $stateProvider.state('listofusers', {//All Users.
+    $stateProvider.state('listofusers', {
       url: '/listofusers',
       templateUrl: '/views/listofusers.html',
         controller: 'UserCtrl as vm'
@@ -68,12 +68,12 @@ angular
       templateUrl: '/views/registerpeople.html',
        controller: 'PeopleCtrl as vm'
     });
-    $stateProvider.state('listofmembers', {//All Members.
+    $stateProvider.state('listofmembers', {
       url: '/listofmembers',
       templateUrl: '/views/listofmembers.html',
        controller: 'PeopleCtrl as vm'
     });
-    $stateProvider.state('membr', {//Unitary Member Details
+    $stateProvider.state('membr', {
       url: '/membr/:email',
       templateUrl: '/views/memberdetail.html',
       controller: 'PeopleCtrl as vm',
@@ -110,7 +110,17 @@ angular
       templateUrl: '/views/acceptpage.html',
        controller: 'SlaveCtrl as vm'
     });
-
+    
+    $stateProvider.state('remanejalist', {
+      url: '/remanejamentos',
+      templateUrl: '/views/remanejamentos.html',
+       controller: 'RemanejaCtrl as vm'
+    });
+    $stateProvider.state('remaneja', {
+      url: '/remanejamento/:id',
+      templateUrl: '/views/remaneja.html',
+       controller: 'RemanejaCtrl as vm'
+    });
 
     //Teste Section -- Used as a test page where its a pattern to view changes and shits.
     $stateProvider.state('teste', {
