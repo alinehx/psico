@@ -21,8 +21,17 @@
     <div class="panel-heading text-center">
         <h5>REMANEJAMENTOS SOLICITADOS POR MIM</h5>
     </div>
-    <div class="panel-body ">
-        
+    <div class="panel-body " ng-repeat="i in vm.forMe">
+        <h4 class="text-center">Responsavel pelo agendamento: {{i.owner | uppercase}}</h4>
+        <br>
+        <div class="btn-group btn-group-justified">
+            <a class="btn btn-success btn-block " ng-click="vm.doAccept()">
+                <i class="fa fa-like fa-lg" aria-hidden="true"></i> Aceitar
+            </a>
+            <a class="btn btn-success btn-block " ng-click="vm.doReject()">
+                <i class="fa fa-cancel fa-lg" aria-hidden="true"></i> Recusar
+            </a>
+        </div>
     </div>
 </div>
 
@@ -31,7 +40,16 @@
     <div class="panel-heading text-center">
         <h5>MINHAS RESPOSTAS PENDENTES</h5>
     </div>
-    <div class="panel-body ">
-        
+    <div class="panel-body " ng-repeat="i in vm.toMe">
+        <h4 class="text-center">Solicitante do Remanejamento: {{i.target | uppercase}}</h4>
+        <br>
+        <div class="btn-group btn-group-justified">
+            <a class="btn btn-success btn-block disabled" ng-show="vm.getResp(i)"><!-- Should return true or false-->
+                <i class="fa fa-like fa-lg" aria-hidden="true"></i> Aceitar
+            </a>
+            <a class="btn btn-success btn-block disabled" ng-show="vm.getResp(i)">
+                <i class="fa fa-cancel fa-lg" aria-hidden="true"></i> Recusar
+            </a>
+        </div>
     </div>
 </div>
