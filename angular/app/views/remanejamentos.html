@@ -23,13 +23,17 @@
     </div>
     <div class="panel-body " ng-repeat="i in vm.forMe">
         <h4 class="text-center">Responsavel pelo agendamento: {{i.owner | uppercase}}</h4>
+        <h5 class="text-right">{{}}</h5>
         <br>
         <div class="btn-group btn-group-justified">
-            <a class="btn btn-success btn-block " ng-click="vm.doAccept()">
-                <i class="fa fa-like fa-lg" aria-hidden="true"></i> Aceitar
+            <a class="btn btn-default btn-block disabled" ng-show="vm.isWaiting(i)">
+                <i class="fa fa-loading fa-lg" aria-hidden="true"></i> Resposta Pendente
             </a>
-            <a class="btn btn-success btn-block " ng-click="vm.doReject()">
-                <i class="fa fa-cancel fa-lg" aria-hidden="true"></i> Recusar
+            <a class="btn btn-success btn-block disabled" ng-show="vm.getResp(i)"><!-- Should return true or false-->
+                <i class="fa fa-check fa-lg" aria-hidden="true"></i> Remanejamento Aceitado
+            </a>
+            <a class="btn btn-danger btn-block disabled" ng-hide="vm.getResp(i)">
+                <i class="fa fa-cancel fa-lg" aria-hidden="true"></i> Remanejamento Recusado
             </a>
         </div>
     </div>
@@ -44,10 +48,15 @@
         <h4 class="text-center">Solicitante do Remanejamento: {{i.target | uppercase}}</h4>
         <br>
         <div class="btn-group btn-group-justified">
-            <a class="btn btn-success btn-block disabled" ng-show="vm.getResp(i)"><!-- Should return true or false-->
+            <a class="btn btn-default btn-block " ng-click="vm.doAccept()">
+                <i class="fa fa-warning fa-lg" aria-hidden="true"></i> Informações
+            </a>
+        </div>
+        <div class="btn-group btn-group-justified">
+            <a class="btn btn-success btn-block " ng-click="vm.doAccept()">
                 <i class="fa fa-like fa-lg" aria-hidden="true"></i> Aceitar
             </a>
-            <a class="btn btn-success btn-block disabled" ng-show="vm.getResp(i)">
+            <a class="btn btn-danger btn-block " ng-click="vm.doReject()">
                 <i class="fa fa-cancel fa-lg" aria-hidden="true"></i> Recusar
             </a>
         </div>

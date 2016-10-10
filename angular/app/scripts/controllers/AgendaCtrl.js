@@ -4,6 +4,7 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
   var vm = this;
   vm.state = $state;
   vm.urlAgenda = 'http://localhost:1337/agenda';
+  vm.urlRemaneja = 'http://localhost:1337/remaneja';
   vm.urlGuest = 'http://localhost:1337/guest';
   vm.urlRoom = 'http://localhost:1337/class';
 
@@ -372,12 +373,12 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
 
   vm.getHourForAgenda = function (hour){
     $http.get(vm.urlAgenda)
-      .success(function (res){
-        vm.agendaListForHour = res;
-      })
-      .error(function(err){
-        alert('warning',"Error! Não foi possivel executar a requisição. " + err);
-      });
+    .success(function (res){
+      vm.agendaListForHour = res;
+    })
+    .error(function(err){
+      alert('warning',"Error! Não foi possivel executar a requisição. " + err);
+    });
   };
 
   //DatePicker
@@ -405,23 +406,58 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     }
   }
 
-  vm.verifyHourForRoom = function(hour, step){
-    var isStep = vm.isActualStep(step);
-    if(hour == vm.blockHourInit.labelValue){
-      return false;
-    }
-    if(vm.agendaListForHour.length < 1){
-      //Means no agenda is registered.
-      return true;
-    }
-    for(var item in vm.agendaListForHour){
-      if(item.roomID == vm.agenda.roomID && item.date == vm.agenda.date && item.initTime == hour) {
+  //FIXMARCEL
+  vm.validateHourAvailability = function(time){
+    var configuredDate = Date(vm.agenda.date);
+    var initUrl = vm.urlAgenda + "/in/" + configuredDate + "&" + time;
+    var endUrl = vm.urlAgenda + "/en/" + configuredDate + "&" + time;
+
+    $http.get(initUrl)
+    .success(function (res){
+      var r = vm.checkEndTime(endUrl);
+      if(r == null){
         return false;
+      } else {
+        if(res == null){
+          return false;
+        } else {
+          return true;
+        }
       }
-      else{
-        return true;
-      }
-    }
+    })
+    .error(function(err){
+      alert('warning',"Error! Não foi possivel executar a requisição. " + err);
+    });
+  }
+  //FIXMARCEL
+  vm.checkEndTime = function(endUrl){
+    $http.get(endUrl)
+    .success(function (res){
+      return res;
+    })
+    .error(function(err){
+      alert('warning',"Error! Não foi possivel executar a requisição. " + err);
+    });
+  }
+
+  //FIXMARCEL
+  vm.requestRemaneja = function(hr){
+    //SHOULD BUILD THE REMANEJA
+    $http.post(vm.urlAgenda)
+    .success(function (res){
+      return res;
+    })
+    .error(function(err){
+      alert('warning',"Error! Não foi possivel executar a requisição. " + err);
+    });
+
+    $http.post(vm.urlRemaneja, rema)
+    .success(function (res){
+      return res;
+    })
+    .error(function(err){
+      alert('warning',"Error! Não foi possivel executar a requisição. " + err);
+    });
   }
 
   //should be used to set 'next' button clickable.

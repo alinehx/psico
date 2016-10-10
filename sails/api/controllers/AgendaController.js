@@ -62,6 +62,31 @@
    });
  }
 
+ function getAgendaByStartDate(req, res) {
+   var date = req.param('date');
+   var initTime = req.param('initTime');
+   AgendaService.findAgendaByResponsable(email, function(err, agendas) {
+     if (err) {
+       return res.status(503).send({
+         message: err
+       });
+     }
+     return res.status(200).send(agendas);
+   });
+ }
+ function getAgendaByEndDate(req, res) {
+   var date = req.param('date');
+   var endTime = req.param('endTime');
+   AgendaService.findAgendaByResponsable(email, function(err, agendas) {
+     if (err) {
+       return res.status(503).send({
+         message: err
+       });
+     }
+     return res.status(200).send(agendas);
+   });
+ }
+
  function getAll(req, res) { // tenta buscar todos esses objetos na base.
    AgendaService.getAll(function(err, agendas) {
      if (err) {
@@ -132,6 +157,8 @@
    deleteAgenda: deleteAgenda,
    updateAgenda: updateAgenda,
    getAgendaByResponsable: getAgendaByResponsable,
+   getAgendaByStartDate: getAgendaByStartDate,
+   getAgendaByEndDate: getAgendaByEndDate,
    getAll: getAll,
    getAgendaById: getAgendaById,
    createAgenda: createAgenda

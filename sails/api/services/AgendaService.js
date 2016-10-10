@@ -41,6 +41,35 @@ function findAgendaByResponsable(email, callback) {
   });
 };
 
+function findAgendaByStartDate(date, initTime, callback) {
+  Agenda.find({
+    date: date,
+    initTime: initTime
+  }).exec(function(err, agenda) {
+    if (err) {
+      return callback(err);
+    } else if (!agenda) {
+      return callback('Agenda não encontrada');
+    } 
+    return callback(null, agenda);
+  });
+};
+
+function findAgendaByEndDate(date, endTime, callback) {
+  Agenda.find({
+    date: date,
+    endTime: endTime
+  }).exec(function(err, agenda) {
+    if (err) {
+      return callback(err);
+    } else if (!agenda) {
+      return callback('Agenda não encontrada');
+    } 
+    return callback(null, agenda);
+  });
+};
+
+
 function removeAgenda(id, callback) {
   Agenda.remove({
     id: id
@@ -81,6 +110,8 @@ module.exports = {
   removeAgenda: removeAgenda,
   updateAgenda: updateAgenda,
   findAgendaByResponsable: findAgendaByResponsable,
+  findAgendaByStartDate: findAgendaByStartDate,
+  findAgendaByEndDate: findAgendaByEndDate,
   getAll: getAll,
   agendaObject: agendaObject
 };

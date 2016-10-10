@@ -51,10 +51,24 @@ module.exports.routes = {
   'get /class/:name&:location': 'ClassController.getClass',
   'get /address/:zipCode': 'AddressController.getAddress',
 
+  'post /constants': 'ConstantsController.createConstant',
+  'get /constants': 'ConstantsController.getAll',
+  'get /constants/:constantType': 'ConstantsController.getByType',
+  'get /constants/:constantValue': 'ConstantsController.getValue',
+  'put /constants': 'ConstantsController.updateConstant',
+
+  'post /hours': 'HourController.createHour',
+  'get /hours': 'HourController.getAll',
+  'get /hours/:constantType': 'HourController.getByDate',
+  'get /hours/:constantValue': 'HourController.getByAvailability',
+  'put /hours': 'HourController.updateHour',
+
   'post /agenda': 'AgendaController.createAgenda',
   'put /agenda/:id': 'AgendaController.updateAgenda',
   'get /agenda/:email': 'AgendaController.getAgendaByResponsable',
   'get /agenda': 'AgendaController.getAll',
+  'get /agenda/in/:date&:hour': 'AgendaController.getAgendaByStartDate',
+  'get /agenda/en/:date&:hour': 'AgendaController.getAgendaByEndDate',
   'get /agenda/a/:agenda': 'AgendaController.getAgendaById',
   
   'post /guest': 'GuestController.create',
@@ -70,7 +84,6 @@ module.exports.routes = {
   'get /remaneja/rt/:id': 'RemanejaController.getForTarget',
   'get /remaneja/ro/:id': 'RemanejaController.getForOwner',
   'put /remaneja/:id': 'RemanejaController.updateRemaneja'
-
 
   /***************************************************************************
   *                                                                          *
