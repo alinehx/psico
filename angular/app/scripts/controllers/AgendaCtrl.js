@@ -7,6 +7,7 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
   vm.urlRemaneja = 'http://localhost:1337/remaneja';
   vm.urlGuest = 'http://localhost:1337/guest';
   vm.urlRoom = 'http://localhost:1337/class';
+  vm.urlHour = 'http://localhost:1337/hours';
 
   //SETTINGS SECTION
   vm.agendaTypes = ['Treinamento', 'Consulta', 'Reunião'];
@@ -381,6 +382,42 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     });
   };
 
+  vm.loadedHours = {};
+  vm.validateHourSettings = function(){
+    var configuredDate = Date(vm.agenda.date);
+    var newUrl = vm.urlHour + '/' + configuredDate;
+    $http.get(newUrl)
+    .success(function (res){
+      if(res == null || res.size() == 0){
+        vm.agendaHours.forEach(function(h){
+          vm.createHoursForDay(h);
+        })
+      } else {
+        vm.loadedHours = res;
+      }
+    })
+    .error(function(err){
+      alert('warning',"Error! Não foi possivel executar a requisição. " + err);
+    });
+    
+  }
+
+  vm.createHoursForDay = function(hora){
+    var configuredDate = Date(vm.agenda.date);
+    var hours = {
+      date: configuredDate,
+      hour: hora,
+      agenda: null
+    };
+    $http.post(vm.urlHour, hours)
+    .success(function (res){
+      console.log("horario criado.");
+    })
+    .error(function(err){
+      alert('warning',"Error! Não foi possivel executar a requisição. " + err);
+    });
+  }
+
   //DatePicker
   $('#datepicker').datepicker({
       altField: "#alternate",
@@ -468,6 +505,7 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     if(vm.agenda.date == null){
       return false;
     }
+    vm.validateHourSettings();
     return true;
   }
 

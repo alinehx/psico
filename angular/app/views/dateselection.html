@@ -66,14 +66,14 @@
 						<div class="step-header">{{"Selecione a Hora de inicio da reserva"}}</div>
 						
 						<table class="table table-striped table-hover" style="border:1px solid #666">
-							<tr data-ng-repeat="hr in vm.agendaHours" ng-class="vm.verifyHourForRoom(hr) ? '' : 'danger'">
-								<td>{{hr}}</td>
+							<tr data-ng-repeat="hr in vm.loadedHours" ng-class="vm.verifyHourForRoom(hr) ? '' : 'danger'">
+								<td>{{hr.hour}}</td>
 								<!-- REMANEJAMENTO -->
-								<td ng-hide="vm.validateHourAvailability(hr)">{{"RESERVADO"}}</td>
-								<td ng-hide="vm.validateHourAvailability(hr)" ng-click="vm.requestRemaneja(hr)">REMANEJAR</td>
+								<td ng-hide="hr.availability">{{"RESERVADO"}}</td>
+								<td ng-hide="hr.availability" ng-click="vm.requestRemaneja(hr.hour)">REMANEJAR</td>
 								<!-- AGENDAMENTO -->
-								<td ng-show="vm.validateHourAvailability(hr)">{{"DISPONÍVEL"}}</td>
-								<td ng-show="vm.validateHourAvailability(hr)" ng-click="vm.selectHour(hr, vm.blockHourInit)">SELECIONAR</td>
+								<td ng-show="hr.availability">{{"DISPONÍVEL"}}</td>
+								<td ng-show="hr.availability" ng-click="vm.selectHour(hr.hour, vm.blockHourInit)">SELECIONAR</td>
 							</tr>
 						</table>
 					</div>
@@ -104,11 +104,14 @@
 					<div class="panel-body">
 						<div class="step-header">{{"Agora selecione o horario de termino"}}</div>
 						<table class="table table-striped table-hover" style="border:1px solid #666">
-							<tr data-ng-repeat="hr in vm.agendaHours" ng-class="vm.verifyHourForRoom(hr) ? '' : 'danger'">
-								<td>{{hr}}</td>
-								<td ng-hide="vm.verifyHourForRoom(hr)">{{"RESERVADO"}}</td>
-								<td ng-show="vm.verifyHourForRoom(hr)">{{"DISPONÍVEL"}}</td>
-								<td ng-click="vm.selectEndHour(hr, vm.blockHourEnd)">SELECIONAR</td>
+							<tr data-ng-repeat="hr in vm.loadedHours" ng-class="vm.verifyHourForRoom(hr) ? '' : 'danger'">
+								<td>{{hr.hour}}</td>
+								<!-- REMANEJAMENTO -->
+								<td ng-hide="hr.availability">{{"RESERVADO"}}</td>
+								<td ng-hide="hr.availability" ng-click="vm.requestRemaneja(hr.hour)">REMANEJAR</td>
+								<!-- AGENDAMENTO -->
+								<td ng-show="hr.availability">{{"DISPONÍVEL"}}</td>
+								<td ng-show="hr.availability" ng-click="vm.selectHour(hr.hour, vm.blockHourInit)">SELECIONAR</td>
 							</tr>
 						</table>
 					</div>
