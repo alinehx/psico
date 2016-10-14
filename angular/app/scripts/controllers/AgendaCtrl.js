@@ -37,7 +37,7 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
          response = false;
     }
     return response;
-  }
+  };
 
   vm.fieldNotEmpty = function(field){
     var response = true;
@@ -45,17 +45,17 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
       response = false;
     }
     return response;
-  }
+  };
 
   //Configs
   vm.setUpPage = function(){
     vm.getRoomList();
-  }
+  };
 
   vm.loggedUser = {
     email: $cookies.get('loggedUserMail'),
     name: $cookies.get('loggedUserName')
-  }
+  };
 
   vm.agenda = {
     roomID : null,
@@ -68,7 +68,7 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     type : null,
     guestQuantity: null,
     timecreation : null
-  }
+  };
 
   //Necessary Objects Load
   vm.getRoomList = function (){
@@ -100,7 +100,7 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     }else{
       alert('warning', 'Erro!', "Email inválido: '" + vm.guestMail.email + "'.");
     }
-  }
+  };
 
   vm.addToGuestList = function() {
     var res = vm.guestList.indexOf(vm.guestMail.email);
@@ -110,19 +110,19 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     } else {
       alert('warning', 'Erro!', "Email inválido: '" + vm.guestMail.email + "'.");
     }
-  }
+  };
 
   vm.getListSize = function(){
     if(vm.guestList.length > 0){
       return true;
     }
     return false;
-  }
+  };
 
   vm.removeGuestFromList = function(item) {
     var pos = vm.guestList.indexOf(item);
     vm.guestList.splice(pos, 1);
-  }
+  };
 
   vm.openGuestConfirmPage = function(item){
     vm.auxArray = vm.guestList;
@@ -132,7 +132,7 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
       guest: guestObj[0].guest,
       agenda: guestObj[0].agenda
     });
-  }
+  };
 
   vm.populateGuests = function(guestList, agendaID) { //Recieves the selected list of guests and insert it to db.
     var succ = null;
@@ -156,7 +156,7 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     if(succ){
       alert('success','Concluido!', 'Agendamento efetuado com sucesso.');
     }
-  }
+  };
 
   vm.updateGuestStatus = function(guest){ //Udate a guest acceptance state for a agenda.
     var preparedUrl = vm.urlGuest + "/" + guest.agenda + "&" + guest.email;
@@ -169,9 +169,9 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
       alert('success','Sucesso!', 'Resposta para agendamento efetuada com sucesso.');
     })
     .error(function(err){
-      alert('warning',"Error!", "Não foi possivel executar a requisição." + err);
+      alert('warning',"Error!", "Não foi possivel executar a requisição." + err.message);
     });
-  }
+  };
 
   vm.removeGuest = function(guest){ //Removes a guest from a agenda.
     var preparedUrl = vm.urlGuest + "/" + guest.agenda + "&" + guest.guest;
@@ -180,9 +180,9 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
       alert('success','Sucesso!', 'Agendamento registrado com sucesso.');
     })
     .error(function(err){
-      alert('warning',"Error!", "Não foi possivel executar a requisição." + err);
+      alert('warning',"Error!", "Não foi possivel executar a requisição." + err.message);
     });
-  }
+  };
 
   vm.getGuestsByAgenda = function(agendaID){ //Get all guests in determined agenda.
     var newurl = vm.urlGuest + "/" + agendaID;
@@ -196,7 +196,7 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     .error(function(err){
       alert('warning',"Error! Não foi possivel executar a requisição.");
     });
-  }
+  };
 
   //Agenda Section
   vm.configureAgendaAndSubmit = function(){
@@ -214,19 +214,21 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
       timecreation :  new Date().getTime()
     }
     vm.submit(agendaModel);
-  }
+  };
 
   vm.submit = function (agenda) {
     $http.post(vm.urlAgenda, agenda)
     .success(function (res) {
       vm.populateGuests(vm.guestList ,res.agenda.id);//Populate Guest list in DB
       vm.openAgendaDetails(res.agenda.id);
+      console.log('save');
+      vm.saveHours(res.agenda.id1);
     })
     .error(function (err) {
       if(err.message === 'Autenticação falhou') {
         alert('warning', 'Erro!', 'Para agendamentos é necessario estar atuenticado.');
       } else {
-        alert('warning', 'Erro!', 'Não foi possivel executar a requisição. ' + err);
+        alert('warning', 'Erro!', 'Não foi possivel executar a requisição. ' + err.message);
       }
     });
   };
@@ -243,9 +245,9 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
       alert('success','Sucesso!', 'Resposta para agendamento efetuada com sucesso.');
     })
     .error(function(err){
-      alert('warning',"Error!", "Não foi possivel executar a requisição." + err);
+      alert('warning',"Error!", "Não foi possivel executar a requisição." + err.message);
     });
-  }
+  };
   
   vm.getUserByEmail = function (email){
     var newurl = vm.urlUser + "/" + email;
@@ -270,9 +272,9 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
       vm.getRoom(vm.agendaDetail.roomID);
     })
     .error(function(err){
-      alert('warning',"Error! Não foi possivel executar a requisição. " + err);
+      alert('warning',"Error! Não foi possivel executar a requisição. " + err.message);
     });
-  }
+  };
   
   vm.getAgendaForUser = function (){
     vm.agendaList = $cookies.getObject('userAgendas');
@@ -360,17 +362,17 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
   //Redirection:
   vm.gotoRoomSelection = function(){
     $state.go('roomselection');
-  }
+  };
 
   //This is used in the display of Agendas for SlaveDevice
   vm.validateDateToShow = function(){
 
-  }
+  };
 
   vm.initAgenda = function(){
     vm.getRoomForAgenda(vm.state.params.name, vm.state.params.location);
     vm.getHourForAgenda();
-  }
+  };
 
   vm.getHourForAgenda = function (hour){
     $http.get(vm.urlAgenda)
@@ -378,45 +380,51 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
       vm.agendaListForHour = res;
     })
     .error(function(err){
-      alert('warning',"Error! Não foi possivel executar a requisição. " + err);
+      alert('warning',"Error! Não foi possivel executar a requisição. " + err.message);
     });
   };
 
   vm.loadedHours = {};
   vm.validateHourSettings = function(){
-    var configuredDate = Date(vm.agenda.date);
-    var newUrl = vm.urlHour + '/' + configuredDate;
+    var configuredDate = vm.agenda.date;
+    var newUrl = vm.urlHour + '/' + vm.replaceAll(configuredDate, '/', '-');
     $http.get(newUrl)
     .success(function (res){
-      if(res == null || res.size() == 0){
+      if(res == null || res.length == 0){
+        var num = 1;
         vm.agendaHours.forEach(function(h){
-          vm.createHoursForDay(h);
+          vm.createHoursForDay(h, num);
+          num++;
         })
       } else {
         vm.loadedHours = res;
       }
     })
     .error(function(err){
-      alert('warning',"Error! Não foi possivel executar a requisição. " + err);
+      alert('warning',"Error! Não foi possivel executar a requisição. " + err.message);
     });
-    
-  }
+  };
 
-  vm.createHoursForDay = function(hora){
-    var configuredDate = Date(vm.agenda.date);
+  vm.createHoursForDay = function(hour, num){
+    var thisDate = vm.agenda.date;
+    thisDate = vm.replaceAll(thisDate, '/', '-');
+    console.log(vm.agenda.roomID);
     var hours = {
-      date: configuredDate,
-      hour: hora,
-      agenda: null
+      room: vm.agenda.roomID,
+      date: thisDate,
+      hour: hour,
+      num: num
     };
     $http.post(vm.urlHour, hours)
     .success(function (res){
-      console.log("horario criado.");
+
     })
     .error(function(err){
-      alert('warning',"Error! Não foi possivel executar a requisição. " + err);
+      if(err.message != "Horário já Existe"){
+        alert('warning',"Error! Não foi possivel executar a requisição. " + err.message);
+      }
     });
-  }
+  };
 
   //DatePicker
   $('#datepicker').datepicker({
@@ -425,55 +433,83 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
       //altFormat: "d MM, yy" -> 18 SETEMBRO, 2016
   });
 
-  vm.selectEndHour = function(hr, source){
-    var goodHour = vm.verifyHourForRoom(hr);
-    if(goodHour == true){
-      vm.agenda.endTime = hr;
-      source.labelValue = hr;
-      vm.doFinish(source);
+  $('#datepicker').change(function (){
+    vm.validateHourSettings();
+  });
+
+  vm.validateHour = function(hr){
+    if(hr.available && vm.agenda.initTime != hr.hour){
+      return true;
     }
+    return false;
   }
 
-  vm.selectHour = function(hr, source){
-    var goodHour = vm.verifyHourForRoom(hr);
-    if(goodHour == true){
-      vm.agenda.initTime = hr;
-      source.labelValue = hr;
-      vm.doFinish(source);
-    }
-  }
-
-  //FIXMARCEL
-  vm.validateHourAvailability = function(time){
-    var configuredDate = Date(vm.agenda.date);
-    var initUrl = vm.urlAgenda + "/in/" + configuredDate + "&" + time;
-    var endUrl = vm.urlAgenda + "/en/" + configuredDate + "&" + time;
-
-    $http.get(initUrl)
-    .success(function (res){
-      var r = vm.checkEndTime(endUrl);
-      if(r == null){
-        return false;
-      } else {
-        if(res == null){
-          return false;
-        } else {
-          return true;
+  vm.availableRange = [];
+  vm.validateHourRange = function(ini, en){
+    var init = ini.num;
+    var end = en.num;
+    var isOk = true;
+    var availableRange = [];
+    vm.loadedHours.forEach(function(item){
+      var actual = item.num;
+      if (actual >= init && actual <= end){
+        availableRange.push(item);
+        if(!item.available){
+          isOk = false;
         }
       }
-    })
-    .error(function(err){
-      alert('warning',"Error! Não foi possivel executar a requisição. " + err);
     });
+    if(isOk){
+      vm.availableRange = availableRange;
+    }
+    return isOk;
   }
-  //FIXMARCEL
-  vm.checkEndTime = function(endUrl){
-    $http.get(endUrl)
-    .success(function (res){
-      return res;
+
+  vm.selectEndHour = function(hr, source){
+    var goodHour = hr.available;
+    if(goodHour && vm.agenda.initTime != hr.hour){
+      if(vm.validateHourRange(vm.auxHour, hr)){
+        vm.agenda.endTime = hr.hour;
+        source.labelValue = hr.hour;
+        vm.doFinish(source);
+      } else{
+        alert('warning',"Já existe algum agendamento entre os horarios selecionados.");
+      }
+    }
+  };
+
+  vm.auxHour = {};
+  vm.selectHour = function(hr, source){
+    var goodHour = hr.available;
+    if(goodHour){
+      vm.auxHour = hr;
+      vm.agenda.initTime = hr.hour;
+      source.labelValue = hr.hour;
+      vm.doFinish(source);
+    }
+  };
+
+  vm.saveHours = function(agenda){
+    console.log('avv', vm.availableRange);
+    vm.availableRange.forEach(function(item){
+      console.log(item.id);
+      vm.putHour(item.id, agenda);
+    })
+  }
+  
+  vm.putHour = function(hour, agenda){
+    var newUrl = vm.urlHour + "/" + hour;
+    var newHour = {
+      id: hour,
+      available: false,
+      agenda: agenda
+    }
+    $http.put(newUrl, newHour)
+    .success(function(res){
+      console.log('success');
     })
     .error(function(err){
-      alert('warning',"Error! Não foi possivel executar a requisição. " + err);
+      alert('warning',"Error!", "Não foi possivel executar a requisição." + err.message);
     });
   }
 
@@ -485,7 +521,7 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
       return res;
     })
     .error(function(err){
-      alert('warning',"Error! Não foi possivel executar a requisição. " + err);
+      alert('warning',"Error! Não foi possivel executar a requisição. " + err.message);
     });
 
     $http.post(vm.urlRemaneja, rema)
@@ -493,8 +529,13 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
       return res;
     })
     .error(function(err){
-      alert('warning',"Error! Não foi possivel executar a requisição. " + err);
+      alert('warning',"Error! Não foi possivel executar a requisição. " + err.message);
     });
+  };
+
+  vm.prepareHours = function(){
+    vm.validateHourSettings();
+    vm.doFinish(vm.blockDate);
   }
 
   //should be used to set 'next' button clickable.
@@ -505,9 +546,8 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     if(vm.agenda.date == null){
       return false;
     }
-    vm.validateHourSettings();
     return true;
-  }
+  };
 
   //Used for validation in details
   vm.isDataFilled = function(){
@@ -515,58 +555,58 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
       return true;
     }
     return false;
-  }
+  };
 
   //NEW MODEL SECETION
   vm.blockDate = {
     labelText: "Selecione a Data",
     labelValue: null,
     isFinished: false
-  }
+  };
   vm.blockHourInit = {
     labelText: "Selecione a Hora de Inicio",
     labelValue: null,
     isFinished: false
-  }
+  };
   vm.blockHourEnd = {
     labelText: "Selecione a Hora de Termino",
     labelValue: null,
     isFinished: false
-  }
+  };
   vm.blockDetail = {
     labelText: "Preencha os detalhes",
     labelValue: null,
     isFinished: false
-  }
+  };
   vm.blockGuest = {
     labelText: "Adicione os Participantes",
     labelValue: null,
     isFinished: false
-  }
+  };
 
   //VALIDATIONS
   vm.checkFinished = function(source){
     return source.isFinished;
-  }
+  };
 
   vm.isDataSelected = function(source){
     if(source != null){
       return true;
     }
     return false;
-  }
+  };
 
   vm.isActualStep = function(step){
     if(vm.step == step){
       return true;
     }
     return false;
-  }
+  };
 
   vm.doFinish = function(source){
     source.isFinished = true;
     vm.step++;
-  }
+  };
 
   vm.unFinish = function(source){
     if(vm.step >= 1){
@@ -579,6 +619,18 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
         vm.blockHourInit.labelValue = null;
       }
     }
+  };
+
+
+  //UTILS:
+  vm.replaceAll = function(text, cTarget, cNew){
+    while(text.match(cTarget) != null){
+      var res = text.search(cTarget);
+      if(res != -1){
+        text = text.replace(cTarget, cNew);
+      }
+    }
+    return text;
   }
 
 });

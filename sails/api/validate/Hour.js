@@ -8,15 +8,24 @@ function Register (hour) {
   if (!hour.hour) {
     errors.push('Target é obrigatória');
   }
+  if (!hour.num) {
+    errors.push('Numero é obrigatório');
+  }
+  if (!hour.room) {
+    errors.push('Sala é obrigatória');
+  }
   errors = validateStructHour(hour, errors);
   return errors;
 };
 
 var propertiesHour = [
+  'id',
+  'room',
   'date',
   'hour',
   'available',
-  'agenda'
+  'agenda',
+  'num'
 ]
 
 function validateStructHour(obj, error) { 

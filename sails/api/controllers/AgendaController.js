@@ -5,31 +5,31 @@
  //Cria agendamento
  function createAgenda(req, res) {
   var erro = validateAgenda.Register(req.body);
-   if (erro.length > 0) { // Bate no metodo Register do Validate(/validade/x.js) e verifica se houveram erros.
+   if (erro.length > 0) {
      return res.status(403).send({
        message: erro
      });
-   } else { // Caso o Register nao apresente erros, entao executa este bloco.
-    AgendaService.findAgenda(req.body.id, function (err, agenda) { //Tenta procurar o obj a ser inserido.
+   } else { 
+    AgendaService.findAgenda(req.body.id, function (err, agenda) {
       if (err) {
         if (err !== 'Agenda não encontrada') { 
           return res.status(503).send({
             message: err
           });
-        } // Se for um erro diferente do mencionado, entao:
-        var agendaObject = AgendaService.agendaObject(req.body); // Criamos um objeto da classe com os dados do request.
-        Agenda.create(agendaObject).exec(function(err, agenda) { // Envia o objeto para ser criado na base.
+        } 
+        var agendaObject = AgendaService.agendaObject(req.body);
+        Agenda.create(agendaObject).exec(function(err, agenda) {
           if (err) {
             return res.status(503).send({
               message: err
             });
            } else {
-             return res.status(200).send({ // Devolve o objeto como um json
+             return res.status(200).send({
                agenda: agenda.toJSON()
              });
            }
         });
-      } else { // Caso retorne um objeto, nao devemos cadastrar.
+      } else {
         return res.status(409).send({
           message: 'Agenda já cadastrada'
         });

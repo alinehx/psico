@@ -2,7 +2,7 @@
 
  var validateHour = require ('../validate/Hour');
 
- //Add Guest
+
  function createHour(req, res){
    var erro = validateHour.Register(req.body);
    if (erro.length > 0) {
@@ -10,16 +10,17 @@
        message: erro
      });
    } else {
-     HourService.findHour(req.body.date, req.body.hour, function(err, hour){
+     HourService.findHour(req.body.room, req.body.date, req.body.hour, function(err, hour){
        if(err){
          if (err !== 'Horário não encontrado') { 
           return res.status(404).send({
             message: err
           });
          }
-          var hourObject = HourService.HourObject(req.body);
+          var hourObject = HourService.hourObject(req.body);
           Hour.create(hourObject).exec(function(err, hour){
           if (err) {
+          console.log("err", err);
           return res.status(503).send({
             message: err
           });
@@ -30,6 +31,7 @@
           }
          });
        } else {
+         console.log("[HourController] Hour already exists.");
         return res.status(409).send({
           message: 'Horário já Existe'
         });
@@ -83,7 +85,6 @@ function getByAvailability(req, res) {
    var hour = req.body;
    var error = [];
    var validate = validateHour.ID(idHour);
-   
    error = validateHour.validateStructHour(hour, error);
    if (validate && error.length === 0) {
      HourService.updateHour(idHour, hour, function(err, updateHour) {

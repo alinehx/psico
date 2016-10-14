@@ -3,8 +3,12 @@
 module.exports = {
 	tableName: 'Hour',
 	  attributes: {
+			room:{
+				type:'string',
+				required: true
+			},
 	    date: {
-	      type: 'date',
+	      type: 'string',
 	      required: true
 	    },
 	    hour: {
@@ -18,6 +22,10 @@ module.exports = {
 			},
 			agenda: {
 	      type: 'string'
+			},
+			num: {
+				type: 'integer',
+				required: true
 			}
 	}
 };
