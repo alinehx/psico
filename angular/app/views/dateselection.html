@@ -32,8 +32,8 @@
 				<div class="panel-body text-center step-component" ng-class="vm.isActualStep(0) ? 'actual-step' : ''" ng-show="vm.isActualStep(0)">
 					<div class="panel-body">
 						<div class="step-header">{{"Por favor, selecione a data desejada"}}</div>
-						<div id="datepicker" ng-model="vm.agenda.date"></div>
-						<input type="text" id="alternate" ng-hide="true">
+						<div id="datepicker"></div>
+						<input type="text" id="alternate" ng-hide="true" ng-model="vm.agenda.date">
 					</div>
 					<div class="btn-group btn-group-justified">
 						<a class="btn btn-default disabled" ng-hide="vm.isDateSelected()">
