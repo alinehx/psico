@@ -197,8 +197,7 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
 
   //Agenda Section
   vm.configureAgendaAndSubmit = function(){
-    var configuredDate = Date(vm.agenda.date);
-    console.log(vm.agenda.date);
+    var configuredDate = vm.configureDate(vm.agenda.date);
     var agendaModel = {
       roomID : vm.agenda.roomID,
       date : configuredDate,
@@ -219,7 +218,7 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     .success(function (res) {
       vm.populateGuests(vm.guestList ,res.agenda.id);//Populate Guest list in DB
       vm.openAgendaDetails(res.agenda.id);
-      vm.saveHours(res.agenda.id1);
+      vm.saveHours(res.agenda.id);
     })
     .error(function (err) {
       if(err.message === 'Autenticação falhou') {
@@ -383,23 +382,18 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
   vm.loadedHours = {};
   vm.validateHourSettings = function(){
     var configuredDate = document.getElementById('alternate').value;
-    var newUrl = vm.urlHour + '/' + vm.replaceAll(configuredDate, '/', '-');
-    console.log(configuredDate);
+    var newUrl = vm.urlHour + '/' + vm.replaceAll(configuredDate, '/', '-') + "&" + vm.agenda.roomID;
     $http.get(newUrl)
     .success(function (res){
       vm.loadedHours = {};
       if(res == null || res.length == 0){
-        console.log("DONT HAS HOUR");
         vm.agendaHours.forEach(function(h){
           vm.createHoursForDay(h[0], h[1], configuredDate);
-          console.log("SO WE CREATED HOUR FOR " + h[0] + " AND " + h[1]);
         })
       } else {
-        console.log("HAS HOURS :D");
         vm.loadedHours = res.sort(function(a, b) {
             return a.num - b.num;
         });
-        console.log("ORDENED TO ", vm.loadedHours);
       }
     })
     .error(function(err){
@@ -410,7 +404,6 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
   vm.createHoursForDay = function(hour, num, day){
     var thisDate = day;
     thisDate = vm.replaceAll(thisDate, '/', '-');
-    console.log("CREATING DATA FOR " + thisDate);
     var hours = {
       room: vm.agenda.roomID,
       date: thisDate,
@@ -454,7 +447,7 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     var availableRange = [];
     vm.loadedHours.forEach(function(item){
       var actual = item.num;
-      if (actual >= init && actual <= end){
+      if (actual >= init && actual < end){
         availableRange.push(item);
         if(!item.available){
           isOk = false;
@@ -544,6 +537,7 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
       dt = document.getElementById('datepicker').value;
     }
     vm.agenda.date = dt;
+    
     vm.blockDate.labelValue = dt;
     if(vm.agenda.date == null){
       return false;
@@ -634,6 +628,17 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
       }
     }
     return text;
+  }
+
+  vm.configureDate = function(date){
+    var newDate = new Date();
+    var arr = date.split('/');
+
+    newDate.setDate(arr[0]);
+    newDate.setMonth((arr[1]-1));
+    newDate.setYear(arr[2]);
+    
+    return newDate
   }
 
 });

@@ -32,9 +32,10 @@ function findHour(room, date, hour, callback) {
   });
 };
 
-function findByDate(date, callback) {
+function findByRoomDate(date, room, callback) {
   Hour.find({
-    date: date
+    date: date,
+    room: room
   }).exec(function(err, hour) {
     if (err) {
       return callback(err);
@@ -74,7 +75,7 @@ function updateHour(hourID, constantjaObject, callback) {
 module.exports = {
   findAll: findAll,
   findHour: findHour,
-  findByDate: findByDate,
+  findByRoomDate: findByRoomDate,
   findByAvailability: findByAvailability,
   updateHour: updateHour,
   hourObject: hourObject

@@ -51,9 +51,10 @@
     });
   }
 
-function getByDate(req, res) {
+function getByRoomDate(req, res) {
     var date = req.param('date');
-    HourService.findByDate(date, function(err, hourList) {
+    var room = req.param('room');
+    HourService.findByRoomDate(date, room, function(err, hourList) {
       if (err) {
         return res.status(503).send({
           message: err
@@ -107,7 +108,7 @@ function getByAvailability(req, res) {
 module.exports = {
    createHour: createHour,
    getAll: getAll,
-   getByDate: getByDate,
+   getByRoomDate: getByRoomDate,
    getByAvailability: getByAvailability,
    updateHour: updateHour
  }
