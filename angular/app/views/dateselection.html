@@ -70,7 +70,7 @@
 								<td>{{hr.hour}}</td>
 								<!-- REMANEJAMENTO -->
 								<td ng-hide="hr.available">{{"RESERVADO"}}</td>
-								<td ng-hide="hr.available" ng-click="vm.requestRemaneja(hr.hour)">REMANEJAR</td>
+								<td ng-hide="hr.available" ng-click="vm.requestRemaneja(hr)">REMANEJAR</td>
 								<!-- AGENDAMENTO -->
 								<td ng-show="hr.available">{{"LIVRE"}}</td>
 								<td ng-show="hr.available" ng-click="vm.selectHour(hr, vm.blockHourInit)">SELECIONAR</td>

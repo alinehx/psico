@@ -354,29 +354,8 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
 
   };
 
-  //Redirection:
-  vm.gotoRoomSelection = function(){
-    $state.go('roomselection');
-  };
-
-  //This is used in the display of Agendas for SlaveDevice
-  vm.validateDateToShow = function(){
-
-  };
-
   vm.initAgenda = function(){
     vm.getRoomForAgenda(vm.state.params.name, vm.state.params.location);
-    vm.getHourForAgenda();
-  };
-
-  vm.getHourForAgenda = function (hour){
-    $http.get(vm.urlAgenda)
-    .success(function (res){
-      vm.agendaListForHour = res;
-    })
-    .error(function(err){
-      alert('warning',"Error! Não foi possivel executar a requisição. " + err.message);
-    });
   };
 
   vm.loadedHours = {};
@@ -505,20 +484,31 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     });
   }
 
-  //FIXMARCEL
-  vm.requestRemaneja = function(hr){
-    //SHOULD BUILD THE REMANEJA
-    $http.post(vm.urlAgenda)
+  vm.remanejamento = {
+    agenda: null,
+    target: $cookies.get('loggedUserMail'),
+    owner: null,
+    resp: null
+  }
+
+  vm.getHourForAgenda = function (hour){
+    var rema = vm.remanejamento;
+    $http.get(vm.urlAgenda)
     .success(function (res){
-      return res;
+      rema.agenda = res.id;
+      rema.owner = res.responsable;
+      vm.requestRemaneja(rema);
     })
     .error(function(err){
       alert('warning',"Error! Não foi possivel executar a requisição. " + err.message);
     });
+  };
 
+  vm.requestRemaneja = function(rema){
     $http.post(vm.urlRemaneja, rema)
     .success(function (res){
-      return res;
+      alert('success',"Remanejamento solicitado com sucesso!" + err.message);
+      vm.gotoRemaneja();
     })
     .error(function(err){
       alert('warning',"Error! Não foi possivel executar a requisição. " + err.message);
@@ -528,7 +518,7 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
   vm.prepareHours = function(){
     vm.validateHourSettings();
     vm.doFinish(vm.blockDate);
-  }
+  };
 
   //should be used to set 'next' button clickable.
   vm.isDateSelected = function(){ 
@@ -640,6 +630,11 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     
     return newDate
   }
+
+  //Redirection:
+  vm.gotoRoomSelection = function(){
+    $state.go('roomselection');
+  };
 
 });
 app.$inject = ['$scope']; 
