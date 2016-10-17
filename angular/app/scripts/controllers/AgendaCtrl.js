@@ -293,15 +293,17 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
   };
 
 
-  vm.deleteAgendaInfo = function(id){
+  vm.deleteAgendaInfo = function(agenda){
     //TODO ENVIAR EMAIL PARA TODOS OS PARTICIPANTES E PARA O RESPONSAVEL.
     //Deleting guests first.
     vm.guestList.forEach(function(guest){
       vm.removeGuest(guest);
     });
-
-    vm.deleteAgenda(id);
+    vm.getHourForAgendaCancellation(agenda.id);
+    vm.deleteAgenda(agenda.id);
   };
+
+  vm.getHourForAgenda
 
   //FIX
   vm.deleteAgenda = function(id){
@@ -491,7 +493,40 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     resp: null
   }
 
-  vm.getHourForAgenda = function (hour){
+   vm.getHourForAgendaCancellation = function (agenda){
+    var newUrl = vm.urlHour + "/u/" + agenda;
+    $http.get(vm.urlHour)
+    .success(function (res){
+      console.log('ok');
+      res.forEach(function(item){
+        vm.cleanHourSettings(item);
+      });
+    })
+    .error(function(err){
+      alert('warning',"Error! Não foi possivel executar a requisição. " + err.message);
+    });
+  };
+
+  vm.cleanHourSettings = function(hour){
+    var newUrl = vm.urlHour + "/" + hour;
+    var newHour = {
+      id: hour,
+      available: false,
+      agenda: null
+    }
+    newHour.agenda=null;
+    newHour.available = true;
+    $http.put(newUrl, newHour)
+    .success(function(res){
+      console.log("lol");
+      console.log("success");
+    })
+    .error(function(err){
+      alert('warning',"Error!", "Não foi possivel executar a requisição." + err.message);
+    });
+  };
+
+  vm.remanejaForAgenda = function (hour){
     var rema = vm.remanejamento;
     $http.get(vm.urlAgenda)
     .success(function (res){

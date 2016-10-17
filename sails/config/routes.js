@@ -61,14 +61,13 @@ module.exports.routes = {
   'get /hours': 'HourController.getAll',
   'get /hours/:date&:room': 'HourController.getByRoomDate',
   'get /hours/a/:availability': 'HourController.getByAvailability',
+  'get /hours/u/:agenda': 'HourController.getByAgenda',
   'put /hours/:id': 'HourController.updateHour',
 
   'post /agenda': 'AgendaController.createAgenda',
   'put /agenda/:id': 'AgendaController.updateAgenda',
   'get /agenda/:email': 'AgendaController.getAgendaByResponsable',
   'get /agenda': 'AgendaController.getAll',
-  'get /agenda/in/:date&:hour': 'AgendaController.getAgendaByStartDate',
-  'get /agenda/en/:date&:hour': 'AgendaController.getAgendaByEndDate',
   'get /agenda/a/:agenda': 'AgendaController.getAgendaById',
   
   'post /guest': 'GuestController.create',

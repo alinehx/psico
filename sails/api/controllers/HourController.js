@@ -66,6 +66,22 @@ function getByRoomDate(req, res) {
     });
  }
 
+ function getByAgenda(req, res) {
+    var agenda = req.param('agenda');
+    HourService.findByAgenda(agenda, function(err, hourList) {
+      if (err) {
+        console.log("a");
+        return res.status(503).send({
+          message: err
+        });
+      }
+      if (hourList) { 
+        console.log("b");
+        return res.status(200).send(hourList);
+      }
+    });
+ }
+
 function getByAvailability(req, res) {
     var availability = req.param('available');
     HourService.findValue(available, function(err, remanejaList) {
@@ -110,5 +126,6 @@ module.exports = {
    getAll: getAll,
    getByRoomDate: getByRoomDate,
    getByAvailability: getByAvailability,
+   getByAgenda: getByAgenda,
    updateHour: updateHour
  }

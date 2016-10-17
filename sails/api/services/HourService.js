@@ -5,13 +5,23 @@ function hourObject(hour) {
       room: hour.room,
       date: hour.date,
       hour: hour.hour,
+      agenda: hour.agenda,
       num: hour.num
   };
 }
 
+function callbackGet(err, hours, callback) {
+  if (err) {
+    return callback(err);
+  } else if(!hours){
+    return callback(null, 'Busca não retornou resultado');
+  }
+  return callback(null, hours);
+}
+
 function findAll(callback) {
-  Hour.find().exec(function (err, findHour) { 
-    callbackGet(err, findHour, callback);
+  Hour.find().exec(function (err, hours) { 
+    callbackGet(err, hours, callback);
   });
 }
 
@@ -42,6 +52,22 @@ function findByRoomDate(date, room, callback) {
     } else if (!hour) {
       return callback('Horário não encontrado');
     } 
+    return callback(null, hour);
+  });
+};
+
+function findByAgenda(agenda, callback) {
+  Hour.find({
+    agenda: agenda
+  }).exec(function(err, hour) {
+    if (err) {
+      console.log("a");
+      return callback(err);
+    } else if (!hour) {
+      console.log("b");
+      return callback('Horário não encontrado');
+    }
+    console.log("c");
     return callback(null, hour);
   });
 };
@@ -77,6 +103,7 @@ module.exports = {
   findHour: findHour,
   findByRoomDate: findByRoomDate,
   findByAvailability: findByAvailability,
+  findByAgenda: findByAgenda,
   updateHour: updateHour,
   hourObject: hourObject
 };
