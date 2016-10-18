@@ -11,6 +11,8 @@ app.controller('RemanejaCtrl', function ($scope, $rootScope, $http, alert, authT
 	vm.byTarget = {};
 	vm.byOwner = {};
 	vm.remanejaList = {};
+	vm.forMe = {};
+	vm.toMe = {};
 
 	vm.remaneja = {
 		agenda: null,
@@ -20,33 +22,18 @@ app.controller('RemanejaCtrl', function ($scope, $rootScope, $http, alert, authT
 		status: null,
 	}
 
-
 	//AJAX
-	vm.createOne = function (remaneja) {
-		$http.post(vm.urlRemaneja, remaneja)
-		.success(function (res) {
-			vm.populateGuests(vm.guestList ,res.agenda.id);
-			vm.openAgendaDetails(res.agenda.id);
-		})
-		.error(function (err) {
-			if(err.message === 'Autenticação falhou') {
-				alert('warning', 'Erro!', 'Usuário não autenticado.');
-			} else {
-				alert('warning', 'Erro!', 'Não foi possivel executar a requisição. ' + err);
-			}
-		});
-	};
-
-	vm.updateAgenda = function(remaneja){
-		var preparedUrl = vm.urlAgenda + "/" + agenda.id;
+	vm.updateRemaneja = function(remaneja, resposta){
+		console.log(remaneja.id);
+		var preparedUrl = vm.urlRemaneja + "/" + remaneja.id;
 		var newRemaneja = {
-			resp: vm.remaneja.resp,
-			status: vm.remaneja.status
+			resp: resposta,
+			status: true
 		};
-
-		$http.put(preparedUrl, newGuestStatus)
+		console.log("rema",newRemaneja);
+		$http.put(preparedUrl, newRemaneja)
 		.success(function(res){
-			alert('success','Sucesso!', 'Requisição realizada com sucesso.');
+			alert('success','Sucesso!', 'Resposta efetuada com sucesso.');
 		})
 		.error(function(err){
 			alert('warning',"Error!", "Não foi possivel executar a requisição." + err);
@@ -54,8 +41,7 @@ app.controller('RemanejaCtrl', function ($scope, $rootScope, $http, alert, authT
 	}
 
 	vm.getAll = function (){
-		var newurl = vm.urlRemaneja;
-		$http.get(newurl)
+		$http.get(vm.urlRemaneja)
 		.success(function (res){
 			alert('success',"Requisição realizada com sucesso.");
 		})
@@ -64,22 +50,35 @@ app.controller('RemanejaCtrl', function ($scope, $rootScope, $http, alert, authT
 		});
 	};
 	
+	vm.loadEssentialData = function(){
+		var user = $cookies.get("loggedUserMail");
+		vm.getByTarget(user);
+		vm.getByOwner(user);
+	};
+
+	vm.defaultResponse = {
+		
+	}
+
 	vm.getByTarget = function (user){
-		var newurl = vm.urlRemaneja;
+		var newurl = vm.urlRemaneja + "/rt/" + user;
+		console.log(newurl);
 		$http.get(newurl)
 		.success(function (res){
-			alert('success',"Requisição realizada com sucesso.");
+			vm.forMe = res;
+			console.log("ByTarget OK", res);
 		})
 		.error(function(err){
 			alert('warning',"Error! Não foi possivel executar a requisição.");
 		});
 	};
 
-	vm.getByOwner = function (){
-		var newurl = vm.urlRemaneja;
+	vm.getByOwner = function (user){
+		var newurl = vm.urlRemaneja + "/ro/" + user;
 		$http.get(newurl)
 		.success(function (res){
-			alert('success',"Requisição realizada com sucesso.");
+			vm.toMe = res;
+			console.log("ByOwner OK", res);
 		})
 		.error(function(err){
 			alert('warning',"Error! Não foi possivel executar a requisição.");
@@ -99,7 +98,7 @@ app.controller('RemanejaCtrl', function ($scope, $rootScope, $http, alert, authT
 	};
 	
 	vm.getOne = function (remaneja){
-		var newurl = vm.urlRemaneja;
+		var newurl = vm.urlRemaneja + "/" + remaneja;
 		$http.get(newurl)
 		.success(function (res){
 			alert('success',"Requisição realizada com sucesso.");
@@ -109,5 +108,25 @@ app.controller('RemanejaCtrl', function ($scope, $rootScope, $http, alert, authT
 		});
 	};
 
+	vm.doAccept = function(item){
+		vm.updateRemaneja(item, 'A');
+	}
+
+	vm.doReject = function(item){
+		vm.updateRemaneja(item, 'R');
+	}
+
+	vm.isWaiting = function(response){
+		console.log("resposta", response.status);
+		return response.status;
+	}
+
+	vm.getResp = function(response){
+		if(response.resp == 'A'){
+			return true;
+		} else if(response.resp == 'R'){
+			return false;
+		}
+	}
 
 });

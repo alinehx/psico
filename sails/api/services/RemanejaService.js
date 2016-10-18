@@ -10,6 +10,21 @@ function remanejaObject(remaneja) {
   };
 }
 
+function callbackGet(err, remaneja, callback) {
+  if (err) {
+    return callback(err);
+  } else if(!remaneja){
+    return callback(null, 'Busca não retornou resultado');
+  }
+  return callback(null, remaneja);
+}
+
+function findAll(callback) {
+  Hour.find().exec(function (err, remaneja) { 
+    callbackGet(err, remaneja, callback);
+  });
+}
+
 function findAll(callback) {
   Remaneja.find().exec(function (err, findRemaneja) { 
     callbackGet(err, findRemaneja, callback);
@@ -29,9 +44,9 @@ function findByAgenda(id, callback) {
   });
 };
 
-function findByTarget(id, callback) {
+function findByTarget(target, callback) {
   Remaneja.find({
-    target: id
+    target: target
   }).exec(function(err, remaneja) {
     if (err) {
       return callback(err);
@@ -42,9 +57,9 @@ function findByTarget(id, callback) {
   });
 };
 
-function findByOwner(id, callback) {
+function findByOwner(owner, callback) {
   Remaneja.find({
-    target: id
+    owner: owner
   }).exec(function(err, remaneja) {
     if (err) {
       return callback(err);
@@ -71,7 +86,7 @@ function findRemaneja(idAgenda, idTarget, idOwner, callback) {
 };
 
 function updateRemaneja(remanejaID, remanejaObject, callback) {
-  Remaneja.update({remaneja: remanejaID}, remanejaObject,
+  Remaneja.update({id: remanejaID}, remanejaObject,
   function (err, remaneja) {
    if (err) {
       return callback(err);

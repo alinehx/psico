@@ -13,13 +13,15 @@
      RemanejaService.findRemaneja(req.body.agenda, req.body.target, req.body.owner, function(err, guest){
        if(err){
          if (err !== 'Remanejamento não encontrado') { 
+          console.log('ERROR> [RemanejamentController] - Occoreu um erro inesperado: ', err);
           return res.status(404).send({
             message: err
           });
          }
-          var remanejaObject = RemanejaService.RemanejaObject(req.body); // Verificar se o accepted inicia como false
+          var remanejaObject = RemanejaService.remanejaObject(req.body);
           Remaneja.create(remanejaObject).exec(function(err, remaneja){
           if (err) {
+          console.log('ERROR> [RemanejamentController] - Occoreu um erro inesperado: ', err);
           return res.status(503).send({
             message: err
           });
@@ -30,6 +32,7 @@
           }
          });
        } else {
+        console.log('ERROR> [RemanejamentController] - Remanejamento já existe, impossivel gerar.');
         return res.status(409).send({
           message: 'Remanejamento já Existe'
         });
@@ -113,7 +116,10 @@
    var remaneja = req.body;
    var error = [];
    var validate = validateRemaneja.ID(idRemaneja);
-   
+
+   console.log("id", idRemaneja);
+   console.log("rema", remaneja);
+
    error = validateRemaneja.validateStructRemaneja(remaneja, error);
    if (validate && error.length === 0) {
      RemanejaService.updateRemaneja(idRemaneja, remaneja, function(err, updateRemaneja) {

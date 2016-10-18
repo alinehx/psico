@@ -48,6 +48,11 @@ module.exports = {
       type: 'boolean',
       required: true,
       defaultsTo: false
+    },
+    active: {
+      type: 'boolean',
+      required: true,
+      defaultsTo: true
     }
   }
 };

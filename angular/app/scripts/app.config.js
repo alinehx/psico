@@ -111,16 +111,17 @@ angular
        controller: 'SlaveCtrl as vm'
     });
     
-    $stateProvider.state('remanejalist', {
+    $stateProvider.state('remanejamentos', {
       url: '/remanejamentos',
       templateUrl: '/views/remanejamentos.html',
        controller: 'RemanejaCtrl as vm'
     });
     $stateProvider.state('remaneja', {
       url: '/remanejamento/:id',
-      templateUrl: '/views/remaneja.html',
+      templateUrl: '/views/remanejamento.html',
        controller: 'RemanejaCtrl as vm'
     });
+    
 
     //Teste Section -- Used as a test page where its a pattern to view changes and shits.
     $stateProvider.state('teste', {

@@ -32,7 +32,9 @@ function Register (agenda) {
   if (!agenda.guestQuantity) {
     errors.push('Quantidade é obrigatória');
   }
-
+  if (!agenda.active) {
+    errors.push('Active é obrigatório');
+  }
   errors = valideStructAgenda(agenda, errors);
   return errors;
 };
@@ -47,7 +49,8 @@ var propertiesAgenda = [
   'description',
   'type',
   'timecreation',
-  'guestQuantity'
+  'guestQuantity',
+  'active'
 ]
 
 function valideStructAgenda(obj, error) { 

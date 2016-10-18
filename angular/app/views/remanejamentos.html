@@ -1,4 +1,4 @@
-<div class="center-block mt-xl wd-xl">
+<div class="center-block mt-xl wd-xl" data-ng-init="vm.loadEssentialData()">
     <div class="panel panel-inverse">
         <div class="panel-heading text-center">
             <h4>REMANEJAMENTOS SOLICITADOS</h4>
@@ -6,10 +6,10 @@
         <div class="panel-body ">
             <div class="btn-group btn-group-justified">
                 <a class="btn btn-success btn-block " ng-click="vm.setMine = true">
-                    <i class="fa fa-diamond fa-lg" aria-hidden="true"></i> POR MIM
+                    <i class="fa fa-cube fa-lg" aria-hidden="true"></i> PARA MIM
                 </a>
                 <a class="btn btn-success btn-block " ng-click="vm.setMine = false">
-                    <i class="fa fa-cube fa-lg" aria-hidden="true"></i> PARA MIM
+                    <i class="fa fa-diamond fa-lg" aria-hidden="true"></i> POR MIM
                 </a>
             </div>
         </div>
@@ -17,47 +17,64 @@
 </div>
 
 <!-- REMANEJAMENTOS FEITOS PELO USER -->
-<div class="panel panel-inverse" ng-show="vm.setMine">
+<div ng-show="vm.setMine">
     <div class="panel-heading text-center">
         <h5>REMANEJAMENTOS SOLICITADOS POR MIM</h5>
     </div>
-    <div class="panel-body " ng-repeat="i in vm.forMe">
-        <h4 class="text-center">Responsavel pelo agendamento: {{i.owner | uppercase}}</h4>
-        <h5 class="text-right">{{}}</h5>
-        <br>
-        <div class="btn-group btn-group-justified">
-            <a class="btn btn-default btn-block disabled" ng-show="vm.isWaiting(i)">
-                <i class="fa fa-loading fa-lg" aria-hidden="true"></i> Resposta Pendente
-            </a>
-            <a class="btn btn-success btn-block disabled" ng-show="vm.getResp(i)"><!-- Should return true or false-->
-                <i class="fa fa-check fa-lg" aria-hidden="true"></i> Remanejamento Aceitado
-            </a>
-            <a class="btn btn-danger btn-block disabled" ng-hide="vm.getResp(i)">
-                <i class="fa fa-cancel fa-lg" aria-hidden="true"></i> Remanejamento Recusado
-            </a>
+
+    <div class="panel panel-inverse" ng-repeat="i in vm.forMe">
+        <div class="panel-body single-item">
+            
+            <h4 class="text-center">Responsavel pelo agendamento: {{i.owner | uppercase}}</h4>
+            <h5 class="text-right">{{}}</h5>
+            <br>
+            <div class="btn-group btn-group-justified">
+                <a class="btn btn-default btn-block disabled" ng-hide="vm.isWaiting(i)">
+                    <i class="fa fa-loading fa-lg" aria-hidden="true"></i> Resposta Pendente
+                </a>
+                <div ng-show="vm.isWaiting(i)">
+                    <a class="btn btn-success btn-block disabled" ng-show="vm.getResp(i)"><!-- Should return true or false-->
+                        <i class="fa fa-check fa-lg" aria-hidden="true"></i> Remanejamento Aceitado
+                    </a>
+                    <a class="btn btn-danger btn-block disabled" ng-hide="vm.getResp(i)">
+                        <i class="fa fa-cancel fa-lg" aria-hidden="true"></i> Remanejamento Recusado
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-
 <!-- REMANEJAMENTOS FEITOS PARA O USER -->
-<div class="panel panel-inverse" ng-hide="vm.setMine">
+<div ng-hide="vm.setMine">
     <div class="panel-heading text-center">
         <h5>MINHAS RESPOSTAS PENDENTES</h5>
     </div>
-    <div class="panel-body " ng-repeat="i in vm.toMe">
-        <h4 class="text-center">Solicitante do Remanejamento: {{i.target | uppercase}}</h4>
-        <br>
-        <div class="btn-group btn-group-justified">
-            <a class="btn btn-default btn-block " ng-click="vm.doAccept()">
-                <i class="fa fa-warning fa-lg" aria-hidden="true"></i> Informações
-            </a>
+    
+    <div class="panel panel-inverse single-item" ng-repeat="i in vm.toMe">
+        <div class="panel-body">
+            <h4 class="text-center">SOLICITANTE: {{i.target | uppercase}}</h4>
+            <br>
+            <div class="single-item">
+                <div class="btn-group btn-group-justified">
+                    <a class="btn btn-default btn-block " ng-click="vm.doAccept()">
+                        <i class="fa fa-warning fa-lg" aria-hidden="true"></i> INFORMAÇÕES
+                    </a>
+                </div>
+            </div>
         </div>
-        <div class="btn-group btn-group-justified">
-            <a class="btn btn-success btn-block " ng-click="vm.doAccept()">
-                <i class="fa fa-like fa-lg" aria-hidden="true"></i> Aceitar
-            </a>
-            <a class="btn btn-danger btn-block " ng-click="vm.doReject()">
-                <i class="fa fa-cancel fa-lg" aria-hidden="true"></i> Recusar
+        <div ng-hide="vm.isWaiting(i)">
+            <div class="btn-group btn-group-justified single-item">
+                <a class="btn btn-success btn-block " ng-click="vm.doAccept(i)">
+                    <i class="fa fa-like fa-lg" aria-hidden="true"></i> ACEITAR
+                </a>
+                <a class="btn btn-default btn-block " ng-click="vm.doReject(i)">
+                    <i class="fa fa-cancel fa-lg" aria-hidden="true"></i> RECUSAR
+                </a>
+            </div>
+        </div>
+        <div ng-show="vm.isWaiting(i)">
+           <a class="btn btn-primary btn-block disabled">
+                <i class="fa fa-cancel fa-lg" aria-hidden="true"></i> Reposta Enviada
             </a>
         </div>
     </div>

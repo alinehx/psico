@@ -64,7 +64,8 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     description : null,
     type : null,
     guestQuantity: null,
-    timecreation : null
+    timecreation : null,
+    active:true
   };
 
   //Necessary Objects Load
@@ -208,7 +209,8 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
       description : vm.agenda.description,
       type : vm.agenda.type,
       guestQuantity: vm.guestList.length,
-      timecreation :  new Date().getTime()
+      timecreation :  new Date().getTime(),
+      active: true
     }
     vm.submit(agendaModel);
   };
@@ -275,11 +277,26 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
   vm.getAgendaForUser = function (){ //FIX - NOT USE COOKIE TO SET THIS SHIT.
     vm.agendaList = $cookies.getObject('userAgendas');
     if(vm.agendaList.length > 0){
+
       vm.userHasAgenda = true;
     } else {
       vm.userHasAgenda = false;
     }
   };
+
+  vm.getActiveAgendasForUser = function(){
+    var newUrl = vm.urlAgenda + "/" + vm.loggedUser.email;
+    var deactivated = {
+      active: false
+    };
+    $http.put(newurl, deactivated)
+    .success(function (res){
+      alert('success',"Dados alterados com sucesso!");
+    })
+    .error(function(err){
+      alert('warning', "Error! Cannot Update User. Check your network connection.");
+    });
+  }
 
   vm.updateAgenda = function(){
     var newurl = vm.url + "/" + vm.userMail;
@@ -303,12 +320,14 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     vm.deleteAgenda(agenda.id);
   };
 
-  vm.getHourForAgenda
 
   //FIX
   vm.deleteAgenda = function(id){
+    var newAgenda = {
+      active: false,
+    };
     var newurl = vm.urlAgenda + "/" + id;
-    $http.delete(newurl)
+    $http.put(newurl)
       .success(function (res){
         alert('success',"Agendamento cancelado!");
         $state.go('main');
@@ -486,13 +505,6 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     });
   }
 
-  vm.remanejamento = {
-    agenda: null,
-    target: $cookies.get('loggedUserMail'),
-    owner: null,
-    resp: null
-  }
-
    vm.getHourForAgendaCancellation = function (agenda){
     var newUrl = vm.urlHour + "/u/" + agenda;
     $http.get(vm.urlHour)
@@ -527,10 +539,16 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
   };
 
   vm.remanejaForAgenda = function (hour){
-    var rema = vm.remanejamento;
-    $http.get(vm.urlAgenda)
+    var agendaUrl = vm.urlAgenda + "/a/" + hour.agenda;
+    var rema = {
+      agenda: hour.agenda,
+      target: vm.loggedUser.email,
+      owner: null
+    }
+    console.log(agendaUrl);
+    $http.get(agendaUrl)
     .success(function (res){
-      rema.agenda = res.id;
+      console.log("res", res);
       rema.owner = res.responsable;
       vm.requestRemaneja(rema);
     })
@@ -540,13 +558,21 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
   };
 
   vm.requestRemaneja = function(rema){
+    console.log("rema", rema);
     $http.post(vm.urlRemaneja, rema)
     .success(function (res){
-      alert('success',"Remanejamento solicitado com sucesso!" + err.message);
-      vm.gotoRemaneja();
+      alert('success',"Remanejamento solicitado com sucesso!");
+      vm.gotoRemaneja(res.id);
     })
     .error(function(err){
       alert('warning',"Error! Não foi possivel executar a requisição. " + err.message);
+    });
+  };
+
+  vm.gotoRemaneja = function(id){
+    console.log("transfering to remaneja");
+    $state.go('remaneja', { 
+      id: id
     });
   };
 

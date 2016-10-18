@@ -11,7 +11,8 @@ function agendaObject(agenda) {
     description : agenda.description,
     type : agenda.type,
     guestQuantity: agenda.guestQuantity,
-    timecreation : agenda.timecreation
+    timecreation : agenda.timecreation,
+    active: agenda.active
   };
 }
 

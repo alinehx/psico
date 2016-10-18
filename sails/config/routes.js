@@ -80,8 +80,8 @@ module.exports.routes = {
   'get /remaneja': 'RemanejaController.getAll',
   'get /remaneja/:id': 'RemanejaController.getRemaneja',
   'get /remaneja/ra/:id': 'RemanejaController.getForAgenda',
-  'get /remaneja/rt/:id': 'RemanejaController.getForTarget',
-  'get /remaneja/ro/:id': 'RemanejaController.getForOwner',
+  'get /remaneja/rt/:target': 'RemanejaController.getForTarget',
+  'get /remaneja/ro/:owner': 'RemanejaController.getForOwner',
   'put /remaneja/:id': 'RemanejaController.updateRemaneja'
 
   /***************************************************************************

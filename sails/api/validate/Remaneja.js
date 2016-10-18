@@ -11,9 +11,6 @@ function Register (remaneja) {
   if (!remaneja.owner) {
     errors.push('Source é obrigatória');
   }
-  if (!remaneja.resp) {
-    errors.push('Resposta é obrigatória');
-  }
   errors = validateStructRemaneja(remaneja, errors);
   return errors;
 };
@@ -22,7 +19,8 @@ var propertiesGuests = [
   'agenda',
   'target',
   'owner',
-  'resp'
+  'resp',
+  'status'
 ]
 
 function validateStructRemaneja(obj, error) { 

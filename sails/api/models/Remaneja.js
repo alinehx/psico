@@ -16,11 +16,10 @@ module.exports = {
 				required: true,
 			},
 			resp: {
-				type: 'string',
-				required: true,
+				type: 'string'
 			},
 			status: {
-				type: 'string',
+				type: 'boolean',
 				required: true,
 				defaultsTo: false
 			}
