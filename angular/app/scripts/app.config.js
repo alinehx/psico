@@ -100,6 +100,12 @@ angular
       templateUrl: '/views/agendadetails.html',
        controller: 'AgendaCtrl as vm'
     });
+    $stateProvider.state('agendarema', {
+      url: '/agendarema/:agendaID',
+      templateUrl: '/views/agendarema.html',
+       controller: 'AgendaCtrl as vm'
+    });
+
     $stateProvider.state('slavedevice', {
       url: '/slave/:roomID',
       templateUrl: '/views/slaveagenda.html',
@@ -120,6 +126,11 @@ angular
       url: '/remanejamento/:id',
       templateUrl: '/views/remanejamento.html',
        controller: 'RemanejaCtrl as vm'
+    });
+    $stateProvider.state('appconfigs', {
+      url: '/configs/',
+      templateUrl: '/views/appconfigs.html',
+       controller: 'ConfigsCtrl as vm'
     });
     
 

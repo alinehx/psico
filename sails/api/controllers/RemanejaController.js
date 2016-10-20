@@ -53,11 +53,10 @@
   }
 
   function getRemaneja(req, res) {
-    var idAgenda = req.param('agenda');
-    var idTarget = req.param('target');
-    var idOwner = req.param('owner');
-    RemanejaService.findRemaneja(idAgenda, idTarget, idOwner, function(err, remanejaObject) {
+    var idAgenda = req.param('id');
+    RemanejaService.findOne(idAgenda, function(err, remanejaObject) {
       if (err) {
+        console.log("error", err);
         return res.status(503).send({
           message: err
         });
@@ -76,7 +75,7 @@
           message: err
         });
       }
-      if (remanejaList) { 
+      if (remanejaList) {
         return res.status(200).send(remanejaList);
       }
     });
@@ -116,10 +115,6 @@
    var remaneja = req.body;
    var error = [];
    var validate = validateRemaneja.ID(idRemaneja);
-
-   console.log("id", idRemaneja);
-   console.log("rema", remaneja);
-
    error = validateRemaneja.validateStructRemaneja(remaneja, error);
    if (validate && error.length === 0) {
      RemanejaService.updateRemaneja(idRemaneja, remaneja, function(err, updateRemaneja) {

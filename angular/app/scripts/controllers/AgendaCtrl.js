@@ -343,6 +343,10 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     });
   };
 
+  vm.backToMain = function(){
+    $state.go('main');
+  }
+
   //ROOM SETS
   vm.getRoomForAgenda = function(name, location){
     var newurl = vm.urlRoom + "/" + name + "&" + location;

@@ -85,6 +85,19 @@ function findRemaneja(idAgenda, idTarget, idOwner, callback) {
   });
 };
 
+function findOne(id, callback) {
+  Remaneja.findOne({
+    id: id
+  }).exec(function(err, remaneja) {
+    if (err) {
+      return callback(err);
+    } else if (!remaneja) {
+      return callback('Remanejamento não encontrado');
+    } 
+    return callback(null, remaneja);
+  });
+};
+
 function updateRemaneja(remanejaID, remanejaObject, callback) {
   Remaneja.update({id: remanejaID}, remanejaObject,
   function (err, remaneja) {
@@ -104,6 +117,7 @@ module.exports = {
   findByTarget: findByTarget,
   findByOwner: findByOwner,
   findRemaneja: findRemaneja,
+  findOne: findOne,
   updateRemaneja: updateRemaneja,
   remanejaObject: remanejaObject
 };

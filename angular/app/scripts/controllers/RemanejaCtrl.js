@@ -11,8 +11,11 @@ app.controller('RemanejaCtrl', function ($scope, $rootScope, $http, alert, authT
 	vm.byTarget = {};
 	vm.byOwner = {};
 	vm.remanejaList = {};
+	vm.rem = {};
+	vm.loadedAgenda = {};
 	vm.forMe = {};
 	vm.toMe = {};
+	vm.hasNone = false;
 
 	vm.remaneja = {
 		agenda: null,
@@ -22,21 +25,48 @@ app.controller('RemanejaCtrl', function ($scope, $rootScope, $http, alert, authT
 		status: null,
 	}
 
+	vm.loadEssentialData = function(){
+		var user = $cookies.get("loggedUserMail");
+		vm.getByTarget(user);
+		vm.getByOwner(user);
+	};
+
+	vm.gotoRemaneja = function(id){
+		$state.go('remaneja', { 
+			id: id
+		});
+	};
+
+	vm.goToAgenda = function(){
+		$state.go('agendarema', { 
+			agendaID: vm.loadedAgenda.id
+		});
+	}
+
 	//AJAX
-	vm.updateRemaneja = function(remaneja, resposta){
-		console.log(remaneja.id);
-		var preparedUrl = vm.urlRemaneja + "/" + remaneja.id;
-		var newRemaneja = {
-			resp: resposta,
-			status: true
-		};
-		console.log("rema",newRemaneja);
-		$http.put(preparedUrl, newRemaneja)
-		.success(function(res){
-			alert('success','Sucesso!', 'Resposta efetuada com sucesso.');
+	vm.remanejaForAgenda = function (agenda){
+		var agendaUrl = vm.urlAgenda + "/a/" + agenda;
+
+		$http.get(agendaUrl)
+		.success(function (res){
+			vm.loadedAgenda = res;
 		})
 		.error(function(err){
-			alert('warning',"Error!", "Não foi possivel executar a requisição." + err);
+			alert('warning',"Error! Não foi possivel executar a requisição. " + err.message);
+		});
+	};
+
+
+	vm.loadUniqueRemaneja = function(id){
+		var newurl = vm.urlRemaneja + "/" + id;
+
+		$http.get(newurl)
+		.success(function (res){
+			vm.rem = res;
+			vm.remanejaForAgenda(res.agenda);
+		})
+		.error(function(err){
+			alert('warning',"Error! Não foi possivel executar a requisição.");
 		});
 	}
 
@@ -49,24 +79,21 @@ app.controller('RemanejaCtrl', function ($scope, $rootScope, $http, alert, authT
 			alert('warning',"Error! Não foi possivel executar a requisição.");
 		});
 	};
-	
-	vm.loadEssentialData = function(){
-		var user = $cookies.get("loggedUserMail");
-		vm.getByTarget(user);
-		vm.getByOwner(user);
-	};
 
 	vm.defaultResponse = {
 		
 	}
 
+
 	vm.getByTarget = function (user){
 		var newurl = vm.urlRemaneja + "/rt/" + user;
-		console.log(newurl);
+
 		$http.get(newurl)
 		.success(function (res){
 			vm.forMe = res;
-			console.log("ByTarget OK", res);
+			if(vm.toMe.length == 0){
+				vm.hasNone = true;
+			}
 		})
 		.error(function(err){
 			alert('warning',"Error! Não foi possivel executar a requisição.");
@@ -78,7 +105,9 @@ app.controller('RemanejaCtrl', function ($scope, $rootScope, $http, alert, authT
 		$http.get(newurl)
 		.success(function (res){
 			vm.toMe = res;
-			console.log("ByOwner OK", res);
+			if(vm.toMe.length == 0){
+				vm.hasNone = true;
+			}
 		})
 		.error(function(err){
 			alert('warning',"Error! Não foi possivel executar a requisição.");
@@ -96,17 +125,21 @@ app.controller('RemanejaCtrl', function ($scope, $rootScope, $http, alert, authT
 			alert('warning',"Error! Não foi possivel executar a requisição.");
 		});
 	};
-	
-	vm.getOne = function (remaneja){
-		var newurl = vm.urlRemaneja + "/" + remaneja;
-		$http.get(newurl)
-		.success(function (res){
-			alert('success',"Requisição realizada com sucesso.");
+
+	vm.updateRemaneja = function(remaneja, resposta){
+		var preparedUrl = vm.urlRemaneja + "/" + remaneja.id;
+		var newRemaneja = {
+			resp: resposta,
+			status: true
+		};
+		$http.put(preparedUrl, newRemaneja)
+		.success(function(res){
+			alert('success','Sucesso!', 'Resposta efetuada com sucesso.');
 		})
 		.error(function(err){
-			alert('warning',"Error! Não foi possivel executar a requisição.");
+			alert('warning',"Error!", "Não foi possivel executar a requisição." + err);
 		});
-	};
+	}
 
 	vm.doAccept = function(item){
 		vm.updateRemaneja(item, 'A');
@@ -117,7 +150,6 @@ app.controller('RemanejaCtrl', function ($scope, $rootScope, $http, alert, authT
 	}
 
 	vm.isWaiting = function(response){
-		console.log("resposta", response.status);
 		return response.status;
 	}
 

@@ -1,15 +1,21 @@
 <div class="panel panel-default" data-ng-init="vm.loadAgendaInfo(vm.state.params.agendaID)">
 	<div class="panel-heading">
 		<div class="text-center">
-			{{"Exibindo dados do agendamento de " + vm.loggedUser.name | uppercase}}
+			{{"detalhes do agendamento" | uppercase}}
 		</div>
 	</div>
 	
 	<div class="panel-body">
 		<div class="panel actual-step" style="border: 2px solid black">
 
-
-			
+			<div class="blockForstep">
+				<!-- ROOM WHICH IS FIXED -->
+				<div class="panel-body text-center step-component">
+					<a class="btn btn-default actual-step disabled " ng-show="true">
+						<i class="fa fa-map-marker fa-lg" aria-hidden="true"></i> {{"RESPONSAVEL " + vm.agendaDetails.responsable | uppercase}}
+					</a>
+				</div>
+			</div>
 			<div class="blockForstep">
 				<!-- ROOM WHICH IS FIXED -->
 				<div class="panel-body text-center step-component">
@@ -30,7 +36,7 @@
 				<!-- ROOM WHICH IS FIXED -->
 				<div class="panel-body text-center step-component">
 					<a class="btn btn-default actual-step disabled " ng-show="true">
-						<i class="fa fa-clock-o fa-lg" aria-hidden="true"></i> {{"inicio " + vm.agendaDetails.initTime + "h" | uppercase}}
+						<i class="fa fa-clock-o fa-lg" aria-hidden="true"></i> {{"INICIO " + vm.agendaDetails.initTime + "h" | uppercase}}
 					</a>
 				</div>
 			</div>
@@ -42,7 +48,7 @@
 					</a>
 				</div>
 			</div>
-			<div class="panel-body text-center step-component">
+			<div class="panel-body text-center">
 				<!--DETALHES SECTION-->
 				<div class="panel-body">
 					<div class="form-group step-component">
@@ -59,54 +65,11 @@
 					</div>
 				</div>
 			</div>
-
-			<div class="panel-body text-center actual-step">
-					<div class="panel-body">
-						<div class="panel-body">
-
-							<div class="step-header">{{"Adicione novos participantes"}}</div>
-
-							<div class="form-group">
-								<div class="input-group">
-									<span class="input-group-addon">Email</span>
-									<input type="text" ng-class="vm.validateGuestMail() ? 'has-success' : 'has-error'" class="form-control has-error" id="guestMail" ng-model="vm.guestMail.email">
-									<span class="input-group-btn">
-									<button class="btn btn-success" type="button" ng-click="vm.addNewGuest()">+</button>
-								</span>
-								</div>
-							</div>
-
-							<table class="table table-striped table-hover" style="border:1px solid #666">
-								<tr data-ng-repeat="item in vm.newGuests track by $index">
-									<td>{{item}}</td>
-									<td ng-show="item.accepted" ng-click="vm.openGuestConfirmPage(item)">Confirmado</td> <!-- CORRIGIR PARA VERIFICAR SE ESTA CONFIRMADO -->
-									<td ng-hide="item.accepted" ng-click="vm.openGuestConfirmPage(item)">Não Confirmado</td> <!-- TALVEZ FAZER UMA NOVA PAGINA APENAS PARA MANIPULAR OS GUESTS-->
-									<td ng-click="vm.removeGuestFromList(item)">x</td>
-								</tr>
-							</table>
-
-							<a class="btn btn-success btn-block " ng-show="true">
-								<i class="fa fa-download fa-lg" aria-hidden="true"></i> Salvar Mudanças
-							</a>
-
-						</div>
-					</div>
-				</div>
-
-				<div class="blockForstep">
-				<!-- ROOM WHICH IS FIXED -->
-				<div class="panel-body danger text-center">
-					<a class="btn btn-danger btn-block " ng-show="true" ng-click="vm.deleteAgendaInfo(vm.agendaDetails)">
-						<i class="fa fa-warning fa-lg" aria-hidden="true"></i> CANCELAR RESERVA
-					</a>
-				</div>
-			</div>
-
 		</div>
 	</div>
 
 
-  <div class="panel panel-footer">
+	<div class="panel panel-footer">
 		<div class="panel-body text-center btn-primary btn-block" ng-click="vm.backToMain()">
 			<a class="btn text-black disabled">
 				<i class="fa fa-arrow-left fa-lg" aria-hidden="true"></i> {{"VOLTAR PARA A PAGINA INICIAL" | uppercase}}

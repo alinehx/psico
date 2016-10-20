@@ -14,6 +14,10 @@
   border: 1px solid RED;
 }
 
+.text-black{
+  color: black;
+}
+
 .has-success{
   border: 1px solid #0B1;
 }

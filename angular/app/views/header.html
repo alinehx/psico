@@ -13,6 +13,10 @@
     <div ng-hide="!isAuthenticated()" class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
       <ul class="nav navbar-nav">
 
+        <li class="dropdown" ng-hide="!isAuthenticated()">
+          <a ui-sref="remanejamentos">Remanejamentos</a>
+        </li>
+
         <li class="dropdown" ng-hide="!isAllowed()"> <!-- Admin Only -->
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Controle de Usuários<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
@@ -39,10 +43,6 @@
           </ul>
         </li>
 
-        <li class="dropdown" ng-hide="!isAuthenticated()">
-          <a ui-sref="remanejamentos">Remanejamentos</a>
-        </li>
-
         <li class="dropdown" ng-hide="!isAllowed()">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Controle de Salas<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
@@ -63,10 +63,10 @@
           <a ui-sref="appconfigs"><i class="fa fa-cog fa-lg" aria-hidden="true"></i></a>
         </li>
         <li ng-hide="isAuthenticated()" ui-sref-active="active">
-          <a ui-sref="login">Login</a>
+          <a ui-sref="login"><i class="fa fa-get-pocket fa-lg" aria-hidden="true"></i> LOGIN</a>
         </li>
         <li ng-show="isAuthenticated()" ui-sref-active="active">
-          <a ui-sref="logout">Logout</a>
+          <a ui-sref="logout"><i class="fa fa-power-off fa-lg" aria-hidden="true"></i> LOGOUT</a>
         </li>
       </ul>
     </div>
