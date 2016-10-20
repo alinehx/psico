@@ -106,6 +106,33 @@ function getAll(callback) {
   });
 }
 
+
+//ExtractionQuery
+function findExtractionRange(user, m, y, callback) {
+	if(m==12){
+		am = 1;
+		ay = y+1;
+	} else {
+		am = m+1;
+		ay = y;
+	}
+  
+	Agenda.find({
+		responsable: user,
+		date: { 
+			'>=': new Date('1/'+am+'/'+ay), 
+			'<': new Date('1/'+am+'/'+ay)
+		}
+	}).exec(function(err, agenda) {
+		if (err) {
+			return callback(err);
+		} else if (!agenda) {
+			return callback('Agenda não encontrada');
+		} 
+		return callback(null, agenda);
+	});
+};
+
 module.exports = {
   findAgenda: findAgenda,
   removeAgenda: removeAgenda,
@@ -113,6 +140,7 @@ module.exports = {
   findAgendaByResponsable: findAgendaByResponsable,
   findAgendaByStartDate: findAgendaByStartDate,
   findAgendaByEndDate: findAgendaByEndDate,
+  findExtractionRange: findExtractionRange,
   getAll: getAll,
   agendaObject: agendaObject
 };

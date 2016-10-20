@@ -50,6 +50,20 @@
    });
  }
 
+  function extractReportForMonth(req, res) {
+    var user = req.params.user;
+    var m = req.params.month;
+    var y = req.params.year
+    AgendaService.findExtractionRange(user, m, y, function(err, agenda) {
+    if (err) {
+      return res.status(503).send({
+        message: err
+      });
+    }
+      return res.status(200).send(agenda);
+    });
+  }
+
  function getAgendaByResponsable(req, res) {
    var email = req.param('email');
    AgendaService.findAgendaByResponsable(email, function(err, agendas) {
@@ -161,5 +175,6 @@
    getAgendaByEndDate: getAgendaByEndDate,
    getAll: getAll,
    getAgendaById: getAgendaById,
-   createAgenda: createAgenda
+   createAgenda: createAgenda,
+   extractReportForMonth: extractReportForMonth
  }

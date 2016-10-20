@@ -69,6 +69,7 @@ module.exports.routes = {
   'get /agenda/:email': 'AgendaController.getAgendaByResponsable',
   'get /agenda': 'AgendaController.getAll',
   'get /agenda/a/:agenda': 'AgendaController.getAgendaById',
+  'get /agenda/extract/:user&:month&:year': 'AgendaController.extractReportForMonth',
   
   'post /guest': 'GuestController.create',
   'delete /guest/:agenda&:guest': 'GuestController.deleteGuest',
