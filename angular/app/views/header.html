@@ -31,7 +31,7 @@
         </li>
           
         <li class="dropdown" ng-hide="!isAuthenticated()">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Controle de Participantes<span class="caret"></span></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Catálogo de Participantes<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
             <li>
               <a ui-sref="registerpeople">Cadastrar Participante</a>
@@ -60,7 +60,7 @@
       
       <ul class="nav navbar-nav navbar-right">
         <li ng-hide="!isAllowed()"> <!-- Admin Only -->
-          <a ui-sref="appconfigs"><i class="fa fa-cog fa-lg" aria-hidden="true"></i></a>
+          <a ui-sref="appconfigs"><i class="fa fa-cog fa-spin fa-lg" aria-hidden="true"></i> CONFIGS</a>
         </li>
         <li ng-hide="isAuthenticated()" ui-sref-active="active">
           <a ui-sref="login"><i class="fa fa-get-pocket fa-lg" aria-hidden="true"></i> LOGIN</a>

@@ -14,6 +14,18 @@ app.controller('LoginCtrl', function ($scope, $rootScope, $http, alert, authToke
     password: null
   };
 
+
+
+  vm.validateOut = function(){
+    var hasvalue = $cookies.get('loggedUserName');
+
+    console.log(hasvalue);
+    if(hasvalue != null){
+      console.log('lol');
+      $state.go('logout');
+    }
+  }
+
   vm.getAgendaForUser = function (email){
     var newurl = vm.urlAgenda + "/" + email;
     $http.get(newurl)
