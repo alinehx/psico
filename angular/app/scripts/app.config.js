@@ -117,6 +117,12 @@ angular
        controller: 'SlaveCtrl as vm'
     });
     
+    $stateProvider.state('paymentreport', {
+      url: '/paymentreport/',
+      templateUrl: '/views/paymentreport.html',
+       controller: 'ExtractorCtrl as vm'
+    });
+    
     $stateProvider.state('remanejamentos', {
       url: '/remanejamentos',
       templateUrl: '/views/remanejamentos.html',
@@ -130,8 +136,9 @@ angular
     $stateProvider.state('appconfigs', {
       url: '/configs/',
       templateUrl: '/views/appconfigs.html',
-       controller: 'ConfigsCtrl as vm'
+       controller: 'ExtractorCtrl as vm'
     });
+    
     
 
     //Teste Section -- Used as a test page where its a pattern to view changes and shits.

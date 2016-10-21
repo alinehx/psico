@@ -109,19 +109,27 @@ function getAll(callback) {
 
 //ExtractionQuery
 function findExtractionRange(user, m, y, callback) {
+  var am = 0, ay = 0;
+  var year = parseInt(y);
+  var month = parseInt(m);
+
 	if(m==12){
 		am = 1;
-		ay = y+1;
+		ay = year+1;
 	} else {
-		am = m+1;
+		am = month+1;
 		ay = y;
 	}
-  
+  var initial = month+'/1'+'/'+year;
+  var final = am+'/1'+'/'+ay;
+
+  console.log(new Date(initial));
+  console.log(new Date(final));
 	Agenda.find({
 		responsable: user,
 		date: { 
-			'>=': new Date('1/'+am+'/'+ay), 
-			'<': new Date('1/'+am+'/'+ay)
+			'>=': new Date(initial), 
+			'<': new Date(final)
 		}
 	}).exec(function(err, agenda) {
 		if (err) {
@@ -129,6 +137,7 @@ function findExtractionRange(user, m, y, callback) {
 		} else if (!agenda) {
 			return callback('Agenda não encontrada');
 		} 
+    console.log("agenda", agenda);
 		return callback(null, agenda);
 	});
 };
