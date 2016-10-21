@@ -14,6 +14,7 @@ app.controller('ExtractorCtrl', function ($scope, $rootScope, $http, alert, auth
 	vm.hourForUser = 0;
 
 	vm.initPaymentReport = function(){
+		vm.textReport = "";
 		var user = 'marcel@gmail.com'; // TESTAR COM LISTA DEPOIS
 		var month = 10;
 		var year = 2016;
@@ -25,14 +26,13 @@ app.controller('ExtractorCtrl', function ($scope, $rootScope, $http, alert, auth
 	};
 
 	vm.processData = function(responsable, hourSize){
-		
 		var finalPrice = hourSize * vm.halfHourPrice;
 		vm.printInReport("USUÁRIO -> " + responsable + "\n");
 		vm.printInReport("HORAS AGENDADAS UTILIZADAS -> " + vm.hourForUser + "\n");
 		vm.printInReport("VALOR À SER COBRADO -> R$" + finalPrice + ",00\n");
 		vm.printInReport("## FIM DA EXTRAÇÃO ##");
 		
-		console.log(vm.textReport);
+		$('#myModal').modal('show'); 
 	};
 
 	vm.printInReport = function(text){

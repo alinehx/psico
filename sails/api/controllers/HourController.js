@@ -70,13 +70,11 @@ function getByRoomDate(req, res) {
     var agenda = req.param('agenda');
     HourService.findByAgenda(agenda, function(err, hourList) {
       if (err) {
-        console.log("a");
         return res.status(503).send({
           message: err
         });
       }
-      if (hourList) { 
-        console.log("b");
+      if (hourList) {
         return res.status(200).send(hourList);
       }
     });

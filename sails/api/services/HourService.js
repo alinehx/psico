@@ -61,13 +61,10 @@ function findByAgenda(agenda, callback) {
     agenda: agenda
   }).exec(function(err, hour) {
     if (err) {
-      console.log("a");
       return callback(err);
     } else if (!hour) {
-      console.log("b");
       return callback('Horário não encontrado');
     }
-    console.log("c");
     return callback(null, hour);
   });
 };

@@ -1,6 +1,7 @@
 'use strict';
 
 function agendaObject(agenda) {
+  sails.log.info("[AgendaService] Retrieving agendaObject");
   return {
     roomID : agenda.roomID,
     date : agenda.date,
@@ -123,8 +124,6 @@ function findExtractionRange(user, m, y, callback) {
   var initial = month+'/1'+'/'+year;
   var final = am+'/1'+'/'+ay;
 
-  console.log(new Date(initial));
-  console.log(new Date(final));
 	Agenda.find({
 		responsable: user,
 		date: { 
@@ -136,8 +135,7 @@ function findExtractionRange(user, m, y, callback) {
 			return callback(err);
 		} else if (!agenda) {
 			return callback('Agenda não encontrada');
-		} 
-    console.log("agenda", agenda);
+		}
 		return callback(null, agenda);
 	});
 };
