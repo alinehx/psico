@@ -71,6 +71,22 @@ function findAgendaByEndDate(date, endTime, callback) {
   });
 };
 
+function findByRoom(roomID, initTime, endTime, callback) {
+  Agenda.find({
+    roomID: roomID,
+    date: { 
+			'>=': new Date(initTime), 
+			'<': new Date(endTime)
+		}
+  }).exec(function(err, agenda) {
+    if (err) {
+      return callback(err);
+    } else if (!agenda) {
+      return callback('Agenda não encontrada');
+    } 
+    return callback(null, agenda);
+  });
+};
 
 function removeAgenda(id, callback) {
   Agenda.remove({
@@ -140,10 +156,28 @@ function findExtractionRange(user, m, y, callback) {
 	});
 };
 
+function findExtrationByRoom(roomID, initDate, endDate, callback) {
+	Agenda.find({
+		roomID: roomID,
+		date: {
+			'>=': new Date(initDate), 
+			'<': new Date(endDate)
+		}
+	}).exec(function(err, agenda) {
+		if (err) {
+			return callback(err);
+		} else if (!agenda) {
+			return callback('Agenda não encontrada');
+		}
+		return callback(null, agenda);
+	});
+};
+
 module.exports = {
   findAgenda: findAgenda,
   removeAgenda: removeAgenda,
   updateAgenda: updateAgenda,
+  findByRoom: findByRoom,
   findAgendaByResponsable: findAgendaByResponsable,
   findAgendaByStartDate: findAgendaByStartDate,
   findAgendaByEndDate: findAgendaByEndDate,

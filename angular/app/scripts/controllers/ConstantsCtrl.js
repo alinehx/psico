@@ -1,10 +1,11 @@
 'use strict';
 
-app.controller('ConstantsCtrl', function ($scope, $rootScope, $http, alert, authToken, $state, $cookies) {
+app.controller('ConstantsCtrl', function ($scope, $rootScope, $http, alert, authToken, $state, $cookies, globalized) {
+	var actualHost = globalized;
 	var vm = this;
 	vm.state = $state;
-	vm.urlAgenda = 'http://localhost:1337/agenda'; 
-	vm.urlHours = 'http://localhost:1337/hours'; // /u/:agenda
+	vm.urlAgenda = actualHost + '/agenda'; 
+	vm.urlHours = actualHost + '/hours'; // /u/:agenda
 
 	//Attribute
 	vm.halfHourPrice = 5 //$cookies.get('priceForHalfAnHour'); // in reais $

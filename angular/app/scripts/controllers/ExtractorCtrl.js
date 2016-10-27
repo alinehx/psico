@@ -1,11 +1,13 @@
 'use strict';
 
-app.controller('ExtractorCtrl', function ($scope, $rootScope, $http, alert, authToken, $state, $cookies) {
+app.controller('ExtractorCtrl', function ($scope, $rootScope, $http, alert, authToken, $state, $cookies, globalized) {
+	var actualHost = globalized;
 	var vm = this;
 	vm.state = $state;
-	vm.urlAgenda = 'http://localhost:1337/agenda';
-	vm.urlUser = 'http://localhost:1337/user';
-	vm.urlHours = 'http://localhost:1337/hours'; // /u/:agenda
+	vm.urlAgenda = actualHost + '/agenda';
+	vm.urlUser = actualHost + '/user';
+	vm.urlRoom = actualHost + '/class/'; // /u/:room
+	vm.urlHours = actualHost + '/hours'; // /u/:agenda
 
 	//Attribute
 	vm.halfHourPrice = 5 //$cookies.get('priceForHalfAnHour'); // in reais $
@@ -15,6 +17,7 @@ app.controller('ExtractorCtrl', function ($scope, $rootScope, $http, alert, auth
 
 	vm.initPaymentReport = function(){
 		vm.textReport = "";
+		vm.hourForUser = 0;
 		var user = 'marcel@gmail.com'; // TESTAR COM LISTA DEPOIS
 		var month = 10;
 		var year = 2016;
@@ -71,6 +74,53 @@ app.controller('ExtractorCtrl', function ($scope, $rootScope, $http, alert, auth
 
 		});
 	};
+
+	//EXTRACT BY ROOM:
+	vm.byRoom = null;
+	vm.init = {
+		day: null,
+		month: null,
+		year: null
+	}
+	vm.end = {
+		day: null,
+		month: null,
+		year: null
+	}
+
+	vm.prepareDataToExtractByRoom = function(){
+		//LIMPAR VARIAVEIS ANTES DE EXECUTAR
+		var room = vm.byRoom;
+		var initDate = vm.init.month + '/' + vm.init.day + '/' + vm.init.year;
+		var endDate = vm.end.month + '/' + vm.end.day + '/' + vm.end.year;
+
+		vm.printRoomDetail(room);
+		vm.extractAgendaByRoom(room, initDate, endDate);
+	};
+
+	vm.printRoomDetail = function (roomID){
+		var newurl = vm.urlRoom + '/u/' + roomID;
+		$http.get(newurl)
+		.success(function (res){
+			vm.printInReport("## SALA " + res.name + " - " + res.location);
+		})
+		.error(function(err){
+			alert('warning',"Error! Não foi possivel executar a requisição.");
+		});
+	};
+
+	vm.extractAgendaByRoom = function (roomID, initDate, endDate){
+		var newurl = vm.urlAgenda + '/extractroom/' + roomID + "&" + initDate + "&" + endDate;
+		$http.get(newurl)
+		.success(function (res){
+			
+		})
+		.error(function(err){
+			alert('warning',"Error! Não foi possivel executar a requisição.");
+		});
+	};
+
+
 
 	vm.gotoReports = function(){
 		$state.go('paymentreport');

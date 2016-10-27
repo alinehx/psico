@@ -1,13 +1,14 @@
 'use strict';
 
-app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authToken, $state, $cookies) {
+app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authToken, $state, $cookies, globalized) {
+  var actualHost = globalized;
   var vm = this;
   vm.state = $state;
-  vm.urlAgenda = 'http://localhost:1337/agenda';
-  vm.urlRemaneja = 'http://localhost:1337/remaneja';
-  vm.urlGuest = 'http://localhost:1337/guest';
-  vm.urlRoom = 'http://localhost:1337/class';
-  vm.urlHour = 'http://localhost:1337/hours';
+  vm.urlAgenda = actualHost + '/agenda';
+  vm.urlRemaneja = actualHost + '/remaneja';
+  vm.urlGuest = actualHost + '/guest';
+  vm.urlRoom = actualHost + '/class';
+  vm.urlHour = actualHost + '/hours';
 
   //SETTINGS SECTION
   vm.agendaTypes = ['Treinamento', 'Consulta', 'Reunião'];

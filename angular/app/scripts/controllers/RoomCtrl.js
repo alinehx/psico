@@ -1,10 +1,11 @@
 'use strict';
 
-app.controller('RoomCtrl', function ($scope, $rootScope, $http, alert, authToken, $state) {
+app.controller('RoomCtrl', function ($scope, $rootScope, $http, alert, authToken, $state, globalized) {
+  var actualHost = globalized;
   var vm = this;
   vm.state = $state;
   $scope.tiposSala = ["Consulta", "Treinamento", "Reunião"];
-  vm.url = 'http://localhost:1337/class';
+  vm.url = actualHost + '/class';
 
   $scope.room = {
       name: null,

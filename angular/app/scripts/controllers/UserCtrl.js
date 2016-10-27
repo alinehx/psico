@@ -1,9 +1,10 @@
 'use strict';
 
-app.controller('UserCtrl', function ($scope, $rootScope, $http, alert, authToken, $state) {
+app.controller('UserCtrl', function ($scope, $rootScope, $http, alert, authToken, $state, globalized) {
+  var actualHost = globalized;
   var vm = this;
   vm.state = $state;
-  vm.url = 'http://localhost:1337/user';
+  vm.url = actualHost + '/user';
   vm.isEdt = false;
 
   $scope.comp = null;

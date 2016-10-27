@@ -81,6 +81,18 @@ function getClass(req, res) {
   }
 };
 
+function getOne(req, res) {
+  var room = req.params.room;
+  ClassService.findById(room, function (err, objectClass) {
+    if (err) {
+      return res.status(503).send({
+        message: err
+      });
+    }
+    return res.status(200).send(objectClass);
+  });  
+};
+
 function getAll(req, res){
   ClassService.getAll(function (err, objectClass) {
     if (err) {
@@ -97,6 +109,6 @@ module.exports = {
   update: update,
   disable: disable,
   getClass: getClass,
-  getAll: getAll
-  
+  getAll: getAll,
+  getOne: getOne
 };

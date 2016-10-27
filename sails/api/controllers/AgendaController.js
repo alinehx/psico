@@ -50,6 +50,20 @@
    });
  }
 
+ function getAgendaListByRoom(req, res) {
+   var id = req.params.room;
+   var initDate = req.param.initDate;
+   var endDate = req.param.endDate;
+   AgendaService.findByRoom(id, initDate, endDate, function(err, agenda) {
+     if (err) {
+       return res.status(503).send({
+         message: err
+       });
+     }
+    return res.status(200).send(agenda);
+   });
+ }
+
   function extractReportForMonth(req, res) {
     var user = req.params.user;
     var m = req.params.month;
@@ -66,31 +80,6 @@
 
  function getAgendaByResponsable(req, res) {
    var email = req.param('email');
-   AgendaService.findAgendaByResponsable(email, function(err, agendas) {
-     if (err) {
-       return res.status(503).send({
-         message: err
-       });
-     }
-     return res.status(200).send(agendas);
-   });
- }
-
- function getAgendaByStartDate(req, res) {
-   var date = req.param('date');
-   var initTime = req.param('initTime');
-   AgendaService.findAgendaByResponsable(email, function(err, agendas) {
-     if (err) {
-       return res.status(503).send({
-         message: err
-       });
-     }
-     return res.status(200).send(agendas);
-   });
- }
- function getAgendaByEndDate(req, res) {
-   var date = req.param('date');
-   var endTime = req.param('endTime');
    AgendaService.findAgendaByResponsable(email, function(err, agendas) {
      if (err) {
        return res.status(503).send({
@@ -170,9 +159,8 @@
  module.exports = {
    deleteAgenda: deleteAgenda,
    updateAgenda: updateAgenda,
+   getAgendaListByRoom: getAgendaListByRoom,
    getAgendaByResponsable: getAgendaByResponsable,
-   getAgendaByStartDate: getAgendaByStartDate,
-   getAgendaByEndDate: getAgendaByEndDate,
    getAll: getAll,
    getAgendaById: getAgendaById,
    createAgenda: createAgenda,

@@ -1,11 +1,12 @@
 'use strict';
 
-app.controller('RemanejaCtrl', function ($scope, $rootScope, $http, alert, authToken, $state, $cookies) {
+app.controller('RemanejaCtrl', function ($scope, $rootScope, $http, alert, authToken, $state, $cookies, globalized) {
+	var actualHost = globalized;
 	var vm = this;
 	vm.state = $state;
-	vm.urlAgenda = 'http://localhost:1337/agenda';
-	vm.urlGuest = 'http://localhost:1337/guest';
-	vm.urlRemaneja = 'http://localhost:1337/remaneja';
+	vm.urlAgenda = actualHost + '/agenda';
+	vm.urlGuest = actualHost + '/guest';
+	vm.urlRemaneja = actualHost + '/remaneja';
 
 	vm.setMine = false;
 	vm.byTarget = {};

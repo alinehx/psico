@@ -28,7 +28,13 @@ function getAll(callback) {
 function findClass(name, location, callback) {
   Class.findOne({name: name, location: location}).exec(function (err, findClass) { 
     callbackGet(err, findClass, callback);
-  });  
+  });
+}
+
+function findById(room, callback) {
+  Class.findOne({id: room}).exec(function (err, findClass) { 
+    callbackGet(err, findClass, callback);
+  });
 }
 
 function updateClass(name, location, classUpdate, callback) {
@@ -75,5 +81,6 @@ module.exports = {
   createClass: createClass,
   updateClass : updateClass,
   findClass: findClass,
+  findById: findById,
   getAll: getAll
 };

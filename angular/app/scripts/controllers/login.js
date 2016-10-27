@@ -1,12 +1,12 @@
 'use strict';
 
-app.controller('LoginCtrl', function ($scope, $rootScope, $http, alert, authToken, $state, $cookies) {
+app.controller('LoginCtrl', function ($scope, $rootScope, $http, alert, authToken, $state, $cookies, globalized) {
   authToken.removeToken();//Quando voltar para /Login por engano ou proposito, mata a auth.
-
+  var actualHost = globalized;
   var vm = this;
-  vm.url = 'http://localhost:1337/login';
-  vm.urlUser = 'http://localhost:1337/user';
-  vm.urlAgenda = 'http://localhost:1337/agenda';
+  vm.url = actualHost + '/login';
+  vm.urlUser = actualHost + '/user';
+  vm.urlAgenda = actualHost + '/agenda';
 
   vm.agendaList = {};
   $scope.user = {

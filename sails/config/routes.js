@@ -35,21 +35,25 @@ module.exports.routes = {
   
   'get /login/:email&:password': 'AuthController.login',
   'post /user': 'UserController.create',
+  'get /address/:zipCode': 'AddressController.getAddress',
+
   'delete /user/:email': 'UserController.disable',
   'put /user/:email': 'UserController.update',
   'get /user': 'UserController.getAll',
   'get /user/:email': 'UserController.getUser',
+
   'post /member': 'MemberController.create',
   'delete /member/:email': 'MemberController.disable',
   'put /member/:email': 'MemberController.update',
   'get /member': 'MemberController.getAll',
   'get /member/:email': 'MemberController.getMember',
+
   'post /class': 'ClassController.create',
   'put /class/:name&:location': 'ClassController.update',
   'delete /class/:name&:location': 'ClassController.disable',
-  'get /class': 'ClassController.getAll',
   'get /class/:name&:location': 'ClassController.getClass',
-  'get /address/:zipCode': 'AddressController.getAddress',
+  'get /class': 'ClassController.getAll',
+  'get /class/u/:room': 'ClassController.getOne',
 
   'post /constants': 'ConstantsController.createConstant',
   'get /constants': 'ConstantsController.getAll',
@@ -70,6 +74,7 @@ module.exports.routes = {
   'get /agenda': 'AgendaController.getAll',
   'get /agenda/a/:agenda': 'AgendaController.getAgendaById',
   'get /agenda/extract/:user&:month&:year': 'AgendaController.extractReportForMonth',
+  'get /agenda/extractroom/:room&:initDate&:endDate': 'AgendaController.getAgendaListByRoom',
   
   'post /guest': 'GuestController.create',
   'delete /guest/:agenda&:guest': 'GuestController.deleteGuest',

@@ -1,9 +1,10 @@
 'use strict';
 
-app.controller('TesteCtrl', function ($scope, $rootScope, $http, alert, authToken, $state) {
+app.controller('TesteCtrl', function ($scope, $rootScope, $http, alert, authToken, $state, globalized) {
+  var actualHost = globalized;
   var vm = this;
   vm.state = $state;
-  vm.url = 'http://localhost:1337/member';
+  vm.url = actualHost + '/member';
   vm.isEdt = false;
 
   $scope.member = {
