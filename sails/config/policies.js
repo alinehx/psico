@@ -26,9 +26,9 @@ module.exports.policies = {
   *                                                                          *
   ***************************************************************************/
   
-  /*'UserController': {
+  'UserController': {
      '*': 'jwtAuth'
-  },*/
+  },
   'MemberController': {
     '*': 'jwtAuth'
   },
