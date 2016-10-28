@@ -1,0 +1,28 @@
+<div class="center-block mt-xl wd-xl" data-ng-init="vm.startSlavery(vm.state.params.room)">
+    <div class="panel panel-inverse">
+        <div class="panel-heading text-center">
+            <h4>CONFIGURAÇÕES SLAVE DEVICE</h4>
+        </div>
+        <div class="panel-body">
+            <div class="btn-group btn-group-justified single-item">
+                <a class="btn btn-success btn-block" ng-click="vm.setMine = true">
+                    <i class="fa fa-cube fa-lg" aria-hidden="true"></i> CONFIGURAR VARIAVEIS DO SISTEMA
+                </a>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="btn-group btn-group-justified single-item">
+                <a class="btn btn-success btn-block" ng-click="vm.setMine = false">
+                    <i class="fa fa-diamond fa-lg" aria-hidden="true"></i> CONFIGURAR APARELHO SLAVE
+                </a>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="btn-group btn-group-justified single-item">
+                <a class="btn btn-success btn-block" ng-click="vm.gotoSlaveDevice()">
+                    <i class="fa fa-cube fa-lg" aria-hidden="true"></i> EXTRAÇÃO DE RELATÓRIOS
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

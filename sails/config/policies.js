@@ -25,7 +25,7 @@ module.exports.policies = {
   * access)                                                                  *
   *                                                                          *
   ***************************************************************************/
-  
+  //ToFirstStart
   'UserController': {
      '*': 'jwtAuth'
   },

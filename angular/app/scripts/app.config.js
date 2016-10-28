@@ -106,11 +106,17 @@ angular
        controller: 'AgendaCtrl as vm'
     });
 
-    $stateProvider.state('slavedevice', {
-      url: '/slave/:roomID',
-      templateUrl: '/views/slaveagenda.html',
+    $stateProvider.state('slaveselection', {
+      url: '/slave',
+      templateUrl: '/views/slaveselection.html',
        controller: 'SlaveCtrl as vm'
     });
+    $stateProvider.state('slavedevice', {
+      url: '/slave/:room',
+      templateUrl: '/views/slaved.html',
+       controller: 'SlaveCtrl as vm'
+    });
+
     $stateProvider.state('acceptpage', {
       url: '/acceptpage/:guest &:agenda',
       templateUrl: '/views/acceptpage.html',
@@ -120,6 +126,11 @@ angular
     $stateProvider.state('paymentreport', {
       url: '/paymentreport/',
       templateUrl: '/views/paymentreport.html',
+       controller: 'ExtractorCtrl as vm'
+    });
+    $stateProvider.state('usagereport', {
+      url: '/usagereport/',
+      templateUrl: '/views/usagereport.html',
        controller: 'ExtractorCtrl as vm'
     });
     

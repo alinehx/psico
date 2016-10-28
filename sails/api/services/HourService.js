@@ -42,9 +42,30 @@ function findHour(room, date, hour, callback) {
   });
 };
 
+function setInitialDatePattern(date){
+  date.setHours(0);
+  date.setMinutes(0);
+  date.setSeconds(0);
+  date.setMiliseconds(0);
+  return date;
+};
+function setFinalDatePattern(date){
+  date.setHours(23);
+  date.setMinutes(59);
+  date.setSeconds(59);
+  date.setMiliseconds(999);
+  return date;
+};
+
 function findByRoomDate(date, room, callback) {
+  var initial = setInitialDatePattern(date);
+  var final = setFinalDatePattern(date);
+  console.log("i " + initial + " f " + final);
   Hour.find({
-    date: date,
+    date: { 
+			'>=': new Date(initial), 
+			'<': new Date(final)
+		},
     room: room
   }).exec(function(err, hour) {
     if (err) {

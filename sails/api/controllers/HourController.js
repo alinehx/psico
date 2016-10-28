@@ -54,6 +54,8 @@
 function getByRoomDate(req, res) {
     var date = req.param('date');
     var room = req.param('room');
+    console.log('date', date);
+    console.log('room', room);
     HourService.findByRoomDate(date, room, function(err, hourList) {
       if (err) {
         return res.status(503).send({

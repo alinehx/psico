@@ -1,0 +1,30 @@
+<div class="center-block mt-xl wd-xl" data-ng-init="vm.loadNecessaryContent()">
+    <div class="panel panel-primary">
+        <div class="panel-heading text-center">
+            <h4>CONFIGURAÇÕES SLAVE DEVICE</h4>
+        </div>
+        <div class="panel-body">
+            <p class="text-center">Favor selecione uma sala para acompanhar</p>
+            <div class="form-group">
+            <div class="col-lg-3 text-right">
+                <h5>SALA: </h5>
+            </div>
+            <div class="col-lg-7">
+                <select class="form-control" ng-model="vm.actualRoom">
+                    <option ng-repeat="room in vm.roomList">{{room.name}}</option>
+                </select>
+            </div>
+            <br>
+            <br>
+        </div>
+        <div class="btn-group btn-group-justified single-item">
+            <a class="btn btn-success btn-block" ng-hide="vm.hasActualRoom(vm.actualRoom)" ng-click="vm.gotoSlaveDevice(vm.actualRoom)">
+                INICIAR
+            </a>
+            
+            <a class="btn btn-primary btn-block disabled" ng-show="vm.hasActualRoom(vm.actualRoom)" ng-click="vm.gotoSlaveDevice(vm.actualRoom)">
+                INICIAR
+            </a>
+        </div>
+    </div>
+</div>
