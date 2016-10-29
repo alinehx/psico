@@ -126,4 +126,12 @@ app.controller('ExtractorCtrl', function ($scope, $rootScope, $http, alert, auth
 		$state.go('paymentreport');
 	};
 
+	vm.gotoSlave = function(){
+		$state.go('slaveselection');
+	}
+
+	vm.gotoConstants = function(){
+		$state.go('constants');
+	}
+
 });

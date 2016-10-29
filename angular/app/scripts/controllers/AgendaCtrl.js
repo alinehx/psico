@@ -391,6 +391,7 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     $http.get(newUrl)
     .success(function (res){
       vm.loadedHours = {};
+      console.log("newUrl", newUrl);
       if(res == null || res.length == 0){
         vm.agendaHours.forEach(function(h){
           vm.createHoursForDay(h[0], h[1], configuredDate);

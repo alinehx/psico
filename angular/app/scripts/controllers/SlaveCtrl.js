@@ -19,6 +19,9 @@ app.controller('SlaveCtrl', function ($scope, $rootScope, $http, alert, authToke
 	vm.reflectedRoom = {};
 	vm.reflectedHour = {};
 	vm.reflectedAgenda = {};
+	vm.roomState = "";
+
+	vm.isLoading = true;
 
 	vm.loadNecessaryContent = function(){
 		var date = new Date();
@@ -27,7 +30,6 @@ app.controller('SlaveCtrl', function ($scope, $rootScope, $http, alert, authToke
 	};
 
 	vm.hasActualRoom = function(item){
-		console.log(item);
 		if(item != null && item.length > 0){
 			return false;
 		}
@@ -35,10 +37,8 @@ app.controller('SlaveCtrl', function ($scope, $rootScope, $http, alert, authToke
 	}
 
 	vm.getRoomList = function(){
-		console.log('log');
 		$http.get(vm.urlRoom)
 		.success(function (res){
-			console.log('res', res)
 			vm.roomList = res;
 		})
 		.error(function(err){
@@ -48,15 +48,16 @@ app.controller('SlaveCtrl', function ($scope, $rootScope, $http, alert, authToke
 
 	vm.startSlavery = function(roomid){
 		vm.actualDate = new Date();
-		console.log("state",vm.state);
 		vm.getRoomByID(roomid, vm.actualDate);
 	}
 
 	vm.getRoomByID = function(id, date){
-		var newurl = vm.urlRoom + "/" + id;
-		$http.get(vm.urlRoom)
+		var newurl = vm.urlRoom + "/u/" + id;
+		console.log(newurl);
+		$http.get(newurl)
 		.success(function (res){
 			vm.reflectedRoom = res;
+			console.log("r",res);
 			vm.getHoursForRoomAndDay(id, date);
 		})
 		.error(function(err){
@@ -64,17 +65,44 @@ app.controller('SlaveCtrl', function ($scope, $rootScope, $http, alert, authToke
 		});
 	};
 
+	vm.canShowAgendaInfo = function(){
+		var yes = false;
+		console.log(vm.waitForNext, vm.isLoading)
+		if(vm.waitForNext == false && vm.isLoading == false){
+			yes = true;
+		}
+		return yes;
+	};
+
+	vm.waitForNext = false;
+	vm.buildEmptyRoom = function(){
+		vm.waitForNext = true;
+		vm.roomState="LIVRE";
+		var nowdate = new Date();
+		var nowH = nowdate.getHours();
+		var nowM = nowdate.getMinutes();
+		var endTime = "";
+		if(nowM < 30){
+			endTime = nowH + ":30";
+		} else {
+			endTime = nowH+1 + ":00";
+		}
+		console.log('next', endTime);
+		vm.setHourCounter(endTime);
+	};
+
 	vm.getHoursForRoomAndDay = function(room, date){
-		var newurl = vm.urlHour + "/" + date + "&" + room;
+		var newurl = vm.urlHour + "/s/" + date + "&" + room;
 		console.log(newurl);
 		$http.get(newurl)
 		.success(function (res){
-			console.log('hours4day', res);
 			if(res.length > 0){
+				console.log("hasHourForDay");
 				vm.findAgendaForHour(res);
-				console.log("FOUND", res);
 			} else{
-				//Dont Have Any Shit
+				//TODO
+				console.log("DONThasHourForDay");
+				vm.buildEmptyRoom();
 			}
 		})
 		.error(function(err){
@@ -82,7 +110,7 @@ app.controller('SlaveCtrl', function ($scope, $rootScope, $http, alert, authToke
 		});
 	};
 
-	vm.findAgendaForHour = function(hourList){
+	function prepareHour(){
 		var date = new Date();
 		var actualHour = parseInt(date.getHours());
 		var actualMin = date.getMinutes();
@@ -92,12 +120,25 @@ app.controller('SlaveCtrl', function ($scope, $rootScope, $http, alert, authToke
 		} else{
 			preparedHour = actualHour + ":00";
 		}
+		return preparedHour;
+	};
+
+	vm.findAgendaForHour = function(hourList){
+		var preparedHour = prepareHour();
 		var c = 0;
 		hourList.forEach(function(h){
 			if(c == 0 && h.hour == preparedHour){
 				c++;
-				vm.getHoursFromAgenda(h.agenda);
-				console.log("FOUND", h.agenda);
+				if(h.agenda != null){
+					console.log("HASAgendaForNOW");
+					vm.roomState = "OCUPADA";
+					vm.getHoursFromAgenda(h.agenda);
+				} else {
+					//TODO
+					console.log("NOAgendaForNOW");
+					vm.roomState = "LIVRE";
+					vm.buildEmptyRoom();
+				}
 			}
 		});
 	};
@@ -107,7 +148,6 @@ app.controller('SlaveCtrl', function ($scope, $rootScope, $http, alert, authToke
 		$http.get(newurl)
 		.success(function (res){
 			vm.hourList = res;
-			vm.calculateHourRage();
 			vm.getAgendaDetail(agenda);
 		})
 		.error(function(err){
@@ -119,7 +159,9 @@ app.controller('SlaveCtrl', function ($scope, $rootScope, $http, alert, authToke
 		var newurl = vm.urlAgenda + "/a/" + agendaID;
 		$http.get(newurl)
 		.success(function (res){
-			vm.agendaDetails = res;
+			vm.reflectedAgenda = res;
+			console.log(vm.reflectedAgenda);
+			vm.setHourCounter(res.endTime);
 		})
 		.error(function(err){
 			alert('warning',"FAIL");
@@ -127,29 +169,8 @@ app.controller('SlaveCtrl', function ($scope, $rootScope, $http, alert, authToke
 	};
 
 	//Auxiliar:
-	vm.calculateHourRage = function(){
-		var highest = vm.hourList;
-		var lowest = vm.hourList;
-		var size = vm.hourList.length;
-		var counter = 0;
-
-		vm.hourList.forEach(function(hour){
-			if(hour.num > highest.num){
-				highest = hour;
-			}
-			if(hour.num < lowest.num){
-				lowest = hour;
-			}
-
-			if(counter == size){
-				vm.setHourCounter(highest);
-			}
-			counter++;
-		});
-	};
-
 	vm.setHourCounter = function(lastHour){
-		var hourValue = lastHour.hour.split(':');
+		var hourValue = lastHour.split(':');
 		var h = hourValue[0];
 		var m = hourValue[1];
 		var endTime = new Date();
@@ -160,18 +181,35 @@ app.controller('SlaveCtrl', function ($scope, $rootScope, $http, alert, authToke
 		endTime.setHours(h);
 
 		vm.hourValue = endTime;
-		//Use the 'endTime' to pass for the 'getTimeRemaining()' and use a ng-model to reflect the timer.
-		//Or Start a timer in this method to set the model
+		vm.countDown = initializeClock(endTime);
 	};
 
-	vm.gotoSlaveDevice = function(roomName){
-		vm.roomList.forEach(function(room){
-			if(room.name == roomName){
+	function configureTime(val){
+		var newval = ""+ val;
+		if(newval.length < 2){
+			newval = "0"+val;
+		}
+		return newval;
+	};
+
+	function initializeClock(endtime){
+		var clock = document.getElementById('countdown');
+		vm.isLoading = false;
+		var timeinterval = setInterval(function(){
+			var t = getTimeRemaining(endtime);
+			var pHour = configureTime(t.hours);
+			var pMin = configureTime(t.minutes);
+			var pSec = configureTime(t.seconds);
+
+			clock.innerHTML = 	'' + pHour + ':' + pMin + ':' + pSec;
+
+			if(t.total <= 0){
+				clearInterval(timeinterval);
 				$state.go('slavedevice',{
-					room: room.id
+					room: vm.state.params.room
 				});
 			}
-		});
+		},1000);
 	}
 
 	//counter
@@ -188,5 +226,15 @@ app.controller('SlaveCtrl', function ($scope, $rootScope, $http, alert, authToke
 			'minutes': minutes,
 			'seconds': seconds
 		};
+	}
+
+	vm.gotoSlaveDevice = function(roomName){
+		vm.roomList.forEach(function(room){
+			if(room.name == roomName){
+				$state.go('slavedevice',{
+					room: room.id
+				});
+			}
+		});
 	}
 });

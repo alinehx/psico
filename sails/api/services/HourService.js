@@ -42,30 +42,36 @@ function findHour(room, date, hour, callback) {
   });
 };
 
-function setInitialDatePattern(date){
-  date.setHours(0);
-  date.setMinutes(0);
-  date.setSeconds(0);
-  date.setMiliseconds(0);
-  return date;
+function setDatePattern(date){
+  sails.log.info("[HourService] - Executing setDatePattern");
+  var newDate = new Date(date);
+  var ds = "";
+  ds = newDate.getDate() + "-";
+  ds = ds + (newDate.getMonth()+1) + "-";
+  ds = ds + newDate.getFullYear();
+  return ds;
 };
-function setFinalDatePattern(date){
-  date.setHours(23);
-  date.setMinutes(59);
-  date.setSeconds(59);
-  date.setMiliseconds(999);
-  return date;
+
+function findByDateRange(date, room, callback) {
+  var transformedDate = setDatePattern(date);
+  sails.log.info("[HourService] - findByDateRange for date [" + transformedDate + "]");
+
+  Hour.find({
+    date: transformedDate,
+    room: room
+  }).exec(function(err, hour) {
+    if (err) {
+      return callback(err);
+    } else if (!hour) {
+      return callback('Horário não encontrado');
+    } 
+    return callback(null, hour);
+  });
 };
 
 function findByRoomDate(date, room, callback) {
-  var initial = setInitialDatePattern(date);
-  var final = setFinalDatePattern(date);
-  console.log("i " + initial + " f " + final);
   Hour.find({
-    date: { 
-			'>=': new Date(initial), 
-			'<': new Date(final)
-		},
+    date: date,
     room: room
   }).exec(function(err, hour) {
     if (err) {
@@ -112,7 +118,7 @@ function updateHour(hourID, constantjaObject, callback) {
     if (!hour) {
       return callback('Horário não encontrado');
     }    
-    return callback(null, hour);	
+    return callback(null, hour);  
   }); 
 };
 
@@ -120,6 +126,7 @@ module.exports = {
   findAll: findAll,
   findHour: findHour,
   findByRoomDate: findByRoomDate,
+  findByDateRange: findByDateRange,
   findByAvailability: findByAvailability,
   findByAgenda: findByAgenda,
   updateHour: updateHour,

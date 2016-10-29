@@ -31,11 +31,25 @@ function findClass(name, location, callback) {
   });
 }
 
+// function findById(room, callback) {
+//   Class.findOne({id: room}).exec(function (err, findClass) { 
+//     callbackGet(err, findClass, callback);
+//   });
+// }
+
 function findById(room, callback) {
-  Class.findOne({id: room}).exec(function (err, findClass) { 
-    callbackGet(err, findClass, callback);
+  console.log("serv", room);
+  Class.findOne({
+    id: room
+  }).exec(function(err, room) {
+    if (err) {
+      return callback(err);
+    } else if (!room) {
+      return callback('Agenda não encontrada');
+    } 
+    return callback(null, room);
   });
-}
+};
 
 function updateClass(name, location, classUpdate, callback) {
   findClass(name, location, function (err, classFind) {

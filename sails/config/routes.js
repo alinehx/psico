@@ -64,6 +64,7 @@ module.exports.routes = {
   'post /hours': 'HourController.createHour',
   'get /hours': 'HourController.getAll',
   'get /hours/:date&:room': 'HourController.getByRoomDate',
+  'get /hours/s/:date&:room': 'HourController.getByDateRange',
   'get /hours/a/:availability': 'HourController.getByAvailability',
   'get /hours/u/:agenda': 'HourController.getByAgenda',
   'put /hours/:id': 'HourController.updateHour',

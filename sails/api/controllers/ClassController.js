@@ -83,6 +83,7 @@ function getClass(req, res) {
 
 function getOne(req, res) {
   var room = req.params.room;
+  console.log("Room:", room)
   ClassService.findById(room, function (err, objectClass) {
     if (err) {
       return res.status(503).send({
