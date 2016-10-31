@@ -8,9 +8,11 @@ app.controller('SlaveCtrl', function ($scope, $rootScope, $http, alert, authToke
 	vm.urlRoom = actualHost + '/class';
 	vm.urlGuest = actualHost + '/guest';
 	vm.urlHour = actualHost + '/hours';
+	vm.urlUser = actualHost + '/user';
 
 	vm.roomList = [];
 	vm.hourList = [];
+	vm.guestList = [];
 	vm.agendaDetails = {};
 
 	vm.actualRoom = null;
@@ -53,11 +55,9 @@ app.controller('SlaveCtrl', function ($scope, $rootScope, $http, alert, authToke
 
 	vm.getRoomByID = function(id, date){
 		var newurl = vm.urlRoom + "/u/" + id;
-		console.log(newurl);
 		$http.get(newurl)
 		.success(function (res){
 			vm.reflectedRoom = res;
-			console.log("r",res);
 			vm.getHoursForRoomAndDay(id, date);
 		})
 		.error(function(err){
@@ -67,7 +67,6 @@ app.controller('SlaveCtrl', function ($scope, $rootScope, $http, alert, authToke
 
 	vm.canShowAgendaInfo = function(){
 		var yes = false;
-		console.log(vm.waitForNext, vm.isLoading)
 		if(vm.waitForNext == false && vm.isLoading == false){
 			yes = true;
 		}
@@ -87,21 +86,16 @@ app.controller('SlaveCtrl', function ($scope, $rootScope, $http, alert, authToke
 		} else {
 			endTime = nowH+1 + ":00";
 		}
-		console.log('next', endTime);
 		vm.setHourCounter(endTime);
 	};
 
 	vm.getHoursForRoomAndDay = function(room, date){
 		var newurl = vm.urlHour + "/s/" + date + "&" + room;
-		console.log(newurl);
 		$http.get(newurl)
 		.success(function (res){
 			if(res.length > 0){
-				console.log("hasHourForDay");
 				vm.findAgendaForHour(res);
 			} else{
-				//TODO
-				console.log("DONThasHourForDay");
 				vm.buildEmptyRoom();
 			}
 		})
@@ -130,12 +124,10 @@ app.controller('SlaveCtrl', function ($scope, $rootScope, $http, alert, authToke
 			if(c == 0 && h.hour == preparedHour){
 				c++;
 				if(h.agenda != null){
-					console.log("HASAgendaForNOW");
 					vm.roomState = "OCUPADA";
 					vm.getHoursFromAgenda(h.agenda);
 				} else {
 					//TODO
-					console.log("NOAgendaForNOW");
 					vm.roomState = "LIVRE";
 					vm.buildEmptyRoom();
 				}
@@ -160,8 +152,31 @@ app.controller('SlaveCtrl', function ($scope, $rootScope, $http, alert, authToke
 		$http.get(newurl)
 		.success(function (res){
 			vm.reflectedAgenda = res;
-			console.log(vm.reflectedAgenda);
+			vm.getUserDetails(res.responsable);
+			vm.getGuestList(agendaID);
 			vm.setHourCounter(res.endTime);
+		})
+		.error(function(err){
+			alert('warning',"FAIL");
+		});
+	};
+
+	vm.getUserDetails = function(userID){
+		var newurl = vm.urlUser + '/' + userID;
+		$http.get(newurl)
+		.success(function (res){
+			vm.reflectedUser = res;
+		})
+		.error(function(err){
+			alert('warning',"FAIL");
+		});
+	};
+
+	vm.getGuestList = function(agendaID){
+		var newurl = vm.urlGuest + '/' + agendaID;
+		$http.get(newurl)
+		.success(function (res){
+			vm.guestList = res;
 		})
 		.error(function(err){
 			alert('warning',"FAIL");
@@ -202,11 +217,10 @@ app.controller('SlaveCtrl', function ($scope, $rootScope, $http, alert, authToke
 			var pSec = configureTime(t.seconds);
 
 			clock.innerHTML = 	'' + pHour + ':' + pMin + ':' + pSec;
-
 			if(t.total <= 0){
 				clearInterval(timeinterval);
 				$state.go('slavedevice',{
-					room: vm.state.params.room
+					room: vm.reflectedRoom.id
 				});
 			}
 		},1000);
@@ -214,14 +228,13 @@ app.controller('SlaveCtrl', function ($scope, $rootScope, $http, alert, authToke
 
 	//counter
 	function getTimeRemaining(endtime){
-		var t = Date.parse(endtime) - Date.parse(new Date());
-		var seconds = Math.floor( (t/1000) % 60 );
-		var minutes = Math.floor( (t/1000/60) % 60 );
-		var hours = Math.floor( (t/(1000*60*60)) % 24 );
-		var days = Math.floor( t/(1000*60*60*24) );
+		var time = Date.parse(endtime) - Date.parse(new Date());
+		var seconds = Math.floor( (time/1000) % 60 );
+		var minutes = Math.floor( (time/1000/60) % 60 );
+		var hours = Math.floor( (time/(1000*60*60)) % 24 );
+		var days = Math.floor( time/(1000*60*60*24) );
 		return {
-			'total': t,
-			'days': days,
+			'total': time,
 			'hours': hours,
 			'minutes': minutes,
 			'seconds': seconds
