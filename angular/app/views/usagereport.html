@@ -1,0 +1,86 @@
+<div class="modal" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title text-center">RELATÓRIO DE USO DE SALAS</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+						<textarea class="form-control text-left" rows="10" disabled>{{vm.textReport}}</textarea>
+					</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+        <button type="button" class="btn btn-primary">Enviar por E-mail</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="jumbotron" data-ng-init="vm.initUsageReport()">
+  <h2>RELATÓRIO DE USO DE SALAS</h2>
+  <br>
+
+  <form class="form-horizontal">
+    <fieldset>
+      <div class="form-group">
+        <label class="col-lg-2 control-label">SALA: </label>
+        <div class="col-lg-10">
+          <select class="form-control col-sm-10" ng-model="vm.byRoom">
+            <option ng-repeat="item in vm.roomList">{{item.name}}</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- DATE -->
+      <div class="form-group">
+        <label for="inputEmail" class="col-lg-2 control-label">INICIO: </label>
+        <div class="col-lg-3">
+          <select class="form-control col-sm-10" ng-model="vm.init.day">
+            <option ng-repeat="item in vm.dayList">{{item}}</option>
+          </select>
+        </div>
+        <div class="col-lg-3">
+          <select class="form-control col-sm-10" ng-model="vm.init.month">
+            <option ng-repeat="item in vm.monthList">{{item}}</option>
+          </select>
+        </div>
+        <div class="col-lg-4">
+          <select class="form-control col-sm-10" ng-model="vm.init.year">
+            <option ng-repeat="item in vm.yearList">{{item}}</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- DATE -->
+      <div class="form-group">
+        <label for="inputEmail" class="col-lg-2 control-label">FIM: </label>
+        <div class="col-lg-3">
+          <select class="form-control col-sm-10" ng-model="vm.end.day">
+            <option ng-repeat="item in vm.dayList">{{item}}</option>
+          </select>
+        </div>
+        <div class="col-lg-3">
+          <select class="form-control col-sm-10" ng-model="vm.end.month">
+            <option ng-repeat="item in vm.monthList">{{item}}</option>
+          </select>
+        </div>
+        <div class="col-lg-4">
+          <select class="form-control col-sm-10" ng-model="vm.end.year">
+            <option ng-repeat="item in vm.yearList">{{item}}</option>
+          </select>
+        </div>
+      </div>
+
+    </fieldset>
+
+    <a class="btn btn-success btn-block" ng-show="vm.isDataSet()" ng-click="vm.prepareDataToExtractByRoom()">
+        <i class="fa fa-sticky-note fa-lg" aria-hidden="true"></i> EXTRAIR RELATÓRIO
+    </a>
+    <a class="btn btn-success btn-block disabled" ng-hide="vm.isDataSet()" ng-click="vm.prepareDataToExtractByRoom()">
+        <i class="fa fa-asterisk fa-lg" aria-hidden="true"></i> EXTRAIR RELATÓRIO
+    </a>
+
+  </form>
+</div>
