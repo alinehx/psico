@@ -7,12 +7,12 @@ angular
     $stateProvider.state('login', {
       url: '/login',
       templateUrl: '/views/login.html',
-       controller: 'LoginCtrl'
+       controller: 'LoginCtrl as vm'
     });
     $stateProvider.state('main', {
       url: '/index',
       templateUrl: '/views/index.html',
-      controller:"AgendaCtrl as vm"
+      controller:"ConstantsCtrl as vm"
     });
 
     //User Control
@@ -62,6 +62,18 @@ angular
        controller: 'AgendaCtrl as vm',
     });
 
+    //Alternative flow for agendamento
+    $stateProvider.state('calendarselection', {
+      url: '/calendarselection/',
+      templateUrl: '/views/calendarselection.html',
+       controller: 'AgendaCtrl as vm',
+    });
+    $stateProvider.state('selectbycalendar', {
+      url: '/selectbycalendar/:date',
+      templateUrl: '/views/datesselectbycalendarelection.html',
+       controller: 'AgendaCtrl as vm',
+    });
+
     //Member Control
     $stateProvider.state('registerpeople', {
       url: '/registerpeople',
@@ -90,9 +102,14 @@ angular
       templateUrl: '/views/registeragenda.html',
        controller: 'AgendaCtrl as vm'
     });
-    $stateProvider.state('agendalist', {
-      url: '/agendalist',
-      templateUrl: '/views/agendalist.html',
+    $stateProvider.state('agendatypes', {
+      url: '/agendatypes',
+      templateUrl: '/views/agendatypes.html',
+       controller: 'ConstantsCtrl as vm'
+    });
+    $stateProvider.state('agendaforuser', {
+      url: '/agendaforuser',
+      templateUrl: '/views/agendas.html',
        controller: 'AgendaCtrl as vm'
     });
     $stateProvider.state('agendadetails', {

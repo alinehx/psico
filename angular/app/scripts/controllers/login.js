@@ -13,29 +13,16 @@ app.controller('LoginCtrl', function ($scope, $rootScope, $http, alert, authToke
     email: null,
     password: null
   };
-
-
-
-  vm.validateOut = function(){
-    var hasvalue = $cookies.get('loggedUserName');
-
-    console.log(hasvalue);
-    if(hasvalue != null){
-      console.log('lol');
-      $state.go('logout');
+  
+  vm.setApp = function (){
+    authToken.removeToken();
+    var userMail = $cookies.get('loggedUserMail');
+    if(userMail == undefined || userMail.length > 1){
+      $cookies.remove('loggedUserMail');
+      $cookies.remove('loggedUserName');
+      $cookies.remove('isMaster');
+      $state.go('login');
     }
-  }
-
-  vm.getAgendaForUser = function (email){
-    var newurl = vm.urlAgenda + "/" + email;
-    $http.get(newurl)
-      .success(function (res){
-        $cookies.putObject('userAgendas', res);
-        $state.go('main');
-      })
-      .error(function(err){
-        alert('warning',"Error! Não foi possivel executar a requisição. " + err);
-      });
   };
 
   $scope.submit = function() {
@@ -44,8 +31,8 @@ app.controller('LoginCtrl', function ($scope, $rootScope, $http, alert, authToke
     .success(function (res) {
       authToken.setToken(res.token);
       alert('success','Login Efetuado.', 'Seja Bem-vindo, ' + $scope.user.email); 
-      vm.getAgendaForUser($scope.user.email);
       setGlobalVars($scope.user.email);
+      $state.go('main');
     })
     .error(function (err) {
       if(err.message === 'Usuário ou senha inválidos') {

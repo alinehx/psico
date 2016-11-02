@@ -1,9 +1,9 @@
-<div class="panel panel-default" data-ng-init="getRoomList()">
+<div class="panel" data-ng-init="getRoomList()">
   <div class="panel-heading"><div class="text-center">
 	  {{"Selecione uma sala para fazer um agendamento" | uppercase}}
   </div></div>
   <div class="panel-body">
-		<div class="panel panel-default" ng-repeat="room in vm.roomList" ng-show="room.active" style="border: 2px solid black">
+		<div class="panel panel-primary" ng-repeat="room in vm.roomList" ng-show="room.active" style="border: 2px solid black">
 			<div class="panel-heading col-lg-12" style="border-bottom: 2px solid black">
 				<div class="text-center">
 					{{"SALA PARA "+ room.typeClass + ", " + room.name | uppercase}}
@@ -15,12 +15,14 @@
 				<p>Localizada em {{room.location}}</p>
 				Com capacidade maxima de {{room.size | lowercase}} pessoas, esta sala possuí {{room.description | lowercase}}
 			</div>
-			<a ng-click="startAgendaProcess(room.name, room.location)" class="btn btn-default btn-lg btn-block actual-step" style="border-top: 2px solid black">
+			<a ng-click="startAgendaProcess(room.name, room.location)" class="btn btn-success btn-block" style="border-top: 2px solid black">
 				Agendar Horario
 			</a>
 		</div>
   </div>
-  <div class="panel panel-footer">
-	<button type="button" class="btn btn-default" ng-click="backToMain()">Voltar</button>
-  </div>
+	<div ng-click="vm.backToMain()">
+		<a class="btn btn-primary btn-lg btn-block">
+			<i class="fa text-black fa-arrow-left fa-lg" aria-hidden="true"></i> {{"VOLTAR PARA A PAGINA INICIAL" | uppercase}}
+		</a>
+	</div>
 </div>

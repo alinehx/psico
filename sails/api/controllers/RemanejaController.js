@@ -112,7 +112,6 @@
  function getByRange(req, res) {
     var initTime = req.param('init');
     var endTime = req.param('end');
-    console.log(initTime, endTime); 
     RemanejaService.findByRange(initTime, endTime, function(err, remanejaList) {
       if (err) {
         return res.status(503).send({

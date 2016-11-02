@@ -1,46 +1,15 @@
-<div class="jumbotron" data-ng-init="vm.getAgendaForUser()">
-  <h1>EasyMeet</h1>
-  <p class="panel-footer">Mantendo a paz em ambientes compartilhados.</p>
-  <button type="button" class="btn btn-default" ng-click="vm.gotoRoomSelection()">
-    <img src="img/opendoorlogo.png" alt="Image" class="center-block img-rounded" height="100px"/>
-    AGENDAR
-  </button>
+
+<div class="jumbotron btn btn-primary btn-lg btn-block" ng-click="vm.gotoAgendaList()">
+  <h3>Meus Agendamentos</h3>
+  <i class="fa fa-list-alt fa-4x" aria-hidden="true"></i>
 </div>
-<div ng-hide="vm.userHasAgenda">
-  <div class="alert alert-dismissible alert-warning text-center">
-    <button type="button" class="close" data-dismiss="alert">&times;</button>
-    <h4>Você não possuí nenhum agendamento!</h4>
-    
-    <p>Para agendar um novo compomisso, clique em 'AGENDAR'.</p>
-  </div>
+
+<div class="jumbotron btn btn-primary btn-lg btn-block" ng-click="vm.gotoAgendaTypes()">
+  <h3>Agendar</h3>
+  <i class="fa fa-calendar-check-o fa-4x" aria-hidden="true"></i>
 </div>
-<div ng-hide="!vm.userHasAgenda">
-  <h1 class="text-center">Meus Agendamentos</h1>
-  <br/>
-    <div class="panel">
-      <div class="panel-footer">
-        <div class="panel panel-success" ng-repeat="agenda in vm.agendaList track by $index" style="border: 2px solid black">
-          <div class="panel-heading col-lg-12 text-center" style="border-bottom: 2px solid black">
-              {{agenda.date | date : format : timezone}}, das {{agenda.initTime + "h"}} às {{agenda.endTime + "h"}}
-          </div>
-          <div class="panel-body">
-            <div class="panel-body text-center">
-            </div>
-            <h4 class="text-center">{{agenda.subject | uppercase}}</h4>
-            <p>{{agenda.description | uppercase}}</p>
-            <div ng-show="agenda.guestQuantity <= 1">
-              <h4>
-                <i class="fa fa-user fa-lg" aria-hidden="true"></i> {{agenda.guestQuantity + " convidado"}}
-              </h4>
-            </div>
-            <div ng-show="agenda.guestQuantity > 1">
-              <h4>
-                <i class="fa fa-user fa-lg" aria-hidden="true"></i> {{agenda.guestQuantity + " convidados"}}
-              </h4>
-            </div>
-          </div>
-          <a ng-click="vm.openAgendaDetails(agenda.id)" class="btn btn-default btn-lg btn-block" style="border-top: 2px solid black">Detalhes</a>
-        </div>
-      </div>
-    </div>
+
+<div class="jumbotron btn btn-primary btn-lg btn-block" ng-click="vm.gotoRemanejaList()">
+  <h3>Remanejamentos</h3>
+  <i class="fa fa-exchange fa-4x" aria-hidden="true"></i>
 </div>

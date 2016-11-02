@@ -1,0 +1,26 @@
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<div class="text-center">
+			{{"SELECIONE A DATA" | uppercase}}
+		</div>
+	</div>
+
+	<div class="panel-body text-center step-component">
+		<div class="panel-body">
+
+			<div id="datepicker"></div>
+			<input type="text" class="disabled" id="alternate">
+		</div>
+		<div class="btn-group btn-group-justified">
+			<a class="btn btn-success" ng-show="vm.isDateSelected()" ng-click="vm.prepareHours()">
+				{{"Escolher Dia" | uppercase}} <i class="fa fa-arrow-right" aria-hidden="true"></i>
+			</a>
+		</div>
+	</div>
+			
+	<div class="panel panel-footer">
+		<a class="btn btn-primary btn-block" ng-click="vm.backToMain()">
+			{{"VOLTAR PARA A PAGINA INICIAL" | uppercase}}
+		</a>
+	</div>
+</div>

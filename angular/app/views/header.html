@@ -21,6 +21,10 @@
           <a ui-sref="remanejamentos">Remanejamentos</a>
         </li>
 
+        <li class="dropdown" ng-hide="!isAuthenticated()">
+          <a ui-sref="agendaforuser">Meus Agendamentos</a>
+        </li>
+
         <li class="dropdown" ng-hide="!isAllowed()"> <!-- Admin Only -->
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Controle de Usuários<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">

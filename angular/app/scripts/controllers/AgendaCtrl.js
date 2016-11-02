@@ -18,7 +18,6 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
 
   //ALL VARIABLES
   vm.step = 0;
-  vm.userHasAgenda = false;
   vm.agendaDetail = {};
   vm.roomForAgenda = {};
   vm.agendaListForHour = {};
@@ -275,15 +274,24 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     });
   };
   
-  vm.getAgendaForUser = function (){ //FIX - NOT USE COOKIE TO SET THIS SHIT.
-    vm.agendaList = $cookies.getObject('userAgendas');
-    if(vm.agendaList.length > 0){
-
-      vm.userHasAgenda = true;
-    } else {
-      vm.userHasAgenda = false;
-    }
+  vm.getAgendaForUser = function (){
+    var newurl = vm.urlAgenda + "/" + vm.loggedUser.email;
+    $http.get(newurl)
+    .success(function (res){
+      vm.agendaList = res;
+    })
+    .error(function(err){
+      alert('warning', "Error! Cannot Update User. Check your network connection.");
+    });
   };
+
+  vm.userHasAgenda = function(){
+    if(vm.agendaList.length > 0){
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   vm.getActiveAgendasForUser = function(){
     var newUrl = vm.urlAgenda + "/" + vm.loggedUser.email;
@@ -391,7 +399,6 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     $http.get(newUrl)
     .success(function (res){
       vm.loadedHours = {};
-      console.log("newUrl", newUrl);
       if(res == null || res.length == 0){
         vm.agendaHours.forEach(function(h){
           vm.createHoursForDay(h[0], h[1], configuredDate);
@@ -515,7 +522,6 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     var newUrl = vm.urlHour + "/u/" + agenda;
     $http.get(vm.urlHour)
     .success(function (res){
-      console.log('ok');
       res.forEach(function(item){
         vm.cleanHourSettings(item);
       });
@@ -536,8 +542,7 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     newHour.available = true;
     $http.put(newUrl, newHour)
     .success(function(res){
-      console.log("lol");
-      console.log("success");
+
     })
     .error(function(err){
       alert('warning',"Error!", "Não foi possivel executar a requisição." + err.message);
@@ -551,10 +556,8 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
       target: vm.loggedUser.email,
       owner: null
     }
-    console.log(agendaUrl);
     $http.get(agendaUrl)
     .success(function (res){
-      console.log("res", res);
       rema.owner = res.responsable;
       vm.requestRemaneja(rema);
     })
@@ -564,7 +567,6 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
   };
 
   vm.requestRemaneja = function(rema){
-    console.log("rema", rema);
     $http.post(vm.urlRemaneja, rema)
     .success(function (res){
       alert('success',"Remanejamento solicitado com sucesso!");
@@ -576,7 +578,6 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
   };
 
   vm.gotoRemaneja = function(id){
-    console.log("transfering to remaneja");
     $state.go('remaneja', { 
       id: id
     });
