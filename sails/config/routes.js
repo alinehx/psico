@@ -74,8 +74,8 @@ module.exports.routes = {
   'get /agenda/:email': 'AgendaController.getAgendaByResponsable',
   'get /agenda': 'AgendaController.getAll',
   'get /agenda/a/:agenda': 'AgendaController.getAgendaById',
-  'get /agenda/extract/:user&:month&:year': 'AgendaController.extractReportForMonth',
-  'get /agenda/extractroom/:room&:initDate&:endDate': 'AgendaController.getAgendaListByRoom',
+  'get /agenda/extract/:user&:init&:end': 'AgendaController.extractReportForMonth',
+  'get /agenda/extractroom/:room&:init&:end': 'AgendaController.getAgendaListByRoom',
   
   'post /guest': 'GuestController.create',
   'delete /guest/:agenda&:guest': 'GuestController.deleteGuest',
@@ -89,6 +89,7 @@ module.exports.routes = {
   'get /remaneja/ra/:id': 'RemanejaController.getForAgenda',
   'get /remaneja/rt/:target': 'RemanejaController.getForTarget',
   'get /remaneja/ro/:owner': 'RemanejaController.getForOwner',
+  'get /remaneja/extract/:init&:end': 'RemanejaController.getByRange',
   'put /remaneja/:id': 'RemanejaController.updateRemaneja'
 
   /***************************************************************************

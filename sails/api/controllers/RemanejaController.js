@@ -109,6 +109,22 @@
     });
  }
 
+ function getByRange(req, res) {
+    var initTime = req.param('init');
+    var endTime = req.param('end');
+    console.log(initTime, endTime); 
+    RemanejaService.findByRange(initTime, endTime, function(err, remanejaList) {
+      if (err) {
+        return res.status(503).send({
+          message: err
+        });
+      }
+      if (remanejaList) { 
+        return res.status(200).send(remanejaList);
+      }
+    });
+ }
+
  //updateGuestFromAgenda
  function updateRemaneja(req, res) {
    var idRemaneja = req.param('id');
@@ -141,5 +157,6 @@ module.exports = {
    getForTarget: getForTarget,
    getForOwner: getForOwner,
    getForAgenda: getForAgenda,
+   getByRange: getByRange,
    updateRemaneja: updateRemaneja
  }

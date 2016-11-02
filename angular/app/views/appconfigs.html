@@ -1,40 +1,42 @@
-<div class="center-block mt-xl wd-xl" data-ng-init="vm.loadEssentialData()">
-    <div class="panel panel-inverse">
-        <div class="panel-heading text-center">
-            <h4>CONFIGURAÇÕES DO SISTEMA</h4>
-        </div>
+<div class="jumbotron" data-ng-init="vm.setPageInfo()">
+  <h2>CONFIGURAÇÕES DO SISTEMA</h2>
+  <br>
+    <div class="center-block mt-xl wd-xl" data-ng-init="vm.loadEssentialData()">
+        <p>- CONFIGURAÇÕES -</p>
         <div class="panel-body">
             <div class="btn-group btn-group-justified single-item">
                 <a class="btn btn-success btn-block" ng-click="vm.setMine = true">
-                    <i class="fa fa-cube fa-lg" aria-hidden="true"></i> CONFIGURAR VARIAVEIS DO SISTEMA
+                    <i class="fa fa-cubes fa-lg" aria-hidden="true"></i> VARIAVEIS DO SISTEMA
                 </a>
             </div>
         </div>
         <div class="panel-body">
             <div class="btn-group btn-group-justified single-item">
                 <a class="btn btn-success btn-block" ng-click="vm.gotoSlave()">
-                    <i class="fa fa-diamond fa-lg" aria-hidden="true"></i> CONFIGURAR APARELHO SLAVE
+                    <i class="fa fa-sign-in fa-lg" aria-hidden="true"></i> APARELHO SLAVE
                 </a>
             </div>
         </div>
+        <br>
+        <p>- RELATÓRIOS -</p>
         <div class="panel-body">
             <div class="btn-group btn-group-justified single-item">
                 <a class="btn btn-success btn-block" ng-click="vm.gotoReports()">
-                    <i class="fa fa-cube fa-lg" aria-hidden="true"></i> RELATÓRIO DE COBRANÇA 
+                    <i class="fa fa-money fa-lg" aria-hidden="true"></i> COBRANÇA 
                 </a>
             </div>
         </div>
         <div class="panel-body">
             <div class="btn-group btn-group-justified single-item">
                 <a class="btn btn-success btn-block" ng-click="vm.gotoUsages()">
-                    <i class="fa fa-cube fa-lg" aria-hidden="true"></i> RELATÓRIO DE USO
+                    <i class="fa fa-bar-chart fa-lg" aria-hidden="true"></i> USO DE SALAS
                 </a>
             </div>
         </div>
         <div class="panel-body">
             <div class="btn-group btn-group-justified single-item">
                 <a class="btn btn-success btn-block" ng-click="vm.gotoRemanejas()">
-                    <i class="fa fa-cube fa-lg" aria-hidden="true"></i> RELATÓRIO DE REMANEJAMENTOS
+                    <i class="fa fa-exchange fa-lg" aria-hidden="true"></i> REMANEJAMENTOS
                 </a>
             </div>
         </div>

@@ -96,7 +96,7 @@ function findByRoomAndRange(roomID, initTime, endTime, callback) {
       return callback(err);
     } else if (!agenda) {
       return callback('Agenda não encontrada');
-    } 
+    }
     return callback(null, agenda);
   });
 };
@@ -113,7 +113,7 @@ function findByRoom(roomID, initTime, endTime, callback) {
       return callback(err);
     } else if (!agenda) {
       return callback('Agenda não encontrada');
-    } 
+    }
     return callback(null, agenda);
   });
 };
@@ -155,26 +155,16 @@ function getAll(callback) {
 
 
 //ExtractionQuery
-function findExtractionRange(user, m, y, callback) {
-  var am = 0, ay = 0;
-  var year = parseInt(y);
-  var month = parseInt(m);
-
-	if(m==12){
-		am = 1;
-		ay = year+1;
-	} else {
-		am = month+1;
-		ay = y;
-	}
-  var initial = month+'/1'+'/'+year;
-  var final = am+'/1'+'/'+ay;
+function findExtractionRange(user, initTime, endTime, callback) {
+  sails.log.info("[AgendaService] findExtractionRange for [" + user + "] and " + initTime + " -> " + endTime);
+  var formatedInitTime = replaceAll(initTime, '-', '/');
+  var formatedEndTime =replaceAll(endTime, '-', '/');
 
 	Agenda.find({
 		responsable: user,
 		date: { 
-			'>=': new Date(initial), 
-			'<': new Date(final)
+			'>=': new Date(formatedInitTime), 
+			'<': new Date(formatedEndTime)
 		}
 	}).exec(function(err, agenda) {
 		if (err) {

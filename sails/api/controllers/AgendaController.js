@@ -52,8 +52,9 @@
 
  function getAgendaListByRoom(req, res) {
    var id = req.params.room;
-   var initDate = req.param.initDate;
-   var endDate = req.param.endDate;
+   var initDate = req.params.init;
+   var endDate = req.params.end;
+   console.log(initDate, endDate);
    AgendaService.findByRoomAndRange(id, initDate, endDate, function(err, agenda) {
      if (err) {
        return res.status(503).send({
@@ -66,9 +67,9 @@
 
   function extractReportForMonth(req, res) {
     var user = req.params.user;
-    var m = req.params.month;
-    var y = req.params.year
-    AgendaService.findExtractionRange(user, m, y, function(err, agenda) {
+    var initDate = req.params.init;
+    var endDate = req.params.end;
+    AgendaService.findExtractionRange(user, initDate, endDate, function(err, agenda) {
     if (err) {
       return res.status(503).send({
         message: err

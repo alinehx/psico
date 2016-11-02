@@ -123,6 +123,7 @@ angular
        controller: 'SlaveCtrl as vm'
     });
     
+    //Reports
     $stateProvider.state('paymentreport', {
       url: '/paymentreport/',
       templateUrl: '/views/paymentreport.html',
@@ -133,7 +134,13 @@ angular
       templateUrl: '/views/usagereport.html',
        controller: 'ExtractorCtrl as vm'
     });
-    
+    $stateProvider.state('remareport', {
+      url: '/remareport/',
+      templateUrl: '/views/remareport.html',
+       controller: 'ExtractorCtrl as vm'
+    });
+    //EndReports
+
     $stateProvider.state('remanejamentos', {
       url: '/remanejamentos',
       templateUrl: '/views/remanejamentos.html',
