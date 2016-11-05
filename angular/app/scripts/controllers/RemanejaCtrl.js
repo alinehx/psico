@@ -144,6 +144,7 @@ app.controller('RemanejaCtrl', function ($scope, $rootScope, $http, alert, authT
 
 	vm.doAccept = function(item){
 		vm.updateRemaneja(item, 'A');
+		$state.go('remanejamentos');
 	}
 
 	vm.doReject = function(item){

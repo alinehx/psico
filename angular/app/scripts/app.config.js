@@ -135,7 +135,7 @@ angular
     });
 
     $stateProvider.state('acceptpage', {
-      url: '/acceptpage/:guest &:agenda',
+      url: '/acceptpage/:guest&:agenda',
       templateUrl: '/views/acceptpage.html',
        controller: 'SlaveCtrl as vm'
     });

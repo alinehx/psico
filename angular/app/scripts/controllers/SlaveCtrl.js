@@ -13,7 +13,9 @@ app.controller('SlaveCtrl', function ($scope, $rootScope, $http, alert, authToke
 	vm.roomList = [];
 	vm.hourList = [];
 	vm.guestList = [];
+
 	vm.agendaDetails = {};
+	vm.guestObject = {};
 
 	vm.actualRoom = null;
 	vm.actualDate = null;
@@ -24,6 +26,56 @@ app.controller('SlaveCtrl', function ($scope, $rootScope, $http, alert, authToke
 	vm.roomState = "";
 
 	vm.isLoading = true;
+
+
+
+	vm.updateGuestAcceptFlag = function(status){
+		var agenda = vm.state.params.agenda;
+		var guest = vm.state.params.guest;
+
+		var newurl = vm.urlGuest + "/" + agenda + "&" + guest;
+		var newObject = {
+			accepted: status
+		}
+		$http.put(newurl, newObject)
+		.success(function (res){
+			$state.go('agendadetails',{
+				agendaID: agenda
+			});
+		})
+		.error(function(err){
+			alert('warning',"FAIL");
+		});
+	};
+
+	vm.setPageInfo = function(){
+		var agenda = vm.state.params.agenda;
+		var guest = vm.state.params.guest;
+		vm.getAgenda(agenda);
+		vm.getGuest(agenda, guest);
+	};
+
+	vm.getAgenda = function(agenda){
+		var newurl = vm.urlAgenda + "/a/" + agenda;
+		$http.get(newurl)
+		.success(function (res){
+			vm.agendaDetails = res;
+		})
+		.error(function(err){
+			alert('warning',"FAIL");
+		});
+	};
+
+	vm.getGuest = function(agenda, guest){
+		var newurl = vm.urlGuest + "/g/" + agenda + "&" + guest;
+		$http.get(newurl)
+		.success(function (res){
+			vm.guestObject = res;
+		})
+		.error(function(err){
+			alert('warning',"FAIL");
+		});
+	};
 
 	vm.loadNecessaryContent = function(){
 		var date = new Date();

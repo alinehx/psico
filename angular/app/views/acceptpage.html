@@ -6,13 +6,13 @@
   <div ng-hide="vm.guestObject.accepted == true">
     <h4>Olá, {{vm.agendaDetails.responsable}} convidou você para comparecer à uma reunião.</h4>
     <h5>Ela acontecerá em {{vm.agendaDetails.date | date : format : timezone}} das {{vm.agendaDetails.initTime}}h, às {{vm.agendaDetails.endTime}}h. </h5>
-    <a class="btn btn-success btn-block " ng-show="true" ng-click="vm.updateGuestAcceptFlag()">
+    <a class="btn btn-success btn-block " ng-show="true" ng-click="vm.updateGuestAcceptFlag(true)">
         <i class="fa fa-check fa-lg" aria-hidden="true"></i> Confirmar Presença
     </a>
   </div>
   <div ng-show="vm.guestObject.accepted == true">
     <h4>Olá, você já confirmou comparecimento à essa reunião. Deseja cancelar seu comparecimento?</h4>
-    <a class="btn btn-danger btn-block " ng-show="true" ng-click="vm.updateGuestAcceptFlag()">
+    <a class="btn btn-danger btn-block " ng-show="true" ng-click="vm.updateGuestAcceptFlag(false)">
         <i class="fa fa-warning fa-lg" aria-hidden="true"></i>  Cancelar Confirmação
     </a>
     <h5>Você poderá confirmar novamente caso mude de ideia.</h5>

@@ -278,7 +278,11 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     var newurl = vm.urlAgenda + "/" + vm.loggedUser.email;
     $http.get(newurl)
     .success(function (res){
-      vm.agendaList = res;
+      res.forEach(function(item){
+        if(item.active == true){
+          vm.agendaList.push(item);
+        }
+      });
     })
     .error(function(err){
       alert('warning', "Error! Cannot Update User. Check your network connection.");
@@ -336,9 +340,10 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
       active: false,
     };
     var newurl = vm.urlAgenda + "/" + id;
-    $http.put(newurl)
+    $http.put(newurl, newAgenda)
       .success(function (res){
         alert('success',"Agendamento cancelado!");
+        console.log(res);
         $state.go('main');
       })
       .error(function(err){
@@ -538,7 +543,6 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
   vm.cleanHourSettings = function(hour){
     var newUrl = vm.urlHour + "/" + hour;
     var newHour = {
-      id: hour,
       available: false,
       agenda: null
     }
