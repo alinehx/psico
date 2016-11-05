@@ -389,29 +389,33 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
   };
 
   vm.initAgenda = function(){
+    vm.isbyroom = true;
     vm.getRoomForAgenda(vm.state.params.name, vm.state.params.location);
   };
 
   vm.loadedHours = {};
+  vm.isbyroom = false;
   vm.validateHourSettings = function(){
-    var configuredDate = document.getElementById('alternate').value;
-    var newUrl = vm.urlHour + '/' + vm.replaceAll(configuredDate, '/', '-') + "&" + vm.agenda.roomID;
-    $http.get(newUrl)
-    .success(function (res){
-      vm.loadedHours = {};
-      if(res == null || res.length == 0){
-        vm.agendaHours.forEach(function(h){
-          vm.createHoursForDay(h[0], h[1], configuredDate);
-        })
-      } else {
-        vm.loadedHours = res.sort(function(a, b) {
-            return a.num - b.num;
-        });
-      }
-    })
-    .error(function(err){
-      alert('warning',"Error! Não foi possivel executar a requisição. " + err.message);
-    });
+    if(vm.isbyroom){
+      var configuredDate = document.getElementById('alternate').value;
+      var newUrl = vm.urlHour + '/' + vm.replaceAll(configuredDate, '/', '-') + "&" + vm.agenda.roomID;
+      $http.get(newUrl)
+      .success(function (res){
+        vm.loadedHours = {};
+        if(res == null || res.length == 0){
+          vm.agendaHours.forEach(function(h){
+            vm.createHoursForDay(h[0], h[1], configuredDate);
+          })
+        } else {
+          vm.loadedHours = res.sort(function(a, b) {
+              return a.num - b.num;
+          });
+        }
+      })
+      .error(function(err){
+        alert('warning',"Error! Não foi possivel executar a requisição. " + err.message);
+      });
+    }
   };
 
   vm.createHoursForDay = function(hour, num, day){
@@ -577,10 +581,114 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     });
   };
 
+  vm.rangeHours = [];
+  vm.generateHoursToSelect = function(){
+    var range = [];
+    console.log("eita");
+    vm.agendaHours.forEach(function(h){
+      range.push(h[0]);
+    });
+    vm.rangeHours = range;
+  };
+
   vm.gotoRemaneja = function(id){
     $state.go('remaneja', { 
       id: id
     });
+  };
+
+  vm.gotoSelectByCalendar = function(id){
+    $state.go('selectbycalendar', { 
+      id: id
+    });
+  };
+
+  //GETBYDATEFIRST VARIABLES
+  vm.allSalas = [];
+  vm.allUnavailableHours = [];
+  vm.allAvailableRooms = [];
+  vm.byDayDate = null;
+  vm.byDayInitHour = null;
+  vm.byDayEndHour = null;
+
+  vm.getAllSalas = function(){
+    $http.get(vm.urlRoom)
+    .success(function (res){
+      alert('success',"Remanejamento solicitado com sucesso!");
+      vm.allSalas = res;
+      vm.findAvailableRooms();
+    })
+    .error(function(err){
+    });
+  };
+
+  vm.startLookingForAvailableRooms = function(){
+    vm.allAvailableRooms = [];
+    var date = document.getElementById('alternate').value;
+    date = vm.replaceAll(date, '/', '-');
+
+    var newurl = vm.urlHour + "/r/" + date;
+    $http.get(newurl)
+    .success(function (res){
+      alert('success',"Remanejamento solicitado com sucesso!");
+      vm.allUnavailableHours = res;
+      vm.getAllSalas();
+    })
+    .error(function(err){
+    });
+  };
+
+  vm.setDateToMDY = function(old){
+    var arr = old.split('-');
+    var newdate = arr[1] + "-" + arr[0] + "-" + arr[2];
+    return newdate;
+  };
+
+    vm.findAvailableRooms = function(){
+    var selectedRange = [];
+    vm.allSalas.forEach(function(sala){
+
+      var isBetween = false;
+      var isOver = false;
+      vm.agendaHours.forEach(function(item){
+        if(item[0] == vm.agenda.initTime){
+          isBetween = true;
+        }
+
+        if(item[0] == vm.agenda.endTime){
+          isOver = true;
+        }
+
+        if(isBetween && !isOver){
+          selectedRange.push(item[1]);
+        }
+      });
+
+      var check = true;
+      vm.allUnavailableHours.forEach(function(hora){
+        
+        if(hora.room == sala.id){
+          selectedRange.forEach(function(hh){
+            if(hh == hora.num){
+              console.log("sala", sala.id);
+              console.log("Hora", hh);
+              check = false;
+            }
+          });
+        }
+      });
+
+      if(check){
+        vm.allAvailableRooms.push(sala);
+      }
+    });
+
+    vm.doFinish(null);
+  };
+
+  vm.chooseRoom = function(roomID){
+    vm.agenda.roomID = roomID;
+    vm.doFinish(null);
   };
 
   vm.prepareHours = function(){
@@ -658,24 +766,35 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
   };
 
   vm.doFinish = function(source){
-    source.isFinished = true;
-    vm.step++;
-  };
-
-  vm.unFinish = function(source){
-    source.isFinished = false;
-    source.labelValue = null;
-    if(vm.step >= 1){
-      vm.step--;
-      if(vm.step == 2){
-        vm.blockHourEnd.labelValue = null;
-      }
-      if(vm.step == 1){
-        vm.blockHourInit.labelValue = null;
-      }
+    if(source == null){
+      vm.step++;
+    }else{
+      vm.step++;
+      source.isFinished = true;
     }
   };
 
+  vm.unFinish = function(source){
+    if(source == null){
+      if(vm.step == 0){
+        $state.go('agendatypes');
+      } else {
+        vm.step--;
+      }
+    } else {
+      source.isFinished = false;
+      source.labelValue = null;
+      if(vm.step >= 1){
+        vm.step--;
+        if(vm.step == 2){
+          vm.blockHourEnd.labelValue = null;
+        }
+        if(vm.step == 1){
+          vm.blockHourInit.labelValue = null;
+        }
+      }
+    }
+  };
 
   //UTILS:
   vm.replaceAll = function(text, cTarget, cNew){

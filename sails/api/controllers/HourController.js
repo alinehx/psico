@@ -68,11 +68,27 @@ function getByRoomDate(req, res) {
     });
  }
 
+ function getByDateFirst(req, res) {
+    var date = req.param('date');
+    
+    sails.log.info("[HourController] - getByDateFirst for " + date);
+    HourService.findByDateFirst(date, function(err, hourList) {
+      if (err) {
+        return res.status(503).send({
+          message: err
+        });
+      }
+      if (hourList) {
+        return res.status(200).send(hourList);
+      }
+    });
+ }
+
  function getByDateRange(req, res) {
     var date = req.param('date');
     var room = req.param('room');
 
-    sails.log.info("[HourController] - getByRoomDate for " + date + ", and room " + room);
+    sails.log.info("[HourController] - getByDateRange for " + date + ", and room " + room);
     HourService.findByDateRange(date, room, function(err, hourList) {
       if (err) {
         return res.status(503).send({
@@ -144,6 +160,7 @@ module.exports = {
    getByRoomDate: getByRoomDate,
    getByDateRange: getByDateRange,
    getByAvailability: getByAvailability,
+   getByDateFirst: getByDateFirst,
    getByAgenda: getByAgenda,
    updateHour: updateHour
  }

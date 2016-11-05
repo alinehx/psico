@@ -7,7 +7,6 @@
 	
 	<div class="panel-body">
 		<div class="panel" style="border: 2px solid black">
-
 			<div class="blockForstep">
 				<!-- ROOM WHICH IS FIXED -->
 				<div class="panel-body text-center step-component done-step">
@@ -16,7 +15,6 @@
 					</a>
 				</div>
 			</div>
-
 			<div class="blockForstep">
 				<!-- DATE -->
 				<div class="panel-body text-center step-component" ng-hide="vm.isActualStep(0)" ng-class="vm.checkFinished(vm.blockDate) ? 'done-step' : ''">
@@ -27,7 +25,6 @@
 						<i class="fa fa-calendar fa-lg" aria-hidden="true"></i> {{vm.blockDate.labelValue | uppercase}}
 					</a>
 				</div>
-
 				<!-- FORM FOR THIS BLOCK -->
 				<div class="panel-body text-center step-component" ng-class="vm.isActualStep(0) ? 'actual-step' : ''" ng-show="vm.isActualStep(0)">
 					<div class="panel-body">

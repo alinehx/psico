@@ -70,7 +70,7 @@ angular
     });
     $stateProvider.state('selectbycalendar', {
       url: '/selectbycalendar/:date',
-      templateUrl: '/views/datesselectbycalendarelection.html',
+      templateUrl: '/views/selectbycalendar.html',
        controller: 'AgendaCtrl as vm',
     });
 

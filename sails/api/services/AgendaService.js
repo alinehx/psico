@@ -79,7 +79,7 @@ function replaceAll(text, cTarget, cNew){
 			}
 		}
 		return text;
-	}
+}
 
 function findByRoomAndRange(roomID, initTime, endTime, callback) {
   sails.log.info("[AgendaService] findByRoomAndRange for [" + roomID + " and " + initTime + " -> " + endTime);

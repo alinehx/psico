@@ -69,6 +69,24 @@ function findByDateRange(date, room, callback) {
   });
 };
 
+function findByDateFirst(date, callback) {
+
+  sails.log.info("[HourService] - findByDateFirst for date ["+ date +"]");
+  sails.log.info("Getting only not available hours.");
+
+  Hour.find({
+    date: date,
+    available: false
+  }).exec(function(err, hour) {
+    if (err) {
+      return callback(err);
+    } else if (!hour) {
+      return callback('Horário não encontrado');
+    }
+    return callback(null, hour);
+  });
+};
+
 function findByRoomDate(date, room, callback) {
   Hour.find({
     date: date,
@@ -122,11 +140,23 @@ function updateHour(hourID, constantjaObject, callback) {
   }); 
 };
 
+function replaceAll(text, cTarget, cNew){
+		while(text.match(cTarget) != null){
+			var res = text.search(cTarget);
+			if(res != -1){
+			text = text.replace(cTarget, cNew);
+			}
+		}
+    console.log('returned text', text);
+		return text;
+}
+
 module.exports = {
   findAll: findAll,
   findHour: findHour,
   findByRoomDate: findByRoomDate,
   findByDateRange: findByDateRange,
+  findByDateFirst: findByDateFirst,
   findByAvailability: findByAvailability,
   findByAgenda: findByAgenda,
   updateHour: updateHour,
