@@ -56,6 +56,8 @@ module.exports.routes = {
   'get /class/u/:room': 'ClassController.getOne',
 
   'post /constants': 'ConstantsController.createConstant',
+  'post /constants/sendreport': 'ConstantsController.sendMail',
+  'post /constants/sendconfirm': 'ConstantsController.sendConfirmMail',
   'get /constants': 'ConstantsController.getAll',
   'get /constants/:constantType': 'ConstantsController.getByType',
   'get /constants/:constantValue': 'ConstantsController.getValue',

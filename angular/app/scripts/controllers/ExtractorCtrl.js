@@ -21,6 +21,30 @@ app.controller('ExtractorCtrl', function ($scope, $rootScope, $http, alert, auth
 	vm.hourForUser = 0;
 
 
+	//SEND MAIL
+	vm.selectedEmail = document.getElementById('inputEmail');
+	vm.urlContants = actualHost + '/constants';
+	vm.sendReportByMail = function(mailName){
+		if(vm.selectedEmail == undefined || vm.selectedEmail == null || vm.selectedEmail == '' ){
+			alert('warning', 'Error! Favor preencher o campo de email.');
+		} else {
+			var obj = {
+				name: mailName,
+				email: vm.selectedEmail,
+				report: vm.textReport
+			};
+
+			var newurl = vm.urlContants + "/sendreport";
+			$http.post(newurl, obj)
+			.success(function (res){
+				alert('success',"E-mail contendo as informações do report foi enviado.");
+			})
+			.error(function(err){
+				alert('warning',"Error! Não foi possivel executar a requisição.");
+			});
+		}
+	};
+
 	vm.setPageInfo = function(){
 		vm.getAllUsers();
 	};
@@ -71,7 +95,7 @@ app.controller('ExtractorCtrl', function ($scope, $rootScope, $http, alert, auth
 		var finalPrice = hourSize * vm.halfHourPrice;
 		if(unique){
 			vm.printInReport("## USUÁRIO " + responsable + "\n");
-			vm.printInReport("## HORAS UTILIZADAS [" + vm.hourForUser + "]\n");
+			vm.printInReport("## HORAS UTILIZADAS [" + hourSize + "]\n");
 			vm.printInReport("## VALOR À SER COBRADO R$" + finalPrice + ",00\n");
 			vm.printInReport("###################################### \n");
 			vm.printInReport("## FIM DO RELATORIO DE USO DE SALAS  \n");
@@ -79,7 +103,7 @@ app.controller('ExtractorCtrl', function ($scope, $rootScope, $http, alert, auth
 			vm.showModal();
 		} else {
 			vm.printInReport("## USUÁRIO " + responsable + "\n");
-			vm.printInReport("## HORAS UTILIZADAS [" + vm.hourForUser + "]\n");
+			vm.printInReport("## HORAS UTILIZADAS [" + hourSize + "]\n");
 			vm.printInReport("## VALOR À SER COBRADO R$" + finalPrice + ",00\n");
 			vm.printInReport("###################################### \n");
 		}
@@ -128,15 +152,19 @@ app.controller('ExtractorCtrl', function ($scope, $rootScope, $http, alert, auth
 		if(agendaList.length < 1){
 			vm.isPrinting = false;
 		}
+		var hrs = 0;
+		console.log(agendaList);
 		agendaList.forEach(function(agenda){
 			var newurl = vm.urlHours + '/u/' + agenda.id;
 
 			$http.get(newurl)
 			.success(function (res){
 				vm.hourForUser = vm.hourForUser + res.length;
+				console.log('res', res);
+				hrs = hrs + res.length;
 				ctrl++;
 				if(ctrl==size){
-					vm.processData(unique, responsable, vm.hourForUser);
+					vm.processData(unique, responsable, hrs);
 				}
 			})
 			.error(function(err){
@@ -175,10 +203,13 @@ app.controller('ExtractorCtrl', function ($scope, $rootScope, $http, alert, auth
 	vm.yearList = [2016,2017,2018];
 
 	vm.initUsageReport = function(){
+		vm.clearPrintFile();
+		vm.textReport = "";
 		vm.getRoomList();
 	};
 
 	vm.prepareDataToExtractByRoom = function(){
+		vm.clearPrintFile();
 		//LIMPAR VARIAVEIS ANTES DE EXECUTAR
 		var room = vm.byRoom;
 		var initDate = vm.init.month + '-' + vm.init.day + '-' + vm.init.year;

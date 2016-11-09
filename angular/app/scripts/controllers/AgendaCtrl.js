@@ -132,6 +132,22 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     });
   };
 
+  vm.sendConfirmMail = function(page, email){
+		var obj = {
+			page: page,
+			email: email
+		};
+
+		var newurl = vm.urlContants + "/sendconfirm";
+		$http.post(newurl, obj)
+		.success(function (res){
+			console.log("Email Enviado");
+		})
+		.error(function(err){
+			alert('warning',"Error! Não foi possivel executar a requisição.");
+		});
+	};
+
   vm.populateGuests = function(guestList, agendaID) { //Recieves the selected list of guests and insert it to db.
     var succ = null;
     guestList.forEach(function(item){
@@ -142,6 +158,8 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
       $http.post(vm.urlGuest, guest)
       .success(function(res){
         succ = true;
+        var mailUrl = vm.urlGuest + "/" + agendaID + "&" + item;
+        vm.sendConfirmMail(mailUrl, guest); //Sending Confim Mails
       })
       .error(function(err){
         if(err.message === 'Autenticação falhou') {
@@ -521,6 +539,7 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     }
     $http.put(newUrl, newHour)
     .success(function(res){
+      console.log(res);
     })
     .error(function(err){
       alert('warning',"Error!", "Não foi possivel executar a requisição." + err.message);
@@ -692,6 +711,7 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
 
   vm.chooseRoom = function(roomID){
     vm.agenda.roomID = roomID;
+    vm.validateHourRange(vm.agenda.initTime, vm.agenda.endTime);
     vm.doFinish(null);
   };
 

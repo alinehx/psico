@@ -2,7 +2,6 @@
 
  var validateConstant = require ('../validate/Constants');
 
- //Add Guest
  function createConstant(req, res){
    var erro = validateConstant.Register(req.body);
    if (erro.length > 0) {
@@ -35,6 +34,32 @@
         });
        }
      });
+   }
+ }
+
+ //Uses Malier
+ function sendMail(req, res){
+   var obj = req;
+   if(obj != null){
+     Mailer.sendReportMail(obj);
+     return res.status(200).send(obj);
+   }else{
+     return res.status(503).send({
+      message: "Não foi possivel enviar o email"
+    });
+   }
+ }
+
+ //Uses Malier
+ function sendConfirmMail(req, res){
+   var obj = req;
+   if(obj != null){
+     Mailer.acceptMeet(obj);
+     return res.status(200).send(obj);
+   }else{
+     return res.status(503).send({
+      message: "Não foi possivel enviar o email"
+    });
    }
  }
 
@@ -104,9 +129,11 @@ function getValue(req, res) {
  }
 
 module.exports = {
-   createConstant: createConstant,
-   getAll: getAll,
-   getByType: getByType,
-   getValue: getValue,
-   updateConstant: updateConstant
+    sendMail: sendMail,
+    sendConfirmMail: sendConfirmMail,
+    createConstant: createConstant,
+    getAll: getAll,
+    getByType: getByType,
+    getValue: getValue,
+    updateConstant: updateConstant
  }
