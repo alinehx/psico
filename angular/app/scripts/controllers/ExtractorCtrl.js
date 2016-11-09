@@ -276,7 +276,9 @@ app.controller('ExtractorCtrl', function ($scope, $rootScope, $http, alert, auth
 			vm.printInReport("## DIA " + vm.formatDateToDisplay(agenda.date) + " \n");
 			vm.printInReport("## DAS " + agenda.initTime + "h ATÉ AS " + agenda.endTime + "h \n");
 		});
-		
+		vm.printInReport("###################################### \n");
+		vm.printInReport("## FIM DA EXTRAÇÃO \n");
+		vm.printInReport("###################################### \n");
 		$('#myModal').modal('show'); 
 	};
 

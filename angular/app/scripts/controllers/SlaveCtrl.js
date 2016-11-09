@@ -102,14 +102,17 @@ app.controller('SlaveCtrl', function ($scope, $rootScope, $http, alert, authToke
 
 	vm.startSlavery = function(roomid){
 		vm.actualDate = new Date();
+		console.log('a');
 		vm.getRoomByID(roomid, vm.actualDate);
 	}
 
 	vm.getRoomByID = function(id, date){
 		var newurl = vm.urlRoom + "/u/" + id;
+		console.log('b');
 		$http.get(newurl)
 		.success(function (res){
 			vm.reflectedRoom = res;
+			console.log('c', res);
 			vm.getHoursForRoomAndDay(id, date);
 		})
 		.error(function(err){
@@ -142,9 +145,11 @@ app.controller('SlaveCtrl', function ($scope, $rootScope, $http, alert, authToke
 	};
 
 	vm.getHoursForRoomAndDay = function(room, date){
+		console.log('d');
 		var newurl = vm.urlHour + "/s/" + date + "&" + room;
 		$http.get(newurl)
 		.success(function (res){
+			console.log('e', res);
 			if(res.length > 0){
 				vm.findAgendaForHour(res);
 			} else{
@@ -172,10 +177,12 @@ app.controller('SlaveCtrl', function ($scope, $rootScope, $http, alert, authToke
 	vm.findAgendaForHour = function(hourList){
 		var preparedHour = prepareHour();
 		var c = 0;
+		console.log('f');
 		hourList.forEach(function(h){
 			if(c == 0 && h.hour == preparedHour){
 				c++;
 				if(h.agenda != null){
+					console.log('g', h);
 					vm.roomState = "OCUPADA";
 					vm.getHoursFromAgenda(h.agenda);
 				} else {
@@ -201,6 +208,7 @@ app.controller('SlaveCtrl', function ($scope, $rootScope, $http, alert, authToke
 
 	vm.getAgendaDetail = function(agendaID){
 		var newurl = vm.urlAgenda + "/a/" + agendaID;
+		console.log('h');
 		$http.get(newurl)
 		.success(function (res){
 			vm.reflectedAgenda = res;

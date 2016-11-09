@@ -4,19 +4,15 @@
   	<table class="table table-striped table-hover" >
 	  <thead>
 	    <tr class="warning">
-    	  <th class="text-center">Ativo?</th>
-	      <th class="text-center">Email</th>
-	      <th>Nome</th>
+	      <th>Nome do participante</th>
 	      <th class="text-center"></th>
 	    </tr>
 	  </thead>
 	  <tbody>
 	    <tr class="active" data-ng-repeat="item in vm.memberList">
-	    	<td class="text-center">{{item.active}}</td>
-	    	<td class="text-center">{{item.email}}</td>
 	    	<td>{{item.name}}</td>
-	    	<td class="text-center">
-		<button type="button" class="btn btn-xs btn-info" ng-click="openMemberDetail(item.email)">editar</button>
+	    	<td class="text-right">
+					<a class="btn btn-primary btn-xs" ng-click="openMemberDetail(item.email)"> DETALHES </a>
 	    	</td>
 	    </tr>
 	  </tbody>

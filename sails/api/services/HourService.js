@@ -42,11 +42,19 @@ function findHour(room, date, hour, callback) {
   });
 };
 
+
+
+
 function setDatePattern(date){
   sails.log.info("[HourService] - Executing setDatePattern");
   var newDate = new Date(date);
   var ds = "";
-  ds = newDate.getDate() + "-";
+  var dia = newDate.getDate()+"";
+  if(dia.length <2){
+    ds = '0' + dia + "-";
+  }else{
+    ds = dia + "-";
+  }
   ds = ds + (newDate.getMonth()+1) + "-";
   ds = ds + newDate.getFullYear();
   return ds;
@@ -54,7 +62,7 @@ function setDatePattern(date){
 
 function findByDateRange(date, room, callback) {
   var transformedDate = setDatePattern(date);
-  sails.log.info("[HourService] - findByDateRange for date [" + transformedDate + "]");
+  sails.log.info("[HourService] - findByDateRange for date [" + transformedDate + "] and room "+ room);
 
   Hour.find({
     date: transformedDate,
@@ -147,7 +155,6 @@ function replaceAll(text, cTarget, cNew){
 			text = text.replace(cTarget, cNew);
 			}
 		}
-    console.log('returned text', text);
 		return text;
 }
 

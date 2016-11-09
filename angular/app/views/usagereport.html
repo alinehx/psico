@@ -78,7 +78,7 @@
           <input type="text" class="form-control" id="inputEmail" placeholder="Email">
         </div>
       </div>
-
+      
     </fieldset>
 
     <a class="btn btn-success btn-block" ng-show="vm.isDataSet(vm.byRoom)" ng-click="vm.prepareDataToExtractByRoom()">
@@ -88,7 +88,7 @@
         <i class="fa fa-asterisk fa-lg" aria-hidden="true"></i> EXTRAIR RELATÓRIO
     </a>
     <br>
-    <a class="btn btn-info btn-block disabled" ng-hide="vm.isMailMissing()" ng-click="vm.prepareDataToExtractByRoom()">
+    <a class="btn btn-info btn-block disabled" ng-hide="vm.isMailMissing()" ng-click="vm.sendReportByMail('Uso de Salas')">
         <i class="fa fa-mail-forward fa-lg" aria-hidden="true"></i> ENVIAR POR E-MAIL
     </a>
 

@@ -10,7 +10,7 @@
 			<div class="blockForstep">
 				<!-- ROOM WHICH IS FIXED -->
 				<div class="panel-body text-center step-component done-step">
-					<a class="btn btn-default disabled done-step" ng-show="true">
+					<a class="btn disabled done-step" ng-show="true">
 						<i class="fa fa-map-marker fa-lg" aria-hidden="true"></i> {{"SALA " + vm.state.params.name | uppercase}}
 					</a>
 				</div>
@@ -18,10 +18,10 @@
 			<div class="blockForstep">
 				<!-- DATE -->
 				<div class="panel-body text-center step-component" ng-hide="vm.isActualStep(0)" ng-class="vm.checkFinished(vm.blockDate) ? 'done-step' : ''">
-					<a class="btn btn-default actual-step disabled" ng-hide="vm.checkFinished(vm.blockDate)">
+					<a class="btn btn-primary actual-step disabled" ng-hide="vm.checkFinished(vm.blockDate)">
 						{{vm.blockDate.labelText | uppercase}}
 					</a>
-					<a class="btn btn-default done-step disabled" ng-show="vm.checkFinished(vm.blockDate)">
+					<a class="btn done-step disabled" ng-show="vm.checkFinished(vm.blockDate)">
 						<i class="fa fa-calendar fa-lg" aria-hidden="true"></i> {{vm.blockDate.labelValue | uppercase}}
 					</a>
 				</div>
@@ -33,12 +33,12 @@
 						<input type="text" id="alternate" ng-hide="true">
 					</div>
 					<div class="btn-group btn-group-justified">
-						<a class="btn btn-default disabled" ng-hide="vm.isDateSelected()">
+						<a class="btn btn-primary disabled" ng-hide="vm.isDateSelected()">
 							<i class="fa fa-asterisk" aria-hidden="true"></i>
 								{{"Favor Escolher um dia" | uppercase}}
 							<i class="fa fa-asterisk" aria-hidden="true"></i>
 						</a>
-						<a ng-click="vm.prepareHours()" class="btn btn-default" ng-show="vm.isDateSelected()">
+						<a ng-click="vm.prepareHours()" class="btn btn-primary" ng-show="vm.isDateSelected()">
 							{{"Escolher Dia" | uppercase}} <i class="fa fa-arrow-right" aria-hidden="true"></i>
 						</a>
 					</div>
@@ -48,10 +48,10 @@
 			<div class="blockForstep">
 				<!-- INIT HOUR -->
 				<div class="panel-body text-center step-component" ng-hide="vm.isActualStep(1)" ng-class="vm.checkFinished(vm.blockHourInit) ? 'done-step' : ''">
-					<a class="btn btn-default disabled" ng-hide="vm.blockHourInit.isFinished">
+					<div ng-hide="vm.blockHourInit.isFinished">
 						{{vm.blockHourInit.labelText | uppercase}}
-					</a>
-					<a class="btn btn-default done-step disabled" ng-show="vm.blockHourInit.isFinished">
+					</div>
+					<a class="btn done-step disabled" ng-show="vm.blockHourInit.isFinished">
 						<i class="fa fa-clock-o fa-lg" aria-hidden="false"></i> {{" Inicio às " + vm.blockHourInit.labelValue + "h" | uppercase}}
 					</a>
 				</div>
@@ -75,10 +75,10 @@
 						</table>
 					</div>
 					<div class="btn-group btn-group-justified">
-						<a ng-click="vm.unFinish(vm.blockHourInit)" class="btn btn-default">
+						<a ng-click="vm.unFinish(vm.blockHourInit)" class="btn btn-primary">
 							<i class="fa fa-arrow-left" aria-hidden="true"></i> Retornar
 						</a>
-						<a ng-click="vm.doFinish(vm.blockHourInit)" class="btn btn-default" ng-show="vm.isDataSelected(vm.agenda.initTime)">
+						<a ng-click="vm.doFinish(vm.blockHourInit)" class="btn btn-primary" ng-show="vm.isDataSelected(vm.agenda.initTime)">
 							Prosseguir <i class="fa fa-arrow-right" aria-hidden="true"></i>
 						</a>
 					</div>
@@ -88,10 +88,10 @@
 			<div class="blockForstep">
 				<!-- END HOUR -->
 				<div class="panel-body text-center step-component" ng-hide="vm.isActualStep(2)" ng-class="vm.checkFinished(vm.blockHourEnd) ? 'done-step' : ''">
-					<a class="btn btn-default disabled" ng-hide="vm.blockHourEnd.isFinished">
+					<div ng-hide="vm.blockHourEnd.isFinished">
 						{{vm.blockHourEnd.labelText | uppercase}}
-					</a>
-					<a class="btn btn-default done-step disabled" ng-show="vm.blockHourEnd.isFinished">
+					</div>
+					<a class="btn done-step disabled" ng-show="vm.blockHourEnd.isFinished">
 						<i class="fa fa-times-circle-o fa-lg" aria-hidden="true"></i> {{" Termina às " + vm.blockHourEnd.labelValue + "h" | uppercase}}
 					</a>
 				</div>
@@ -113,10 +113,10 @@
 						</table>
 					</div>
 					<div class="btn-group btn-group-justified">
-						<a ng-click="vm.unFinish(vm.blockHourEnd)" class="btn btn-default">
+						<a ng-click="vm.unFinish(vm.blockHourEnd)" class="btn btn-primary">
 							<i class="fa fa-arrow-left" aria-hidden="true"></i> Retornar
 						</a>
-						<a ng-click="vm.doFinish(vm.blockHourEnd)" class="btn btn-default" ng-show="vm.isDataSelected(vm.agenda.endTime)">
+						<a ng-click="vm.doFinish(vm.blockHourEnd)" class="btn btn-primary" ng-show="vm.isDataSelected(vm.agenda.endTime)">
 							Prosseguir <i class="fa fa-arrow-right" aria-hidden="true"></i>
 						</a>
 					</div>
@@ -126,10 +126,10 @@
 			<div class="blockForstep">
 				<!-- DETAILS -->
 				<div class="panel-body text-center step-component" ng-hide="vm.isActualStep(3)" ng-class="vm.checkFinished(vm.blockDetail) ? 'done-step' : ''">
-					<a class="btn btn-default disabled" ng-hide="vm.blockDetail.isFinished">
+					<div ng-hide="vm.blockDetail.isFinished">
 						 {{vm.blockDetail.labelText | uppercase}}
-					</a>
-					<a class="btn btn-default done-step disabled" ng-show="vm.blockDetail.isFinished">
+					</div>
+					<a class="btn done-step disabled" ng-show="vm.blockDetail.isFinished">
 						<i class="fa fa-asterisk fa-lg" aria-hidden="true"></i> {{"Detalhes Adicionados!" | uppercase}}
 					</a>
 				</div>
@@ -155,10 +155,10 @@
 						</div>
 					</div>
 					<div class="btn-group btn-group-justified">
-						<a ng-click="vm.unFinish(vm.blockDetail)" class="btn btn-default">
+						<a ng-click="vm.unFinish(vm.blockDetail)" class="btn btn-primary">
 							<i class="fa fa-arrow-left" aria-hidden="true"></i> Retornar
 						</a>
-						<a ng-click="vm.doFinish(vm.blockDetail)" class="btn btn-default" ng-show="vm.isDataFilled()">
+						<a ng-click="vm.doFinish(vm.blockDetail)" class="btn btn-primary" ng-show="vm.isDataFilled()">
 							Prosseguir <i class="fa fa-arrow-right" aria-hidden="true"></i>
 						</a>
 					</div>
@@ -168,10 +168,10 @@
 			<div class="blockForstep">
 				<!-- GUESTS -->
 				<div class="panel-body text-center" ng-hide="vm.isActualStep(4)" ng-class="vm.checkFinished(vm.blockDetail) ? 'done-step' : ''">
-					<a class="btn btn-default disabled" ng-hide="vm.blockGuest.isFinished">
+					<div ng-hide="vm.blockGuest.isFinished">
 						 {{vm.blockGuest.labelText | uppercase}}
-					</a>
-					<a class="btn btn-default done-step disabled" ng-show="vm.blockGuest.isFinished">
+					</div>
+					<a class="btn done-step disabled" ng-show="vm.blockGuest.isFinished">
 						<i class="fa fa-users fa-lg" aria-hidden="true"></i> {{"Convidados Adicionados!" | uppercase}}
 					</a>
 				</div>
@@ -202,10 +202,10 @@
 
 						</div>
 						<div class="btn-group btn-group-justified">
-							<a ng-click="vm.unFinish(vm.blockGuest)" class="btn btn-default">
+							<a ng-click="vm.unFinish(vm.blockGuest)" class="btn btn-primary">
 								<i class="fa fa-arrow-left" aria-hidden="true"></i> Retornar
 							</a>
-							<a ng-click="vm.doFinish(vm.blockGuest)" class="btn btn-default" ng-show="vm.getListSize()">
+							<a ng-click="vm.doFinish(vm.blockGuest)" class="btn btn-primary" ng-show="vm.getListSize()">
 								Prosseguir <i class="fa fa-arrow-right" aria-hidden="true"></i>
 							</a>
 						</div>
@@ -215,7 +215,7 @@
 			<!-- FINISH BLOCK -->
 			<div class="blockForstep">
 				<div class="btn-group btn-group-justified">
-					<a class="btn btn-default last-step" ng-show="vm.isActualStep(5)" ng-click="vm.unFinish(vm.nothing)">
+					<a class="btn btn-primary last-step" ng-show="vm.isActualStep(5)" ng-click="vm.unFinish(vm.nothing)">
 						<div class="panel-body text-center">
 							<div class="panel-body">
 								<div class="btn-group btn-group-justified">
@@ -224,7 +224,7 @@
 							</div>
 						</div>
 					</a>
-					<a class="btn btn-default last-step" ng-show="vm.isActualStep(5)" ng-click="vm.configureAgendaAndSubmit()">
+					<a class="btn btn-primary last-step" ng-show="vm.isActualStep(5)" ng-click="vm.configureAgendaAndSubmit()">
 						<div class="panel-body text-center">
 							<div class="panel-body">
 								<div class="btn-group btn-group-justified">
@@ -240,6 +240,10 @@
 
 
   <div class="panel panel-footer">
-		<button type="button" class="btn btn-default" ng-click="backToMain()">Voltar</button>
+	<div ng-click="vm.backToMain()">
+		<a class="btn btn-primary btn-md btn-block">
+			<i class="fa text-black fa-arrow-left fa-lg" aria-hidden="true"></i> {{"VOLTAR PARA A PAGINA INICIAL" | uppercase}}
+		</a>
+	</div>
   </div>
 </div>

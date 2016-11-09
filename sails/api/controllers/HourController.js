@@ -95,7 +95,7 @@ function getByRoomDate(req, res) {
           message: err
         });
       }
-      if (hourList) { 
+      if (hourList) {
         return res.status(200).send(hourList);
       }
     });

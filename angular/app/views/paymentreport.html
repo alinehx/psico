@@ -95,7 +95,7 @@
     <a class="btn btn-success btn-block" ng-show="vm.isDataSet(vm.isTotal)" ng-click="vm.initPaymentReport(null)">
         <i class="fa fa-bar-chart fa-lg" aria-hidden="true"></i> EXTRAÇÃO COMPLETA
     </a>
-    <a class="btn btn-info btn-block disabled" ng-hide="vm.isMailMissing()" ng-click="vm.prepareDataToExtractByRoom()">
+    <a class="btn btn-info btn-block disabled" ng-hide="vm.isMailMissing()" ng-click="vm.sendReportByMail('Cobrança')">
         <i class="fa fa-mail-forward fa-lg" aria-hidden="true"></i> ENVIAR POR E-MAIL
     </a>
   </form>
