@@ -1,14 +1,18 @@
 'use strict';
 
 app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authToken, $state, $cookies, globalized) {
+  //GLOBAL
   var actualHost = globalized;
   var vm = this;
+  var globalTotalHours = 36;
+
   vm.state = $state;
   vm.urlAgenda = actualHost + '/agenda';
   vm.urlRemaneja = actualHost + '/remaneja';
   vm.urlGuest = actualHost + '/guest';
   vm.urlRoom = actualHost + '/class';
   vm.urlHour = actualHost + '/hours';
+  vm.urlContants = actualHost + '/constants';
 
   //SETTINGS SECTION
   vm.agendaTypes = ['Treinamento', 'Consulta', 'Reunião'];
@@ -132,12 +136,12 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     });
   };
 
-  vm.sendConfirmMail = function(page, email){
+  vm.sendConfirmMail = function(page, guest){
 		var obj = {
 			page: page,
-			email: email
+			email: guest.guest
 		};
-
+    console.log(guest.guest);
 		var newurl = vm.urlContants + "/sendconfirm";
 		$http.post(newurl, obj)
 		.success(function (res){
@@ -425,7 +429,7 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
       $http.get(newUrl)
       .success(function (res){
         vm.loadedHours = {};
-        if(res == null || res.length == 0){
+        if(res == null || res.length < globalTotalHours){
           vm.agendaHours.forEach(function(h){
             vm.createHoursForDay(h[0], h[1], configuredDate);
           })
@@ -485,15 +489,17 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     var end = en.num;
     var isOk = true;
     var availableRange = [];
-    vm.loadedHours.forEach(function(item){
-      var actual = item.num;
-      if (actual >= init && actual < end){
-        availableRange.push(item);
-        if(!item.available){
-          isOk = false;
+    if(vm.loadedHours.length > 1){
+      vm.loadedHours.forEach(function(item){
+        var actual = item.num;
+        if (actual >= init && actual < end){
+          availableRange.push(item);
+          if(!item.available){
+            isOk = false;
+          }
         }
-      }
-    });
+      });
+    }
     if(isOk){
       vm.availableRange = availableRange;
     }

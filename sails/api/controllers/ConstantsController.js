@@ -39,7 +39,7 @@
 
  //Uses Malier
  function sendMail(req, res){
-   var obj = req;
+   var obj = req.body;
    if(obj != null){
      Mailer.sendReportMail(obj);
      return res.status(200).send(obj);
@@ -52,7 +52,7 @@
 
  //Uses Malier
  function sendConfirmMail(req, res){
-   var obj = req;
+   var obj = req.body;
    if(obj != null){
      Mailer.acceptMeet(obj);
      return res.status(200).send(obj);

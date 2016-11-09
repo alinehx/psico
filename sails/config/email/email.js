@@ -1,8 +1,8 @@
 module.exports.email = {
-	service: 'Mailgun',
+	service: 'Hotmail',
 	auth: {
-	user: 'easymeet.service@gmail.com', 
-	pass: 'teste@42'
+		user: 'easymeet.contato@hotmail.com', 
+		pass: 'teste@42'
 	},
 	templateDir: 'api/emailTemplates',
 	from: 'admin@easymeet.com',
