@@ -311,7 +311,7 @@ app.controller('ExtractorCtrl', function ($scope, $rootScope, $http, alert, auth
 	//REMANEJA REPORT
 	vm.initRemanejaReport = function(){
 		vm.clearPrintFile();
-
+		console.log('a');
 		var initDate = vm.init.month + '-' + vm.init.day + '-' + vm.init.year;
 		var endDate = vm.end.month + '-' + vm.end.day + '-' + vm.end.year;
 
@@ -326,10 +326,11 @@ app.controller('ExtractorCtrl', function ($scope, $rootScope, $http, alert, auth
 	};
 
 	vm.getAllRemanejas = function(initDate, endDate){
-
+		console.log('b');
 		var newurl = vm.urlRemaneja + '/extract/' + initDate + "&" + endDate;
 		$http.get(newurl)
 		.success(function (res){
+			console.log('c', res);
 			if(res.length > 0){
 				vm.printRemanejas(res);
 			} else {
@@ -389,7 +390,11 @@ app.controller('ExtractorCtrl', function ($scope, $rootScope, $http, alert, auth
 	};
 
 	vm.printNoneRemaneja = function(){
-
+		vm.printInReport("## SEM SOLICITAÇÕES PARA O PERIODO  \n");
+		vm.printInReport("###################################### \n");
+		vm.printInReport("## FIM DO RELATÓRIO  \n");
+		vm.printInReport("###################################### \n");
+		vm.showModal();
 	};
 
 	//Check

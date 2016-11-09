@@ -1,4 +1,4 @@
-<div class="jumbotron" data-ng-init="vm.startSlavery(vm.state.params.room)" ng-class="!vm.canShowAgendaInfo() ? 'done-step' : 'occupied'">
+<div class="jumbotron" data-ng-init="vm.startSlavery(vm.state.params.room)" ng-class="!vm.canShowAgendaInfo() ? 'not-occupied' : 'occupied'">
         <div class="panel-heading text-center" ng-show="vm.isLoading">
             <h1>CARREGANDO <i class="fa fa-hourglass fa-spin fa-1x" aria-hidden="true"></i></h4>
         </div>
