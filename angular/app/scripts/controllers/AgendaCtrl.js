@@ -603,7 +603,7 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     $http.post(vm.urlRemaneja, rema)
     .success(function (res){
       alert('success',"Remanejamento solicitado com sucesso!");
-      vm.gotoRemaneja(res.id);
+      vm.gotoRemaneja(res.remaneja.id);
     })
     .error(function(err){
       alert('warning',"Error! Não foi possivel executar a requisição. " + err.message);
@@ -621,6 +621,7 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
   };
 
   vm.gotoRemaneja = function(id){
+    console.log(id);
     $state.go('remaneja', { 
       id: id
     });

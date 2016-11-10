@@ -177,12 +177,10 @@ app.controller('SlaveCtrl', function ($scope, $rootScope, $http, alert, authToke
 	vm.findAgendaForHour = function(hourList){
 		var preparedHour = prepareHour();
 		var c = 0;
-		console.log('f');
 		hourList.forEach(function(h){
 			if(c == 0 && h.hour == preparedHour){
 				c++;
 				if(h.agenda != null){
-					console.log('g', h);
 					vm.roomState = "OCUPADA";
 					vm.getHoursFromAgenda(h.agenda);
 				} else {
@@ -190,6 +188,9 @@ app.controller('SlaveCtrl', function ($scope, $rootScope, $http, alert, authToke
 					vm.roomState = "LIVRE";
 					vm.buildEmptyRoom();
 				}
+			}else{
+				alert('info', 'Não foi possivel carregar, o horario atual [' + preparedHour + '] nao é comercial.');
+				vm.buildEmptyRoom();
 			}
 		});
 	};

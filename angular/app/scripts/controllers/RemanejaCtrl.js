@@ -88,11 +88,13 @@ app.controller('RemanejaCtrl', function ($scope, $rootScope, $http, alert, authT
 
 	vm.getByTarget = function (user){
 		var newurl = vm.urlRemaneja + "/rt/" + user;
-
+		console.log(newurl);
 		$http.get(newurl)
 		.success(function (res){
+			console.log(res);
 			vm.forMe = res;
-			if(vm.toMe.length == 0){
+			console.log(vm.forMe);
+			if(vm.forMe.length == 0 && vm.toMe.length == 0){
 				vm.hasNone = true;
 			}
 		})
@@ -106,7 +108,7 @@ app.controller('RemanejaCtrl', function ($scope, $rootScope, $http, alert, authT
 		$http.get(newurl)
 		.success(function (res){
 			vm.toMe = res;
-			if(vm.toMe.length == 0){
+			if(vm.forMe.length == 0 && vm.toMe.length == 0){
 				vm.hasNone = true;
 			}
 		})
@@ -119,7 +121,6 @@ app.controller('RemanejaCtrl', function ($scope, $rootScope, $http, alert, authT
 		var newurl = vm.urlRemaneja;
 		$http.get(newurl)
 		.success(function (res){
-
 			alert('success',"Requisição realizada com sucesso.");
 		})
 		.error(function(err){
@@ -135,7 +136,7 @@ app.controller('RemanejaCtrl', function ($scope, $rootScope, $http, alert, authT
 		};
 		$http.put(preparedUrl, newRemaneja)
 		.success(function(res){
-			alert('success','Sucesso!', 'Resposta efetuada com sucesso.');
+			alert('success','Sucesso!', 'Resposta enviada com sucesso.');
 		})
 		.error(function(err){
 			alert('warning',"Error!", "Não foi possivel executar a requisição." + err);
@@ -144,12 +145,18 @@ app.controller('RemanejaCtrl', function ($scope, $rootScope, $http, alert, authT
 
 	vm.doAccept = function(item){
 		vm.updateRemaneja(item, 'A');
-		$state.go('remanejamentos');
 	}
 
 	vm.doReject = function(item){
 		vm.updateRemaneja(item, 'R');
 	}
+
+	vm.isEmpty = function(item){
+		if(item.length < 1){
+			return true;
+		}
+		return false;
+	};
 
 	vm.isWaiting = function(response){
 		return response.status;
