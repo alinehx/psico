@@ -183,14 +183,10 @@ app.controller('SlaveCtrl', function ($scope, $rootScope, $http, alert, authToke
 				if(h.agenda != null){
 					vm.roomState = "OCUPADA";
 					vm.getHoursFromAgenda(h.agenda);
-				} else {
-					//TODO
+				} else {//FIXME QUANDO O HORARIO É APOS O ULTIMO CADASTRADO
 					vm.roomState = "LIVRE";
 					vm.buildEmptyRoom();
 				}
-			}else{
-				alert('info', 'Não foi possivel carregar, o horario atual [' + preparedHour + '] nao é comercial.');
-				vm.buildEmptyRoom();
 			}
 		});
 	};
