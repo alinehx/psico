@@ -102,17 +102,14 @@ app.controller('SlaveCtrl', function ($scope, $rootScope, $http, alert, authToke
 
 	vm.startSlavery = function(roomid){
 		vm.actualDate = new Date();
-		console.log('a');
 		vm.getRoomByID(roomid, vm.actualDate);
 	}
 
 	vm.getRoomByID = function(id, date){
 		var newurl = vm.urlRoom + "/u/" + id;
-		console.log('b');
 		$http.get(newurl)
 		.success(function (res){
 			vm.reflectedRoom = res;
-			console.log('c', res);
 			vm.getHoursForRoomAndDay(id, date);
 		})
 		.error(function(err){
@@ -145,11 +142,9 @@ app.controller('SlaveCtrl', function ($scope, $rootScope, $http, alert, authToke
 	};
 
 	vm.getHoursForRoomAndDay = function(room, date){
-		console.log('d');
 		var newurl = vm.urlHour + "/s/" + date + "&" + room;
 		$http.get(newurl)
 		.success(function (res){
-			console.log('e', res);
 			if(res.length > 0){
 				vm.findAgendaForHour(res);
 			} else{
@@ -166,6 +161,9 @@ app.controller('SlaveCtrl', function ($scope, $rootScope, $http, alert, authToke
 		var actualHour = parseInt(date.getHours());
 		var actualMin = date.getMinutes();
 		var preparedHour = "";
+		if((actualHour + "").length == 1){
+			actualHour = '0' + actualHour;
+		}
 		if(actualMin >= 30){
 			preparedHour = actualHour + ":30";
 		} else{
@@ -181,9 +179,11 @@ app.controller('SlaveCtrl', function ($scope, $rootScope, $http, alert, authToke
 			if(c == 0 && h.hour == preparedHour){
 				c++;
 				if(h.agenda != null){
+
 					vm.roomState = "OCUPADA";
 					vm.getHoursFromAgenda(h.agenda);
 				} else {//FIXME QUANDO O HORARIO É APOS O ULTIMO CADASTRADO
+					
 					vm.roomState = "LIVRE";
 					vm.buildEmptyRoom();
 				}
@@ -205,7 +205,6 @@ app.controller('SlaveCtrl', function ($scope, $rootScope, $http, alert, authToke
 
 	vm.getAgendaDetail = function(agendaID){
 		var newurl = vm.urlAgenda + "/a/" + agendaID;
-		console.log('h');
 		$http.get(newurl)
 		.success(function (res){
 			vm.reflectedAgenda = res;
@@ -272,7 +271,6 @@ app.controller('SlaveCtrl', function ($scope, $rootScope, $http, alert, authToke
 			var pHour = configureTime(t.hours);
 			var pMin = configureTime(t.minutes);
 			var pSec = configureTime(t.seconds);
-
 			clock.innerHTML = 	'' + pHour + ':' + pMin + ':' + pSec;
 			if(t.total <= 0){
 				clearInterval(timeinterval);
