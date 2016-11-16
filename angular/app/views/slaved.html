@@ -12,7 +12,11 @@
         </div>
         <div class="panel-body text-left" ng-show="vm.canShowAgendaInfo()">
             <h3 class="text-center">FICHA TECNICA DO AGENDAMENTO</h3>
+            <div class="text-center">
+            <i class="fa fa-arrow-down fa-4x" aria-hidden="true"></i>
+            </div>
             <br>
+            <h4>{{vm.reflectedAgenda.type | uppercase}}</h4>
             <h4>{{"agendado por " + vm.reflectedUser.name | uppercase}}</h4>
             <h4>{{"assunto: " + vm.reflectedAgenda.subject | uppercase}}</h4>
             <h6>{{"descrição: " + vm.reflectedAgenda.description | uppercase}}</h6>
@@ -26,8 +30,8 @@
                 <table class="table table-striped table-hover" style="border:1px solid #666">
                     <tr data-ng-repeat="item in vm.guestList track by $index">
                         <td>{{item.guest}}</td>
-                        <td ng-show="item.accepted">PRESENÇA CONFIRMADA</td>
-                        <td ng-hide="item.accepted">PRESENÇA NÃO CONFIRMADA</td>
+                        <td ng-show="item.accepted">CONFIRMADO</td>
+                        <td ng-hide="item.accepted">NÃO CONFIRMADO</td>
                     </tr>
                 </table>
             </div>
