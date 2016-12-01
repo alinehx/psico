@@ -61,25 +61,29 @@
 					<div class="panel-body">
 						
 						<div class="step-header">{{"Selecione a Hora de inicio da reserva"}}</div>
-						
-						<table class="table table-striped table-hover" style="border:1px solid #666">
-							<tr data-ng-repeat="hr in vm.loadedHours" ng-class="hr.available ? '' : 'danger'">
-								<td>{{hr.hour}}</td>
-								<!-- REMANEJAMENTO -->
-								<td ng-hide="hr.available">{{"RESERVADO"}}</td>
-								<td ng-hide="hr.available" ng-click="vm.remanejaForAgenda(hr)">REMANEJAR</td>
-								<!-- AGENDAMENTO -->
-								<td ng-show="hr.available">{{"LIVRE"}}</td>
-								<td ng-show="hr.available" ng-click="vm.selectHour(hr, vm.blockHourInit)">SELECIONAR</td>
-							</tr>
-						</table>
+
+						<div ng-class="text-center" ng-hide="vm.isHourListLoaded()">
+							<h3>CARREGANDO HORARIOS</h3>
+							<i class="fa fa-asterisk fa-lg fa-spin" aria-hidden="false"></i>
+						</div>
+
+						<div ng-show="vm.isHourListLoaded()">
+							<table class="table table-striped table-hover" style="border:1px solid #666">
+								<tr data-ng-repeat="hr in vm.loadedHours" ng-class="hr.available ? '' : 'danger'">
+									<td>{{hr.hour}}</td>
+									<!-- REMANEJAMENTO -->
+									<td ng-hide="hr.available">{{"RESERVADO"}}</td>
+									<td ng-hide="hr.available" ng-click="vm.remanejaForAgenda(hr)">REMANEJAR</td>
+									<!-- AGENDAMENTO -->
+									<td ng-show="hr.available">{{"LIVRE"}}</td>
+									<td ng-show="hr.available" ng-click="vm.selectHour(hr, vm.blockHourInit)">SELECIONAR</td>
+								</tr>
+							</table>
+						</div>
 					</div>
 					<div class="btn-group btn-group-justified">
 						<a ng-click="vm.unFinish(vm.blockHourInit)" class="btn btn-primary">
 							<i class="fa fa-arrow-left" aria-hidden="true"></i> Retornar
-						</a>
-						<a ng-click="vm.doFinish(vm.blockHourInit)" class="btn btn-primary" ng-show="vm.isDataSelected(vm.agenda.initTime)">
-							Prosseguir <i class="fa fa-arrow-right" aria-hidden="true"></i>
 						</a>
 					</div>
 				</div>
@@ -101,14 +105,12 @@
 					<div class="panel-body">
 						<div class="step-header">{{"Agora selecione o horario de termino"}}</div>
 						<table class="table table-striped table-hover" style="border:1px solid #666">
-							<tr data-ng-repeat="hr in vm.loadedHours" ng-class="vm.validateHour(hr) ? '' : 'danger'">
-								<td>{{hr.hour}}</td>
-								<!-- REMANEJAMENTO -->
-								<td ng-hide="vm.validateHour(hr)">{{"RESERVADO"}}</td>
-								<td ng-hide="vm.validateHour(hr)" ng-click="vm.requestRemaneja(hr.hour)">REMANEJAR</td>
+							<tr data-ng-repeat="hr in vm.endHourList">
+								<td ng-show="vm.isFirstRow(hr)" class="success">{{hr}}</td>
+								<td ng-hide="vm.isFirstRow(hr)">{{hr}}</td>
 								<!-- AGENDAMENTO -->
-								<td ng-show="vm.validateHour(hr)">{{"LIVRE"}}</td>
-								<td ng-show="vm.validateHour(hr)" ng-click="vm.selectEndHour(hr, vm.blockHourEnd)">SELECIONAR</td>
+								<td ng-show="vm.isFirstRow(hr)" class="success">{{"ESCOLHIDO"}}</td>
+								<td ng-hide="vm.isFirstRow(hr)" ng-click="vm.selectEndHour(hr, vm.blockHourEnd)">SELECIONAR</td>
 							</tr>
 						</table>
 					</div>
@@ -185,7 +187,7 @@
 							<div class="form-group">
 								<div class="input-group">
 									<span class="input-group-addon">Email</span>
-									<input type="text" ng-class="vm.validateGuestMail() ? 'has-success' : 'has-error'" class="form-control has-error" id="guestMail" ng-model="vm.guestMail.email">
+									<input type="text" id="guestmail" ng-class="vm.validateGuestMail() ? 'has-success' : 'has-error'" class="form-control has-error" id="guestMail" ng-model="vm.guestMail.email">
 									<span class="input-group-btn">
 									<button class="btn btn-success" type="button" ng-click="vm.addToGuestList()">+</button>
 								</span>
@@ -193,9 +195,17 @@
 							</div>
 
 							<table class="table table-striped table-hover" style="border:1px solid #666">
+								<tr class="text-center info">
+									<td>Convidado</td>
+									<td>Opção</td>
+								</tr>
+
+								<tr ng-show="vm.hasNoGuestList()">
+									<td colspan="2">{{"Favor adicionar ao menos um convidado"}}</td>
+								</tr>
+
 								<tr data-ng-repeat="item in vm.guestList track by $index">
-									<td>Convidado: </td>
-									<td>{{item}}</td>
+									<td>{{item.toString().split("@")[0]}}</td>
 									<td ng-click="vm.removeGuestFromList(item)">REMOVER</td>
 								</tr>
 							</table>

@@ -4,18 +4,46 @@ app.controller('RoomCtrl', function ($scope, $rootScope, $http, alert, authToken
   var actualHost = globalized;
   var vm = this;
   vm.state = $state;
-  $scope.tiposSala = ["Consulta", "Treinamento", "Reunião"];
   vm.url = actualHost + '/class';
 
   $scope.room = {
       name: null,
       location: null,
-      typeClass: null,
       description: null,
+      price: null,
       size: null
   };
 
-  $scope.submit = function () {
+  vm.check = {
+    c1: null,
+    c2: null,
+    c3: null,
+    c4: null,
+    c5: null
+  }
+
+  vm.validateCheckDesc = function(){
+    console.log("Sta");
+    //FIX > Tirar Mockzinho, deixar dinamico.
+    var newText = "Sala possuí ";
+    var hasAtLeastOne = false;
+    if(vm.check.c1){ newText = newText + "Projetor; "; hasAtLeastOne = true; }
+    if(vm.check.c2){ newText = newText + "Ar Condicionado; "; hasAtLeastOne = true; }
+    if(vm.check.c3){ newText = newText + "Mesa; "; hasAtLeastOne = true; }
+    if(vm.check.c4){ newText = newText + "Ventilador; "; hasAtLeastOne = true; }
+    if(vm.check.c5){ newText = newText + "Tomada; "; hasAtLeastOne = true; }
+
+    if(hasAtLeastOne == true){
+      $scope.room.description = newText;
+      console.log($scope.room.price);
+      vm.submit();
+    }
+    else{
+      alert("warning", "Erro!", "Favor escolher ao menos um atributo de descrição da sala.");
+    }
+  };
+
+  vm.submit = function () {
     $http.post(vm.url, $scope.room)
     .success(function (res) {
       alert('success','Ok!', 'Sala registrada com sucesso');
@@ -23,7 +51,7 @@ app.controller('RoomCtrl', function ($scope, $rootScope, $http, alert, authToken
     })
     .error(function (err) {
       if(err.message === 'Autenticação falhou') {
-        alert('warning', 'Erro!', 'Você precisa estar autenticado para cadastrar uma sala');
+        alert('warning', 'Erro!', 'Você precisa estar autenticado para cadastrar uma sala.');
       } else {
     	  alert('warning', 'Erro!', 'Não foi possível registrar a sala.');
       }
@@ -78,7 +106,9 @@ app.controller('RoomCtrl', function ($scope, $rootScope, $http, alert, authToken
       name: vm.roomDetail.name,
       location: vm.roomDetail.location,
       typeClass: vm.roomDetail.typeClass,
-      description: vm.roomDetail.description
+      description: vm.roomDetail.description,
+      size: vm.roomDetail.size,
+      price: vm.roomDetail.price
     };
 
     var newurl = vm.url + "/" + vm.roomName + "&" + vm.roomLocation;

@@ -47,6 +47,7 @@ app.controller('ExtractorCtrl', function ($scope, $rootScope, $http, alert, auth
 
 	vm.setPageInfo = function(){
 		vm.getAllUsers();
+		vm.getRoomList();
 	};
 
 	vm.getAllUsers = function(){
@@ -71,7 +72,6 @@ app.controller('ExtractorCtrl', function ($scope, $rootScope, $http, alert, auth
 		vm.printInReport("## DE ~ " + vm.init.day + ' / ' + vm.init.month + ' / ' + vm.init.year  + " \n");
 		vm.printInReport("## ATÉ ~ " + vm.end.day + ' / ' + vm.end.month + ' / ' + vm.end.year  + " \n");
 		vm.printInReport("## \n");
-		vm.printInReport("## VALOR DE COBRANÇA POR HORA  R$" + vm.halfHourPrice + ",00\n");
 		vm.printInReport("###################################### \n");
 
 		if(user == null){
@@ -91,21 +91,20 @@ app.controller('ExtractorCtrl', function ($scope, $rootScope, $http, alert, auth
 	};
 
 
-	vm.processData = function(unique, responsable, hourSize){
-		var finalPrice = hourSize * vm.halfHourPrice;
+	vm.processData = function(unique, responsable, hourSize, halfHourPrice){
 		if(unique){
-			vm.printInReport("## USUÁRIO " + responsable + "\n");
-			vm.printInReport("## HORAS UTILIZADAS [" + hourSize + "]\n");
-			vm.printInReport("## VALOR À SER COBRADO R$" + finalPrice + ",00\n");
-			vm.printInReport("###################################### \n");
-			vm.printInReport("## FIM DO RELATORIO DE USO DE SALAS  \n");
-			vm.printInReport("###################################### \n");
+			vm.printInReport(" USUÁRIO " + responsable + "\n");
+			vm.printInReport(" HORAS UTILIZADAS [" + hourSize + "]\n");
+			vm.printInReport(" VALOR À SER COBRADO R$" + halfHourPrice + ",00\n");
+			vm.printInReport(" \n");
+			vm.printInReport(" FIM DO RELATORIO DE USO DE SALAS  \n");
+			vm.printInReport(" \n");
 			vm.showModal();
 		} else {
-			vm.printInReport("## USUÁRIO " + responsable + "\n");
-			vm.printInReport("## HORAS UTILIZADAS [" + hourSize + "]\n");
-			vm.printInReport("## VALOR À SER COBRADO R$" + finalPrice + ",00\n");
-			vm.printInReport("###################################### \n");
+			vm.printInReport(" USUÁRIO " + responsable + "\n");
+			vm.printInReport(" HORAS UTILIZADAS [" + hourSize + "]\n");
+			vm.printInReport(" VALOR À SER COBRADO R$" + halfHourPrice + ",00\n");
+			vm.printInReport(" \n");
 		}
 	};
 
@@ -146,25 +145,35 @@ app.controller('ExtractorCtrl', function ($scope, $rootScope, $http, alert, auth
 	
 
 	vm.executeHourExtraction = function(unique, responsable, agendaList){
+		var roomListForUser = [];
 		var size = agendaList.length;
 		var ctrl = 0;
+		var hrs = 0;
+		var price = 0;
 
 		if(agendaList.length < 1){
 			vm.isPrinting = false;
 		}
-		var hrs = 0;
-		console.log(agendaList);
+
 		agendaList.forEach(function(agenda){
 			var newurl = vm.urlHours + '/u/' + agenda.id;
 
 			$http.get(newurl)
 			.success(function (res){
-				vm.hourForUser = vm.hourForUser + res.length;
-				console.log('res', res);
+				// vm.hourForUser = vm.hourForUser + res.length;
+
 				hrs = hrs + res.length;
 				ctrl++;
+
+				vm.roomList.forEach(function(r){
+					if(r.id == agenda.roomID){
+						price = price + (res.length * r.price);
+						console.log('H: ' + res.length + ", P: " + r.price);
+					}
+				});
+
 				if(ctrl==size){
-					vm.processData(unique, responsable, hrs);
+					vm.processData(unique, responsable, hrs, price);
 				}
 			})
 			.error(function(err){
@@ -176,10 +185,10 @@ app.controller('ExtractorCtrl', function ($scope, $rootScope, $http, alert, auth
 
 	vm.printNoneAction = function(user){
 		var finalPrice = 0;
-		vm.printInReport("## USUÁRIO " + user + "\n");
-		vm.printInReport("## NÃO POSSUÍ AGENDAMENTOS NO PERIODO \n");
-		vm.printInReport("## [SEM COBRANÇA] \n");
-		vm.printInReport("###################################### \n");
+		vm.printInReport(" USUÁRIO " + user + "\n");
+		vm.printInReport(" NÃO POSSUÍ AGENDAMENTOS NO PERIODO \n");
+		vm.printInReport(" [SEM COBRANÇA] \n");
+		vm.printInReport(" \n");
 
 		vm.showModal();
 	};
@@ -215,7 +224,7 @@ app.controller('ExtractorCtrl', function ($scope, $rootScope, $http, alert, auth
 		var initDate = vm.init.month + '-' + vm.init.day + '-' + vm.init.year;
 		var endDate = vm.end.month + '-' + vm.end.day + '-' + vm.end.year;
 
-		vm.printInReport("#####################################\n");
+		vm.printInReport(" \n");
 		vm.searchRoom(vm.byRoom, initDate, endDate);
 	};
 
@@ -227,7 +236,7 @@ app.controller('ExtractorCtrl', function ($scope, $rootScope, $http, alert, auth
 		});
 	};
 
-	vm.getRoomList = function (roomID){
+	vm.getRoomList = function (){
 		var newurl = vm.urlRoom;
 		$http.get(newurl)
 		.success(function (res){
@@ -242,11 +251,11 @@ app.controller('ExtractorCtrl', function ($scope, $rootScope, $http, alert, auth
 		var newurl = vm.urlRoom + '/u/' + room.id;
 		$http.get(newurl)
 		.success(function (res){
-			vm.printInReport("## SALA [" + res.name + "] - [" + res.location + "]\n");
-			vm.printInReport("## UTILIZADA PARA [" + res.typeClass + "]\n");
-			vm.printInReport("## \n");
-			vm.printInReport("## DE " + vm.init.day + ' / ' + vm.init.month + ' / ' + vm.init.year  + " \n");
-			vm.printInReport("## ATÉ " + vm.end.day + ' / ' + vm.end.month + ' / ' + vm.end.year  + " \n");
+			vm.printInReport(" SALA [" + res.name + "] - [" + res.location + "]\n");
+			vm.printInReport(" UTILIZADA PARA [" + res.typeClass + "]\n");
+			vm.printInReport(" \n");
+			vm.printInReport(" DE " + vm.init.day + ' / ' + vm.init.month + ' / ' + vm.init.year  + " \n");
+			vm.printInReport(" ATÉ " + vm.end.day + ' / ' + vm.end.month + ' / ' + vm.end.year  + " \n");
 			vm.extractAgendaByRoom(res.id, initDate, endDate);
 		})
 		.error(function(err){
@@ -270,15 +279,15 @@ app.controller('ExtractorCtrl', function ($scope, $rootScope, $http, alert, auth
 		vm.printInReport("## A SALA TEVE [" + vm.agendaList.length + "] AGENDAMENTOS \n");
 
 		vm.agendaList.forEach(function(agenda){
-			vm.printInReport("###################################### \n");
-			vm.printInReport("## AGENDAMENTO " + agenda.id + " \n");
-			vm.printInReport("## RESPONSAVEL " + agenda.responsable + " \n");
-			vm.printInReport("## DIA " + vm.formatDateToDisplay(agenda.date) + " \n");
-			vm.printInReport("## DAS " + agenda.initTime + "h ATÉ AS " + agenda.endTime + "h \n");
+			vm.printInReport(" \n");
+			vm.printInReport(" AGENDAMENTO " + agenda.id + " \n");
+			vm.printInReport(" RESPONSAVEL " + agenda.responsable + " \n");
+			vm.printInReport(" DIA " + vm.formatDateToDisplay(agenda.date) + " \n");
+			vm.printInReport(" DAS " + agenda.initTime + "h ATÉ AS " + agenda.endTime + "h \n");
 		});
-		vm.printInReport("###################################### \n");
-		vm.printInReport("## FIM DA EXTRAÇÃO \n");
-		vm.printInReport("###################################### \n");
+		vm.printInReport(" \n");
+		vm.printInReport(" FIM DA EXTRAÇÃO \n");
+		vm.printInReport(" \n");
 		$('#myModal').modal('show'); 
 	};
 
@@ -317,12 +326,12 @@ app.controller('ExtractorCtrl', function ($scope, $rootScope, $http, alert, auth
 		var initDate = vm.init.month + '-' + vm.init.day + '-' + vm.init.year;
 		var endDate = vm.end.month + '-' + vm.end.day + '-' + vm.end.year;
 
-		vm.printInReport("###################################### \n");
-		vm.printInReport("## RELATORIO DE REMANEJAMENTOS \n");
-		vm.printInReport("## DE ~ " + vm.init.day + ' / ' + vm.init.month + ' / ' + vm.init.year  + " \n");
-		vm.printInReport("## ATÉ ~ " + vm.end.day + ' / ' + vm.end.month + ' / ' + vm.end.year  + " \n");
-		vm.printInReport("## \n");
-		vm.printInReport("###################################### \n");
+		vm.printInReport(" \n");
+		vm.printInReport(" RELATORIO DE REMANEJAMENTOS \n");
+		vm.printInReport(" DE ~ " + vm.init.day + ' / ' + vm.init.month + ' / ' + vm.init.year  + " \n");
+		vm.printInReport(" ATÉ ~ " + vm.end.day + ' / ' + vm.end.month + ' / ' + vm.end.year  + " \n");
+		vm.printInReport(" \n");
+		vm.printInReport(" \n");
 
 		vm.getAllRemanejas(initDate, endDate);
 	};
@@ -363,39 +372,39 @@ app.controller('ExtractorCtrl', function ($scope, $rootScope, $http, alert, auth
 			}
 		});
 		
-		vm.printInReport("###################################### \n");
-		vm.printInReport("## TOTAL DE REMANEJAMENTOS [" + total + "] \n");
-		vm.printInReport("## \n");
-		vm.printInReport("## ACEITADOS [" + accepted + "] \n");
-		vm.printInReport("## REJEITADOS [" + rejected + "] \n");
-		vm.printInReport("## PENDENTE RESPOSTA [" + pending + "] \n");
-		vm.printInReport("## \n");
-		vm.printInReport("###################################### \n");
-		vm.printInReport("## DETALHE DOS REMANAJEMANTOS \n");
-		vm.printInReport("###################################### \n");
+		vm.printInReport(" \n");
+		vm.printInReport(" TOTAL DE REMANEJAMENTOS [" + total + "] \n");
+		vm.printInReport(" \n");
+		vm.printInReport(" ACEITADOS [" + accepted + "] \n");
+		vm.printInReport(" REJEITADOS [" + rejected + "] \n");
+		vm.printInReport(" PENDENTE RESPOSTA [" + pending + "] \n");
+		vm.printInReport(" \n");
+		vm.printInReport(" \n");
+		vm.printInReport(" DETALHE DOS REMANAJEMANTOS \n");
+		vm.printInReport(" \n");
 		
 		remaList.forEach(function(rema){
-			vm.printInReport("## SOLICITANTE REMANEJAMENTO " + rema.target + " \n");
-			vm.printInReport("## AGENDA DE " + rema.owner + " \n");
-			vm.printInReport("## AGENDAMENTO ORIGINAL " + rema.agenda + " \n");
+			vm.printInReport(" SOLICITANTE REMANEJAMENTO " + rema.target + " \n");
+			vm.printInReport(" AGENDA DE " + rema.owner + " \n");
+			vm.printInReport(" AGENDAMENTO ORIGINAL " + rema.agenda + " \n");
 
 			if(rema.status){
-				vm.printInReport("## STATUS RESPOSTA [RESPONDIDO] \n");
+				vm.printInReport(" STATUS RESPOSTA [RESPONDIDO] \n");
 			}else{
-				vm.printInReport("## STATUS RESPOSTA [PENDENTE] \n");
+				vm.printInReport(" STATUS RESPOSTA [PENDENTE] \n");
 			}
-			vm.printInReport("###################################### \n");
-			vm.printInReport("## FIM DO RELATÓRIO  \n");
-			vm.printInReport("###################################### \n");
+			vm.printInReport(" \n");
+			vm.printInReport(" FIM DO RELATÓRIO  \n");
+			vm.printInReport(" \n");
 		});
 		vm.showModal();
 	};
 
 	vm.printNoneRemaneja = function(){
-		vm.printInReport("## SEM SOLICITAÇÕES PARA O PERIODO  \n");
-		vm.printInReport("###################################### \n");
-		vm.printInReport("## FIM DO RELATÓRIO  \n");
-		vm.printInReport("###################################### \n");
+		vm.printInReport(" SEM SOLICITAÇÕES PARA O PERIODO  \n");
+		vm.printInReport(" \n");
+		vm.printInReport(" FIM DO RELATÓRIO  \n");
+		vm.printInReport(" \n");
 		vm.showModal();
 	};
 

@@ -26,6 +26,21 @@ module.exports.policies = {
   *                                                                          *
   ***************************************************************************/
   //ToFirstStart
+  'AgendaController': {
+     '*': 'jwtAuth'
+  },
+  'ConstantsController': {
+     '*': 'jwtAuth'
+  },
+  'GuestController': {
+     '*': 'jwtAuth'
+  },
+  'HourController': {
+     '*': 'jwtAuth'
+  },
+  'RemanejaController': {
+     '*': 'jwtAuth'
+  },
   'UserController': {
      '*': 'jwtAuth'
   },

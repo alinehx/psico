@@ -3,6 +3,7 @@
 var validateClass = require('../validate/Class');
 
 function create(req, res) {
+  console.log(req.body);
   var erro = validateClass.verifyBody(req.body);
   if (erro.length > 0) {
     return res.status(403).send({

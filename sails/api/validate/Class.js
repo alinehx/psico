@@ -1,13 +1,11 @@
 'use strict';
 
-
-
 var propertiesClass = [
   'name',
   'location',
-  'typeClass',
   'size',
   'description',
+  'price',
   'active'
 ];
 
@@ -28,14 +26,14 @@ function verifyBody (classBody) {
   if(!classBody.location) {
    error.push('Localização é obrigatória')
   }
-  if(!classBody.typeClass) {
-    error.push('Tipo de classe é obrigatório');
-  }
   if(!classBody.size) {
     error.push('Tamanho é obrigatório');
   }
+  if(!classBody.price) {
+    error.push('Preço é obrigatório')
+  }
   if(!classBody.description) {
-    error.push('Descrição é obrigatório')
+    error.push('Descrição é obrigatória')
   }
   error = validateStructClass(classBody, error);
   return error;
@@ -48,13 +46,8 @@ function update(allValues) {
   return allValues.split('&');  
 }
 
-
-
-
 module.exports = {
   verifyBody: verifyBody,
   update: update,
   validateStructClass: validateStructClass
 }
-
-

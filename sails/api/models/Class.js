@@ -12,16 +12,16 @@ module.exports = {
       type: 'string',
       required: true,
     },
-    typeClass: {
-      type: 'string',
-      required: true,
-    },
     size: {
       type: 'integer',
       required: true,
     },
     description: {
       type: 'string',
+      required: true,
+    },
+    price: {
+      type: 'integer',
       required: true,
     },
     active: {

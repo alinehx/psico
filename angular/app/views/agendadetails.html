@@ -77,13 +77,19 @@
 							</div>
 
 							<table class="table table-striped table-hover" style="border:1px solid #666">
+								<tr class="text-center info">
+									<td>Nome</td>
+									<td>Confirmado?</td>
+									<td>Opção</td>
+								</tr>
+
 								<tr data-ng-repeat="item in vm.newGuests track by $index">
-									<td>{{item}}</td>
+									<td>{{item.toString().split("@")[0]}}</td>
 									<td ng-click="vm.openGuestConfirmPage(item)">Verificar</td> <!-- CORRIGIR PARA VERIFICAR SE ESTA CONFIRMADO -->
 									<td ng-click="vm.removeGuestFromList(item)">x</td>
 								</tr>
 							</table>
-
+							
 							<a class="btn btn-success btn-block " ng-show="true">
 								<i class="fa fa-download fa-lg" aria-hidden="true"></i> Salvar Mudanças
 							</a>

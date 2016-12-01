@@ -5,9 +5,9 @@ function classObject(classBody) {
   return {
     name: classBody.name,
     location: classBody.location,
-    typeClass: classBody.typeClass,
     size: classBody.size,
-    description: classBody.description    
+    description: classBody.description,
+    price: classBody.price
   };
 };
 

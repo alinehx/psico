@@ -109,9 +109,17 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     var mailok = vm.validateGuestMail();
     if(res == -1 && mailok){
       vm.guestList.push(vm.guestMail.email);
+      document.getElementById('guestmail').value = '';
     } else {
       alert('warning', 'Erro!', "Email inválido: '" + vm.guestMail.email + "'.");
     }
+  };
+
+  vm.hasNoGuestList = function(){
+    if(vm.guestList.length < 1){
+      return true;
+    }
+    return false;
   };
 
   vm.getListSize = function(){
@@ -485,13 +493,22 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
 
   vm.availableRange = [];
   vm.validateHourRange = function(ini, en){
+    var end = en;
+    vm.agendaHours.forEach(function(it){
+      if (it[0] == end){
+        end = it[1];
+      }
+    });
+
+
     var init = ini.num;
-    var end = en.num;
     var isOk = true;
     var availableRange = [];
+
     if(vm.loadedHours.length > 1){
       vm.loadedHours.forEach(function(item){
         var actual = item.num;
+        
         if (actual >= init && actual < end){
           availableRange.push(item);
           if(!item.available){
@@ -507,26 +524,22 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
   }
 
   vm.selectEndHour = function(hr, source){
-    var goodHour = hr.available;
-    if(goodHour && vm.agenda.initTime != hr.hour){
-      if(vm.validateHourRange(vm.auxHour, hr)){
-        vm.agenda.endTime = hr.hour;
-        source.labelValue = hr.hour;
-        vm.doFinish(source);
-      } else{
-        alert('warning',"Já existe algum agendamento entre os horarios selecionados.");
-      }
-    }
+    console.log('lol');
+    vm.validateHourRange(vm.auxHour, hr)
+    vm.agenda.endTime = hr;
+    source.labelValue = hr;
+    vm.doFinish(source);
   };
 
   vm.auxHour = {};
   vm.selectHour = function(hr, source){
+    vm.endHourList = [];
     var goodHour = hr.available;
     if(goodHour){
       vm.auxHour = hr;
       vm.agenda.initTime = hr.hour;
       source.labelValue = hr.hour;
-      vm.doFinish(source);
+      vm.refineEndHours()
     }
   };
 
@@ -660,7 +673,6 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     var newurl = vm.urlHour + "/r/" + date;
     $http.get(newurl)
     .success(function (res){
-      alert('success',"Remanejamento solicitado com sucesso!");
       vm.allUnavailableHours = res;
       vm.getAllSalas();
     })
@@ -794,6 +806,53 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
       return true;
     }
     return false;
+  };
+
+  vm.prepareEndHours = function(hourList){
+    var check = true;
+    hourList.forEach(function(hour){
+      vm.loadedHours.forEach(function(loadedHour){
+        if(loadedHour.hour == hour){
+          if(loadedHour.available && check){
+            vm.endHourList.push(hour);
+          }
+          else{
+            check = false;
+          }
+        }
+      });
+    });
+  };
+
+  vm.endHourList = [];
+  vm.refineEndHours = function(){
+    vm.doFinish(vm.blockHourInit);
+    var hourValue = vm.agenda.initTime;
+    var hourList = [];
+    var check = false;
+    vm.agendaHours.forEach(function(hour){
+      if(hourValue == hour[0]){
+        check = true;
+      }
+
+      if(check){
+        hourList.push(hour[0]);
+      }
+    });
+    vm.prepareEndHours(hourList);
+  };
+
+  vm.isFirstRow = function(value){
+    if(vm.endHourList[0] == value){
+      return true;
+    }
+  };
+
+  vm.isHourListLoaded = function(){
+    if(vm.loadedHours.length < 1){
+      return false;
+    }
+    return true;
   };
 
   vm.doFinish = function(source){
