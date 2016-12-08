@@ -54,7 +54,6 @@
    var id = req.params.room;
    var initDate = req.params.init;
    var endDate = req.params.end;
-   console.log(initDate, endDate);
    AgendaService.findByRoomAndRange(id, initDate, endDate, function(err, agenda) {
      if (err) {
        return res.status(503).send({

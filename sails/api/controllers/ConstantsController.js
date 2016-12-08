@@ -52,9 +52,10 @@
 
  //Uses Malier
  function sendConfirmMail(req, res){
+   console.log('[sendConfirmMail] Executing.');
    var obj = req.body;
    if(obj != null){
-     Mailer.acceptMeet(obj);
+     Mailer.sendAcceptMail(obj);
      return res.status(200).send(obj);
    }else{
      return res.status(503).send({

@@ -156,11 +156,10 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
 			page: page,
 			email: guest.guest
 		};
-    console.log(guest.guest);
 		var newurl = vm.urlContants + "/sendconfirm";
 		$http.post(newurl, obj)
 		.success(function (res){
-			console.log("Email Enviado");
+			console.log("Email Enviado", res);
 		})
 		.error(function(err){
 			alert('warning',"Error! Não foi possivel executar a requisição.");
