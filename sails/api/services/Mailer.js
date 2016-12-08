@@ -27,6 +27,7 @@ transporter.verify(function(error, success) {
 
 function sendAcceptMail(mailObject){
 	sails.log.info('[Mailer] Executing sendAcceptMail.');
+	createReportFile("um;dss;trss;qtr");
 	var mailOptions = {
 		from: 'administrador@easymeet.com.br',
 		to: mailObject.email,
@@ -39,7 +40,7 @@ function sendAcceptMail(mailObject){
 		attachments: [
 			{   // utf-8 string as an attachment
 				filename: 'report.csv',
-				content: 'hello;darkess;my;\nold;friend;hehe;'
+				content: fs.createReadStream('input.csv')
 			}
 		]
 	}
@@ -48,6 +49,7 @@ function sendAcceptMail(mailObject){
 
 function sendReportMail(mailObject){
 	sails.log.info('[Mailer] sendReportMail');
+	createReportFile("um;dss;trss;qtr");
 	var mailOptions = {
 		from: 'administrador@easymeet.com.br',
 		to: mailObject.email,
@@ -59,7 +61,7 @@ function sendReportMail(mailObject){
 		attachments: [
 			{   // utf-8 string as an attachment
 				filename: 'report.csv',
-				content: 'hello;darkess;my;\nold;friend;hehe;'
+				content: fs.createReadStream('input.csv')
 			}
 		]
 	}
@@ -68,7 +70,6 @@ function sendReportMail(mailObject){
 
 var doSend = function(mailOptions){
 	sails.log.info('[Mailer] Trying to send.');
-	//createReportFile();
 	
 	transporter.sendMail(mailOptions, function(error, info){
 		if(error){
@@ -79,7 +80,7 @@ var doSend = function(mailOptions){
 	});
 };
 
-/*
+
 function createReportFile(message){
 	fs.writeFile('input.csv', message,  function(err) {
 		if(err){
@@ -89,7 +90,7 @@ function createReportFile(message){
 		}
 	});
 };
-*/
+
 
 module.exports = {
 	sendAcceptMail: sendAcceptMail,
