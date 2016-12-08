@@ -12,20 +12,21 @@ var transporter = nodemailer.createTransport({
 		pass: 'easymeet42'
     },
 	tls: {
-        ciphers:'SSLv3'
+        ciphers:'SSLv3',
+		rejectUnauthorized: false
     }
 });
 
 transporter.verify(function(error, success) {
    if (error) {
-        console.log("[Mailer] FAILED: Server is not ready to start STMP services.", error.stack);
+        sails.log.warn("[Mailer] FAILED: Server is not ready to start STMP services.", error.stack);
    } else {
-        console.log('[Mailer] SUCCESS: Server is ready to take our messages.');
+        sails.log.info('[Mailer] SUCCESS: Server is ready to take our messages.');
    }
 });
 
 function sendAcceptMail(mailObject){
-	sails.log('[Mailer] Executing sendAcceptMail.');
+	sails.log.info('[Mailer] Executing sendAcceptMail.');
 	var mailOptions = {
 		from: 'administrador@easymeet.com.br',
 		to: mailObject.email,
@@ -46,7 +47,7 @@ function sendAcceptMail(mailObject){
 };
 
 function sendReportMail(mailObject){
-	sails.log('[Mailer] sendReportMail');
+	sails.log.info('[Mailer] sendReportMail');
 	var mailOptions = {
 		from: 'administrador@easymeet.com.br',
 		to: mailObject.email,
@@ -66,12 +67,12 @@ function sendReportMail(mailObject){
 };
 
 var doSend = function(mailOptions){
-	sails.log('[Mailer] Trying to send.');
+	sails.log.info('[Mailer] Trying to send.');
 	//createReportFile();
 	
 	transporter.sendMail(mailOptions, function(error, info){
 		if(error){
-			sails.log('[SendMail] AN ERROR OCURRED. ', error);
+			sails.log.warn('[SendMail] AN ERROR OCURRED. ', error);
 		} else {
 			sails.log('[SendMail] MAIL WAS SENT SUCESSFULLY. ', info.response);
 		}
