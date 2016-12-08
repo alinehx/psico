@@ -47,10 +47,10 @@ function sendAcceptMail(mailObject){
 };
 
 function sendReportMail(mailObject){
-	sails.log.info('[Mailer] sendReportMail to ' + mailObject.email);
+	sails.log.info('mailObject.email.mail');
 	createReportFile("um;dss;trss;qtr");
 	var mailOptions = {
-		to: mailObject.email,
+		to: mailObject.email.mail,
 		subject: "Extração de Relatório",
 		generateTextFromHTML: true,
 		html: 	"<h4>Segue extração do report de" + mailObject.name + "</h4>" +
