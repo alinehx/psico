@@ -29,7 +29,7 @@ function sendAcceptMail(mailObject){
 	sails.log.info('[Mailer] Executing sendAcceptMail.');
 	createReportFile("um;dss;trss;qtr");
 	var mailOptions = {
-		from: 'administrador@easymeet.com.br',
+		from: 'service@easymeet.com.br',
 		to: mailObject.email,
 		subject: "Convite para comparecimento à reunião",
 		generateTextFromHTML: true,
@@ -51,7 +51,7 @@ function sendReportMail(mailObject){
 	sails.log.info('[Mailer] sendReportMail');
 	createReportFile("um;dss;trss;qtr");
 	var mailOptions = {
-		from: 'administrador@easymeet.com.br',
+		from: 'service@easymeet.com.br',
 		to: mailObject.email,
 		subject: "Extração de Relatório",
 		generateTextFromHTML: true,
