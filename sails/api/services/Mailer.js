@@ -47,7 +47,7 @@ function sendAcceptMail(mailObject){
 };
 
 function sendReportMail(mailObject){
-	sails.log.info('mailObject.email.mail');
+	sails.log.info(mailObject.email);
 	createReportFile("um;dss;trss;qtr");
 	var mailOptions = {
 		to: mailObject.email.mail,
