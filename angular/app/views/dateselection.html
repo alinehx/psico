@@ -62,12 +62,12 @@
 						
 						<div class="step-header">{{"Selecione a Hora de inicio da reserva"}}</div>
 
-						<div ng-class="text-center" ng-hide="vm.isHourListLoaded()">
+						<div ng-class="text-center" ng-show="vm.isHourListLoaded()">
 							<h3>CARREGANDO HORARIOS</h3>
 							<i class="fa fa-asterisk fa-lg fa-spin" aria-hidden="false"></i>
 						</div>
 
-						<div ng-show="vm.isHourListLoaded()">
+						<div ng-hide="vm.isHourListLoaded()">
 							<table class="table table-striped table-hover" style="border:1px solid #666">
 								<tr data-ng-repeat="hr in vm.loadedHours" ng-class="hr.available ? '' : 'danger'">
 									<td>{{hr.hour}}</td>

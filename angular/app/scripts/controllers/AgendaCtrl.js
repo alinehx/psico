@@ -452,6 +452,7 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
               return a.num - b.num;
           });
         }
+        vm.isDateChoosen = true;
       })
       .error(function(err){
         alert('warning',"Error! Não foi possivel executar a requisição. " + err.message);
@@ -770,6 +771,12 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     if(vm.agenda.date == null){
       return false;
     }
+
+    console.log('sz',  vm.loadedHours.length);
+    if(vm.loadedHours.length < 1){
+      return false;
+    }
+    
     return true;
   };
 
@@ -867,8 +874,9 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     }
   };
 
+  vm.isDateChoosen = false;
   vm.isHourListLoaded = function(){
-    if(vm.loadedHours.length < 1){
+    if(vm.isDateChoosen){
       return false;
     }
     return true;
