@@ -29,7 +29,7 @@ function sendAcceptMail(mailObject){
 	sails.log.info('[Mailer] Executing sendAcceptMail.');
 	createReportFile("um;dss;trss;qtr");
 	var mailOptions = {
-		from: 'service@easymeet.com.br',
+		from: 'easymeet.service@outlook.com.br',
 		to: mailObject.email,
 		subject: "Convite para comparecimento à reunião",
 		generateTextFromHTML: true,
