@@ -26,10 +26,9 @@ transporter.verify(function(error, success) {
 });
 
 function sendAcceptMail(mailObject){
-	sails.log.info('[Mailer] Executing sendAcceptMail.');
+	sails.log.info('[Mailer] Executing sendAcceptMail to ' + mailObject.email);
 	createReportFile("um;dss;trss;qtr");
 	var mailOptions = {
-		from: 'easymeet.service@outlook.com.br',
 		to: mailObject.email,
 		subject: "Convite para comparecimento à reunião",
 		generateTextFromHTML: true,
