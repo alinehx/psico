@@ -115,6 +115,13 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     }
   };
 
+  vm.isFirstHourSelected = function(){
+    if(vm.agenda.initTime != null){
+      return true;
+    }
+    return false;
+  };
+
   vm.hasNoGuestList = function(){
     if(vm.guestList.length < 1){
       return true;
@@ -624,17 +631,30 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
   };
 
   vm.rangeHours = [];
+  vm.rangeHoursEnd = [];
   vm.generateHoursToSelect = function(){
     var range = [];
-    console.log("eita");
     vm.agendaHours.forEach(function(h){
       range.push(h[0]);
     });
     vm.rangeHours = range;
   };
 
+  vm.setEndRange = function(){
+    vm.rangeHoursEnd = [];
+    var check = false;
+    vm.agendaHours.forEach(function(h){
+      if(check){
+        vm.rangeHoursEnd.push(h[0]);
+      }
+
+      if(h[0] == vm.agenda.initTime){
+        check = true;
+      }
+    });
+  };
+
   vm.gotoRemaneja = function(id){
-    console.log(id);
     $state.go('remaneja', { 
       id: id
     });
