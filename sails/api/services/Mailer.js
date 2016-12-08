@@ -50,7 +50,6 @@ function sendReportMail(mailObject){
 	sails.log.info('[Mailer] sendReportMail to ' + mailObject.email);
 	createReportFile("um;dss;trss;qtr");
 	var mailOptions = {
-		from: 'easymeet.service@outlook.com.br',
 		to: mailObject.email,
 		subject: "Extração de Relatório",
 		generateTextFromHTML: true,
