@@ -45,6 +45,18 @@ app.controller('ExtractorCtrl', function ($scope, $rootScope, $http, alert, auth
 		}
 	};
 
+	vm.mailModel = null;
+	vm.isMailMissing = function(){
+		if(vm.mailModel == null || vm.mailModel == '' ){
+			return false;
+		} else{
+			if(vm.isDataSet(vm.byUser) || vm.isDataSet(vm.isTotal)){
+				return true;
+			}
+			return false;
+		}
+	};
+
 	vm.setPageInfo = function(){
 		vm.getAllUsers();
 		vm.getRoomList();

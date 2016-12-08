@@ -379,7 +379,6 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     $http.put(newurl, newAgenda)
       .success(function (res){
         alert('success',"Agendamento cancelado!");
-        console.log(res);
         $state.go('main');
       })
       .error(function(err){
@@ -531,7 +530,6 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
   }
 
   vm.selectEndHour = function(hr, source){
-    console.log('lol');
     vm.validateHourRange(vm.auxHour, hr)
     vm.agenda.endTime = hr;
     source.labelValue = hr;
@@ -565,7 +563,6 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     }
     $http.put(newUrl, newHour)
     .success(function(res){
-      console.log(res);
     })
     .error(function(err){
       alert('warning',"Error!", "Não foi possivel executar a requisição." + err.message);
@@ -732,8 +729,6 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
         if(hora.room == sala.id){
           selectedRange.forEach(function(hh){
             if(hh == hora.num){
-              console.log("sala", sala.id);
-              console.log("Hora", hh);
               check = false;
             }
           });
@@ -771,8 +766,6 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     if(vm.agenda.date == null){
       return false;
     }
-
-    console.log('sz',  vm.loadedHours.length);
     if(vm.loadedHours.length < 1){
       return false;
     }

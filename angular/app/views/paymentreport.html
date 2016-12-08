@@ -76,7 +76,7 @@
       <div class="form-group">
         <label for="inputEmail" class="col-lg-2 control-label">Email: </label>
         <div class="col-sm-10">
-          <input type="text" class="form-control" id="inputEmail" placeholder="Email">
+          <input type="text" class="form-control" ng-model="vm.mailModel" id="inputEmail" placeholder="Email">
         </div>
       </div>
     </fieldset>
@@ -95,7 +95,11 @@
     <a class="btn btn-success btn-block" ng-show="vm.isDataSet(vm.isTotal)" ng-click="vm.initPaymentReport(null)">
         <i class="fa fa-bar-chart fa-lg" aria-hidden="true"></i> EXTRAÇÃO COMPLETA
     </a>
+    
     <a class="btn btn-info btn-block disabled" ng-hide="vm.isMailMissing()" ng-click="vm.sendReportByMail('Cobrança')">
+        <i class="fa fa-mail-forward fa-lg" aria-hidden="true"></i> ENVIAR POR E-MAIL
+    </a>
+    <a class="btn btn-info btn-block" ng-show="vm.isMailMissing()" ng-click="vm.sendReportByMail('Cobrança')">
         <i class="fa fa-mail-forward fa-lg" aria-hidden="true"></i> ENVIAR POR E-MAIL
     </a>
   </form>
