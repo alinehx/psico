@@ -5,14 +5,16 @@ var smtpTransport = require('nodemailer-smtp-transport');
 var fs = require("fs");
 
 var transporter = nodemailer.createTransport({
-	service: "Yahoo",
+	host: 'smtp-mail.outlook.com',
+	port: 587,
     auth: {
-		user: 'easymeet.grupo@yahoo.com',
-		pass: 'teste@42'
+		user: 'easymeet.service@outlook.com.br',
+		pass: 'easymeet42'
+    },
+	tls: {
+        ciphers:'SSLv3'
     }
-}); 
-
-
+});
 
 transporter.verify(function(error, success) {
    if (error) {
