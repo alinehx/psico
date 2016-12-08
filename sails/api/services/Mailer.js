@@ -57,13 +57,8 @@ function sendReportMail(mailObject){
 		generateTextFromHTML: true,
 		html: 	"<h4>Segue extração do report de" + mailObject.name + "</h4>" +
 				"<br/>" +
-				"<p><%=Report%></p>",
-		attachments: [
-			{   // utf-8 string as an attachment
-				filename: 'report.csv',
-				content: fs.createReadStream('input.csv')
-			}
-		]
+				"<p>" + mailObject.report + "</p>"
+		
 	}
 	doSend(mailOptions);
 };
