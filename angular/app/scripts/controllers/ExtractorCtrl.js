@@ -13,6 +13,7 @@ app.controller('ExtractorCtrl', function ($scope, $rootScope, $http, alert, auth
 	//Attribute
 	vm.halfHourPrice = 5 //$globalized ('priceForHalfAnHour'); // in reais $
 	vm.textReport = "";
+	vm.csvReport = "";
 	vm.agendasForUser = {};
 	vm.userList = [];
 	vm.byUser = null;
@@ -31,7 +32,7 @@ app.controller('ExtractorCtrl', function ($scope, $rootScope, $http, alert, auth
 			var obj = {
 				name: mailName,
 				email: vm.mailModel,
-				report: vm.textReport
+				report: vm.csvReport
 			};
 			var newurl = vm.urlContants + "/sendreport";
 			$http.post(newurl, obj)
@@ -50,7 +51,10 @@ app.controller('ExtractorCtrl', function ($scope, $rootScope, $http, alert, auth
 			return false;
 		} else{
 			if(vm.isDataSet(vm.byUser) || vm.isDataSet(vm.isTotal)){
-				return true;
+				if(vm.textReport.length > 0){
+					return true;
+				}
+				return false;
 			}
 			return false;
 		}
@@ -84,6 +88,7 @@ app.controller('ExtractorCtrl', function ($scope, $rootScope, $http, alert, auth
 		vm.printInReport("## ATÉ ~ " + vm.end.day + ' / ' + vm.end.month + ' / ' + vm.end.year  + " \n");
 		vm.printInReport("## \n");
 		vm.printInReport("###################################### \n");
+		vm.csvReport = "usuario;email;horas utilizadas;total a pagar;\n";
 
 		if(user == null){
 			vm.extractForAll(initDate, endDate);
@@ -102,7 +107,7 @@ app.controller('ExtractorCtrl', function ($scope, $rootScope, $http, alert, auth
 	};
 
 
-	vm.processData = function(unique, responsable, hourSize, halfHourPrice){
+	vm.processData = function(unique, responsable, responsableName, hourSize, halfHourPrice){
 		if(unique){
 			vm.printInReport(" USUÁRIO " + responsable + "\n");
 			vm.printInReport(" HORAS UTILIZADAS [" + hourSize + "]\n");
@@ -117,6 +122,7 @@ app.controller('ExtractorCtrl', function ($scope, $rootScope, $http, alert, auth
 			vm.printInReport(" VALOR À SER COBRADO R$" + halfHourPrice + ",00\n");
 			vm.printInReport(" \n");
 		}
+		vm.csvReport = vm.csvReport + responsableName + ";" + responsable + ";" + hourSize + ";" + "R$" + halfHourPrice + ",00;\n";
 	};
 
 	vm.printInReport = function(text){
@@ -134,9 +140,11 @@ app.controller('ExtractorCtrl', function ($scope, $rootScope, $http, alert, auth
 	
 	vm.extractAgendasForMonth = function (unique, user, initDate, endDate){
 		var newUser = "";
+		var name = "";
 		vm.userList.forEach(function(userInList){
 			if(userInList.name == user){
 				newUser = userInList.email;
+				name = userInList.name;
 			}
 		});
 
@@ -145,8 +153,9 @@ app.controller('ExtractorCtrl', function ($scope, $rootScope, $http, alert, auth
 		.success(function (res){
 			if(res.length < 1){
 				vm.printNoneAction(user);
+				vm.csvReport = vm.csvReport + name + ";" + newUser + ";nao possui agendamentos para o periodo informado;" + "R$ 0,00;\n";
 			}
-			vm.executeHourExtraction(unique, user, res);
+			vm.executeHourExtraction(unique, user, name, res);
 		})
 		.error(function(err){
 			vm.isPrinting = false;
@@ -155,7 +164,7 @@ app.controller('ExtractorCtrl', function ($scope, $rootScope, $http, alert, auth
 	};
 	
 
-	vm.executeHourExtraction = function(unique, responsable, agendaList){
+	vm.executeHourExtraction = function(unique, responsable, responsableName, agendaList){
 		var roomListForUser = [];
 		var size = agendaList.length;
 		var ctrl = 0;
@@ -179,12 +188,11 @@ app.controller('ExtractorCtrl', function ($scope, $rootScope, $http, alert, auth
 				vm.roomList.forEach(function(r){
 					if(r.id == agenda.roomID){
 						price = price + (res.length * r.price);
-						console.log('H: ' + res.length + ", P: " + r.price);
 					}
 				});
 
 				if(ctrl==size){
-					vm.processData(unique, responsable, hrs, price);
+					vm.processData(unique, responsable, responsableName, (hrs/2), price);
 				}
 			})
 			.error(function(err){
@@ -195,6 +203,7 @@ app.controller('ExtractorCtrl', function ($scope, $rootScope, $http, alert, auth
 	};
 
 	vm.printNoneAction = function(user){
+
 		var finalPrice = 0;
 		vm.printInReport(" USUÁRIO " + user + "\n");
 		vm.printInReport(" NÃO POSSUÍ AGENDAMENTOS NO PERIODO \n");
@@ -240,6 +249,7 @@ app.controller('ExtractorCtrl', function ($scope, $rootScope, $http, alert, auth
 	};
 
 	vm.searchRoom = function(room, initDate, endDate){
+		
 		vm.roomList.forEach(function(room){
 			if(room.name == vm.byRoom){
 				vm.printRoomDetail(room, initDate, endDate);
@@ -263,10 +273,11 @@ app.controller('ExtractorCtrl', function ($scope, $rootScope, $http, alert, auth
 		$http.get(newurl)
 		.success(function (res){
 			vm.printInReport(" SALA [" + res.name + "] - [" + res.location + "]\n");
-			vm.printInReport(" UTILIZADA PARA [" + res.typeClass + "]\n");
 			vm.printInReport(" \n");
 			vm.printInReport(" DE " + vm.init.day + ' / ' + vm.init.month + ' / ' + vm.init.year  + " \n");
 			vm.printInReport(" ATÉ " + vm.end.day + ' / ' + vm.end.month + ' / ' + vm.end.year  + " \n");
+
+			vm.csvReport = "Sala: " + res.name + ";Localizacao: " + res.location + ";";
 			vm.extractAgendaByRoom(res.id, initDate, endDate);
 		})
 		.error(function(err){
@@ -279,22 +290,27 @@ app.controller('ExtractorCtrl', function ($scope, $rootScope, $http, alert, auth
 		$http.get(newurl)
 		.success(function (res){
 			vm.agendaList = res;
-			vm.printAgendaDetails();
+			vm.printAgendaDetails(initDate, endDate);
 		})
 		.error(function(err){
 			alert('warning',"Error! Não foi possivel executar a requisição.");
 		});
 	};
 
-	vm.printAgendaDetails = function(){
+	vm.printAgendaDetails = function(initDate, endDate){
 		vm.printInReport("## A SALA TEVE [" + vm.agendaList.length + "] AGENDAMENTOS \n");
+		vm.csvReport = vm.csvReport + "Total de agendamentos: " + vm.agendaList.length + ";Inicio da extracao: " + initDate + ";Final da extracao: " + endDate +";\n;\n";
+		vm.csvReport = vm.csvReport + "id agendamento;dia agendamento;reponsavel pelo agendamento;hora de inicio; hora de fim;\n";
 
 		vm.agendaList.forEach(function(agenda){
+			var dt = vm.formatDateToDisplay(agenda.date);
 			vm.printInReport(" \n");
 			vm.printInReport(" AGENDAMENTO " + agenda.id + " \n");
 			vm.printInReport(" RESPONSAVEL " + agenda.responsable + " \n");
-			vm.printInReport(" DIA " + vm.formatDateToDisplay(agenda.date) + " \n");
+			vm.printInReport(" DIA " + dt + " \n");
 			vm.printInReport(" DAS " + agenda.initTime + "h ATÉ AS " + agenda.endTime + "h \n");
+
+			vm.csvReport = vm.csvReport + agenda.id + ";" + dt + ";" + agenda.responsable + ";" + agenda.initTime + "h;" + agenda.endTime + "h;\n";
 		});
 		vm.printInReport(" \n");
 		vm.printInReport(" FIM DA EXTRAÇÃO \n");
@@ -333,7 +349,6 @@ app.controller('ExtractorCtrl', function ($scope, $rootScope, $http, alert, auth
 	//REMANEJA REPORT
 	vm.initRemanejaReport = function(){
 		vm.clearPrintFile();
-		console.log('a');
 		var initDate = vm.init.month + '-' + vm.init.day + '-' + vm.init.year;
 		var endDate = vm.end.month + '-' + vm.end.day + '-' + vm.end.year;
 
@@ -348,11 +363,11 @@ app.controller('ExtractorCtrl', function ($scope, $rootScope, $http, alert, auth
 	};
 
 	vm.getAllRemanejas = function(initDate, endDate){
-		console.log('b');
 		var newurl = vm.urlRemaneja + '/extract/' + initDate + "&" + endDate;
 		$http.get(newurl)
 		.success(function (res){
-			console.log('c', res);
+
+			vm.csvReport = "Total de remanejamentos: " + res.length + ";Inicio da extracao: " + initDate + ";Final da extracao: " + endDate +";\n;\n";
 			if(res.length > 0){
 				vm.printRemanejas(res);
 			} else {
@@ -369,7 +384,7 @@ app.controller('ExtractorCtrl', function ($scope, $rootScope, $http, alert, auth
 		var rejected = 0;
 		var pending = 0;
 		var total = remaList.length;
-		console.log("rema", remaList);
+		
 		remaList.forEach(function(rema){
 			
 			if(rema.resp == "A"){
@@ -394,24 +409,38 @@ app.controller('ExtractorCtrl', function ($scope, $rootScope, $http, alert, auth
 		vm.printInReport(" DETALHE DOS REMANAJEMANTOS \n");
 		vm.printInReport(" \n");
 		
+		vm.csvReport = 	vm.csvReport + "Total De Remanejamentos;"+ total +";\nTotal de aceitados;" + accepted + ";\nTotal de Rejeitados; " 
+						+ rejected +";\nTotal pendente resposta;" + pending + ";\n;\n";
+
+		vm.csvReport = 	vm.csvReport + "ID Agendamento; Solicitante; Reponsavel; Foi respondido?; Resposta;\n";
 		remaList.forEach(function(rema){
 			vm.printInReport(" SOLICITANTE REMANEJAMENTO " + rema.target + " \n");
 			vm.printInReport(" AGENDA DE " + rema.owner + " \n");
 			vm.printInReport(" AGENDAMENTO ORIGINAL " + rema.agenda + " \n");
 
+			vm.csvReport = 	vm.csvReport + rema.agenda + ";" + rema.target + ";" + rema.owner + ";";
+
 			if(rema.status){
 				vm.printInReport(" STATUS RESPOSTA [RESPONDIDO] \n");
+				if(rema.resp == "A"){
+					vm.csvReport = 	vm.csvReport + "SIM; Aceitado;\n";
+				}
+				if(rema.resp == "R"){
+					vm.csvReport = 	vm.csvReport + "SIM; Recusado;\n";
+				}
+
 			}else{
 				vm.printInReport(" STATUS RESPOSTA [PENDENTE] \n");
+				vm.csvReport = 	vm.csvReport + "NAO; Pendente;\n";
 			}
-			vm.printInReport(" \n");
-			vm.printInReport(" FIM DO RELATÓRIO  \n");
-			vm.printInReport(" \n");
+
 		});
 		vm.showModal();
 	};
 
 	vm.printNoneRemaneja = function(){
+
+		vm.csvReport += "Nao houveram remanejamentos no periodo informado.";
 		vm.printInReport(" SEM SOLICITAÇÕES PARA O PERIODO  \n");
 		vm.printInReport(" \n");
 		vm.printInReport(" FIM DO RELATÓRIO  \n");

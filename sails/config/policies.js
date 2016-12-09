@@ -32,9 +32,6 @@ module.exports.policies = {
   'ConstantsController': {
      '*': 'jwtAuth'
   },
-  'GuestController': {
-     '*': 'jwtAuth'
-  },
   'HourController': {
      '*': 'jwtAuth'
   },

@@ -146,7 +146,7 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     var pos = vm.guestList.indexOf(item);
     var guestObj = vm.guestList.splice(pos, 1);
     $state.go('acceptpage', { 
-      guest: guestObj[0].guest,
+      guest: item,
       agenda: guestObj[0].agenda
     });
   };
@@ -176,7 +176,7 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
       $http.post(vm.urlGuest, guest)
       .success(function(res){
         succ = true;
-        var mailUrl = vm.urlGuest + "/" + agendaID + "&" + item;
+        var mailUrl = agendaID + "&" + item;
         vm.sendConfirmMail(mailUrl, guest); //Sending Confim Mails
       })
       .error(function(err){
