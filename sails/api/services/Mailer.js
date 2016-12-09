@@ -61,7 +61,7 @@ function sendReportMail(mailObject){
 		attachments: [
 			{   // utf-8 string as an attachment
 				filename: mailfilename,
-				content: fs.createReadStream(filename)
+				content: fs.createReadStream(mailfilename)
 			}
 		]
 	}

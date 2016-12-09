@@ -27,5 +27,10 @@
     "url": "git://github.com/anonymous node/sails user/psicoApi.git"
   },
   "author": "anonymous node/sails user",
-  "license": ""
+  "license": "",
+  "devDependencies": {
+    "nodemailer": "^2.7.0",
+    "nodemailer-smtp-transport": "^2.7.2",
+    "xoauth2": "^1.2.0"
+  }
 }
