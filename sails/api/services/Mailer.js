@@ -44,10 +44,9 @@ function sendAcceptMail(mailObject){
 };
 
 function sendReportMail(mailObject){
-	
+	sails.log.info('[sendReportMail] Building Mail ', info.response);
 	var mailfilename = "Report-" + mailObject.name.trim() + '.csv';
 	createReportFile(mailfilename, mailObject.report);
-	console.log(mailObject.report);
 	var mailOptions = {
 		from: '"Equipe Easymeet " <easymeet.service@outlook.com.br>',
 		to: mailObject.email,
@@ -60,23 +59,23 @@ function sendReportMail(mailObject){
 				"</div>",
 		attachments: [
 			{   // utf-8 string as an attachment
-				filename: "Mail" + mailfilename,
+				filename: mailfilename,
 				content: fs.createReadStream(mailfilename)
 			}
 		]
 	}
-	console.log(mailOptions.attachments);
 	doSend(mailOptions);
 };
 
 var doSend = function(mailOptions){
-	sails.log.info('[Mailer] Trying to send.');
+	sails.log.info('[Mailer] Sengding Request to mail host.');
 	
 	transporter.sendMail(mailOptions, function(error, info){
 		if(error){
-			sails.log.warn('[SendMail] AN ERROR OCURRED. ', error.response);
+			sails.log.warn('[SendMail] An error ocurred. ', error);
+			sails.log.warn('[SendMail] Error info: ', error.response);
 		} else {
-			sails.log.info('[SendMail] MAIL WAS SENT SUCESSFULLY. ', info.response);
+			sails.log.info('[SendMail] Mail sent to {' + mailOptions.to + '} with success. ');
 		}
 	});
 };
@@ -84,9 +83,9 @@ var doSend = function(mailOptions){
 function createReportFile(filename, message){
 	fs.writeFile(filename, message,  function(err) {
 		if(err){
-			sails.log.info('[createReportFile] ERROR: ', err);
+			sails.log.info('[createReportFile] File was not created due to an error: ', err);
 		} else {
-			sails.log.info('[createReportFile] SUCCESS.');
+			sails.log.info('[createReportFile] File {' + filename + '} created with success.');
 		}
 	});
 };
