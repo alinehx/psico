@@ -44,7 +44,7 @@ function sendAcceptMail(mailObject){
 };
 
 function sendReportMail(mailObject){
-	sails.log.info('[sendReportMail] Building ReportMail ', info.response);
+	sails.log.info('[sendReportMail] Building ReportMail.');
 	var mailfilename = "Report-" + mailObject.name.trim() + '.csv';
 	createReportFile(mailfilename, mailObject.report);
 	var mailOptions = {
