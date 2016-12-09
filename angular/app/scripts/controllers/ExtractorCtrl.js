@@ -22,18 +22,17 @@ app.controller('ExtractorCtrl', function ($scope, $rootScope, $http, alert, auth
 
 
 	//SEND MAIL
-	vm.selectedEmail = document.getElementById('inputEmail');
 	vm.urlContants = actualHost + '/constants';
 	vm.sendReportByMail = function(mailName){
-		if(vm.selectedEmail == undefined || vm.selectedEmail == null || vm.selectedEmail == '' ){
+		if(vm.mailModel == undefined || vm.mailModel == null || vm.mailModel == '' ){
 			alert('warning', 'Error! Favor preencher o campo de email.');
 		} else {
+			
 			var obj = {
 				name: mailName,
-				email: vm.selectedEmail,
+				email: vm.mailModel,
 				report: vm.textReport
 			};
-
 			var newurl = vm.urlContants + "/sendreport";
 			$http.post(newurl, obj)
 			.success(function (res){

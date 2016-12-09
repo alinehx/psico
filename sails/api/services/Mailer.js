@@ -47,7 +47,8 @@ function sendAcceptMail(mailObject){
 };
 
 function sendReportMail(mailObject){
-	sails.log.info(mailObject.email);
+	//verirficar o objeto em questão.
+	sails.log.info(mailObject);
 	createReportFile("um;dss;trss;qtr");
 	var mailOptions = {
 		to: mailObject.email.mail,
