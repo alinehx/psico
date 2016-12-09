@@ -26,7 +26,7 @@ transporter.verify(function(error, success) {
 });
 
 function sendAcceptMail(mailObject){
-	sails.log.info('[Mailer] Executing sendAcceptMail to ' + mailObject.email);
+	sails.log.info('[Mailer] Building sendAcceptMail to ' + mailObject.email);
 	var page = 'http://easymeet.zapto.org/#/acceptpage/' + mailObject.page;
 	var mailOptions = {
 		from: '"Equipe Easymeet " <easymeet.service@outlook.com.br>',
@@ -44,7 +44,7 @@ function sendAcceptMail(mailObject){
 };
 
 function sendReportMail(mailObject){
-	sails.log.info('[sendReportMail] Building Mail ', info.response);
+	sails.log.info('[sendReportMail] Building ReportMail ', info.response);
 	var mailfilename = "Report-" + mailObject.name.trim() + '.csv';
 	createReportFile(mailfilename, mailObject.report);
 	var mailOptions = {
@@ -58,7 +58,7 @@ function sendReportMail(mailObject){
 				"<h4>Atenciosamente, grupo easymeet.</h4>" + 
 				"</div>",
 		attachments: [
-			{   // utf-8 string as an attachment
+			{
 				filename: mailfilename,
 				content: fs.createReadStream(mailfilename)
 			}
