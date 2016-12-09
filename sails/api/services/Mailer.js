@@ -44,8 +44,9 @@ function sendAcceptMail(mailObject){
 };
 
 function sendReportMail(mailObject){
-	//verirficar o objeto em questão.
-	var filename = createReportFile(mailObject.name, mailObject.report);
+	
+	var mailfilename = "Report-" + mailObject.name.trim() + '.csv';
+	createReportFile(mailfilename, mailObject.report);
 
 	var mailOptions = {
 		from: '"Equipe Easymeet " <easymeet.service@outlook.com.br>',
@@ -59,7 +60,7 @@ function sendReportMail(mailObject){
 				"</div>",
 		attachments: [
 			{   // utf-8 string as an attachment
-				filename: 'report.csv',
+				filename: mailfilename,
 				content: fs.createReadStream(filename)
 			}
 		]
@@ -79,17 +80,14 @@ var doSend = function(mailOptions){
 	});
 };
 
-function createReportFile(name, message){
-	var newFileName = "Report-" + name.trim() + '.csv';
-
-	fs.writeFile(newFileName, message,  function(err) {
+function createReportFile(filename, message){
+	fs.writeFile(filename, message,  function(err) {
 		if(err){
 			sails.log.info('[createReportFile] ERROR: ', err);
 		} else {
 			sails.log.info('[createReportFile] SUCCESS: ', err);
 		}
 	});
-	return newFileName;
 };
 
 module.exports = {
