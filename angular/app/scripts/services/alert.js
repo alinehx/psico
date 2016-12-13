@@ -15,6 +15,7 @@ angular.module('psico2App')
       alertTimeout = $timeout(function () {
       	$rootScope.alert.show = false;
       }, timeout || 5000);
+	  window.scrollTo(0, 0);
   	};
    
   });

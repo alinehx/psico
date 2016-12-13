@@ -149,5 +149,61 @@ app.controller('PeopleCtrl', function ($scope, $rootScope, $http, alert, authTok
       });
   };
 
+  //Field Validation
+  vm.validateAlpabeticField = function(info){
+
+    if(info == 'null' || info == undefined)
+      return false;
+
+    var re = /^[A-Za-z0-9 \s]*$/;
+    return re.test(info);
+  };
+
+  vm.validateIsFilled = function(info){
+
+    if(info == 'null' || info == undefined)
+      return false;
+
+    return true;
+  };
+
+  vm.validateTelField = function(info){
+    if(info == 'null' || info == undefined)
+      return false;
+
+    if(info.length < 10)
+      return false;
+
+    var re = /^[0-9 \s]*$/
+    return re.test(info);
+  };
+
+  vm.validateLettersField = function(info){
+    if(info == 'null' || info == undefined)
+      return false;
+
+    var re = /^[A-Za-z \s]*$/;
+    return re.test(info);
+  };
+
+  vm.validateNumericField = function(info){
+    if(info == 'null' || info == undefined)
+      return false;
+
+    if(info.length < 0)
+      return false;
+
+    var re = /^[0-9 \s]*$/
+    return re.test(info);
+  };
+
+  vm.validateMailField = function(info){
+    if(info == 'null' || info == undefined)
+      return false;
+
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(info);
+  };
+
 });
 app.$inject = ['$scope']; 

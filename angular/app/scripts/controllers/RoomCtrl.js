@@ -23,23 +23,23 @@ app.controller('RoomCtrl', function ($scope, $rootScope, $http, alert, authToken
   }
 
   vm.validateCheckDesc = function(){
-    console.log("Sta");
     //FIX > Tirar Mockzinho, deixar dinamico.
     var newText = "Sala possuí ";
     var hasAtLeastOne = false;
+    console.log(vm.check.c1);
     if(vm.check.c1){ newText = newText + "Projetor; "; hasAtLeastOne = true; }
-    if(vm.check.c2){ newText = newText + "Ar Condicionado; "; hasAtLeastOne = true; }
-    if(vm.check.c3){ newText = newText + "Mesa; "; hasAtLeastOne = true; }
-    if(vm.check.c4){ newText = newText + "Ventilador; "; hasAtLeastOne = true; }
-    if(vm.check.c5){ newText = newText + "Tomada; "; hasAtLeastOne = true; }
+    if(vm.check.c2 && hasAtLeastOne){ newText = newText + "Ar Condicionado; "; hasAtLeastOne = true; }
+    if(vm.check.c3 && hasAtLeastOne){ newText = newText + "Mesa; "; hasAtLeastOne = true; }
+    if(vm.check.c4 && hasAtLeastOne){ newText = newText + "Ventilador; "; hasAtLeastOne = true; }
+    if(vm.check.c5 && hasAtLeastOne){ newText = newText + "Tomada; "; hasAtLeastOne = true; }
+    
 
     if(hasAtLeastOne == true){
       $scope.room.description = newText;
-      console.log($scope.room.price);
       vm.submit();
     }
     else{
-      alert("warning", "Erro!", "Favor escolher ao menos um atributo de descrição da sala.");
+      alert("warning", "Erro!", "O preenchimento dos itens com (*) é obrigatório. Verificar as informações dos campos em vermelho.");
     }
   };
 
@@ -100,6 +100,62 @@ app.controller('RoomCtrl', function ($scope, $rootScope, $http, alert, authToken
   vm.editRoom = function(){
     vm.isEdt = true;
   };
+
+  vm.validateAlpabeticField = function(info){
+
+    if(info == 'null' || info == undefined)
+      return false;
+
+    var re = /^[A-Za-z0-9 \s]*$/;
+    return re.test(info);
+  };
+
+  vm.validateIsFilled = function(info){
+
+    if(info == 'null' || info == undefined)
+      return false;
+
+    return true;
+  };
+
+  vm.validateTelField = function(info){
+    if(info == 'null' || info == undefined)
+      return false;
+
+    if(info.length < 10)
+      return false;
+
+    var re = /^[0-9 \s]*$/
+    return re.test(info);
+  };
+
+  vm.validateLettersField = function(info){
+    if(info == 'null' || info == undefined)
+      return false;
+
+    var re = /^[A-Za-z \s]*$/;
+    return re.test(info);
+  };
+
+  vm.validateNumericField = function(info){
+    if(info == 'null' || info == undefined)
+      return false;
+
+    if(info < 0)
+      return false;
+
+    var re = /^[0-9 \s]*$/
+    return re.test(info);
+  };
+
+  vm.validateMailField = function(info){
+    if(info == 'null' || info == undefined)
+      return false;
+
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(info);
+  };
+
 
   vm.updateRoom = function(){
     vm.newRoom = {
