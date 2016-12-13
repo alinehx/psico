@@ -13,15 +13,15 @@
     <div ng-hide="!isAuthenticated()" class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
       <ul class="nav navbar-nav">
 
-        <li class="dropdown" ng-hide="!isAuthenticated()">
+        <li class="dropdown" ng-hide="!isAuthenticated()" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
           <a ui-sref="agendatypes">Agendar Sala</a>
         </li>
 
-        <li class="dropdown" ng-hide="!isAuthenticated()">
+        <li class="dropdown" ng-hide="!isAuthenticated()" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
           <a ui-sref="remanejamentos">Remanejamentos</a>
         </li>
 
-        <li class="dropdown" ng-hide="!isAuthenticated()">
+        <li class="dropdown" ng-hide="!isAuthenticated()" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
           <a ui-sref="agendaforuser">Meus Agendamentos</a>
         </li>
 
@@ -29,11 +29,11 @@
           <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Controle de Usuários<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
             <li>
-              <a ui-sref="registeruser">Cadastrar Usuário</a>
+              <a ui-sref="registeruser" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">Cadastrar Usuário</a>
             </li>
             <li class="divider"></li>
             <li>
-              <a ui-sref="listofusers">Lista de Usuários</a>
+              <a ui-sref="listofusers" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">Lista de Usuários</a>
             </li>
           </ul>
         </li>
@@ -42,11 +42,11 @@
           <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Catálogo de Participantes<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
             <li>
-              <a ui-sref="registerpeople">Cadastrar Participante</a>
+              <a ui-sref="registerpeople" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">Cadastrar Participante</a>
             </li>
             <li class="divider"></li>
             <li>
-              <a ui-sref="listofmembers">Lista de Participantes</a>
+              <a ui-sref="listofmembers" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">Lista de Participantes</a>
             </li>
           </ul>
         </li>
@@ -55,11 +55,11 @@
           <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Controle de Salas<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
             <li>
-              <a ui-sref="registerroom">Cadastrar Salas</a>
+              <a ui-sref="registerroom" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">Cadastrar Salas</a>
             </li>
             <li class="divider"></li>
             <li>
-              <a ui-sref="listofrooms">Lista de Salas</a>
+              <a ui-sref="listofrooms" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">Lista de Salas</a>
             </li>
           </ul>
         </li>
@@ -68,13 +68,13 @@
       
       <ul class="nav navbar-nav navbar-right">
         <li ng-hide="!isAllowed()"> <!-- Admin Only -->
-          <a ui-sref="appconfigs"><i class="fa fa-cog fa-spin fa-lg" aria-hidden="true"></i> CONFIGS</a>
+          <a ui-sref="appconfigs" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2"><i class="fa fa-cog fa-spin fa-lg" aria-hidden="true"></i> CONFIGS</a>
         </li>
         <li ng-hide="isAuthenticated()" ui-sref-active="active">
           <a ui-sref="login"><i class="fa fa-get-pocket fa-lg" aria-hidden="true"></i> LOGIN</a>
         </li>
         <li ng-show="isAuthenticated()" ui-sref-active="active">
-          <a ui-sref="logout"><i class="fa fa-power-off fa-lg" aria-hidden="true"></i> LOGOUT</a>
+          <a ui-sref="logout" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2"><i class="fa fa-power-off fa-lg" aria-hidden="true"></i> LOGOUT</a>
         </li>
       </ul>
     </div>
