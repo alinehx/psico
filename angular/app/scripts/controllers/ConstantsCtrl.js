@@ -7,6 +7,14 @@ app.controller('ConstantsCtrl', function ($scope, $rootScope, $http, alert, auth
 	vm.urlAgenda = actualHost + '/agenda'; 
 	vm.urlHours = actualHost + '/hours';
 
+	//DefaultSettings
+	$(document).ready(function(){
+		$('#mainHeader').show();
+		$('mainFooter').show();
+		$("body").removeClass('not-occupied');
+		$("body").removeClass('occupied');
+	});
+
 	vm.gotoAgendaList = function(){
 		$state.go('agendaforuser');
 	};

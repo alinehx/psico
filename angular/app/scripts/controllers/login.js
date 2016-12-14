@@ -8,6 +8,14 @@ app.controller('LoginCtrl', function ($scope, $rootScope, $http, alert, authToke
   vm.urlUser = actualHost + '/user';
   vm.urlAgenda = actualHost + '/agenda';
 
+  	//DefaultSettings
+	$(document).ready(function(){
+		$('#mainHeader').show();
+		$('mainFooter').show();
+		$("body").removeClass('not-occupied');
+		$("body").removeClass('occupied');
+	});
+
   vm.agendaList = {};
   $scope.user = {
     email: null,

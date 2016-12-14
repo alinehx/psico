@@ -3,6 +3,15 @@
 app.controller('ExtractorCtrl', function ($scope, $rootScope, $http, alert, authToken, $state, $cookies, globalized) {
 	var actualHost = globalized;
 	var vm = this;
+
+	//DefaultSettings
+	$(document).ready(function(){
+		$('#mainHeader').show();
+		$('mainFooter').show();
+		$("body").removeClass('not-occupied');
+		$("body").removeClass('occupied');
+	});
+
 	vm.state = $state;
 	vm.urlAgenda = actualHost + '/agenda';
 	vm.urlRemaneja = actualHost + '/remaneja';

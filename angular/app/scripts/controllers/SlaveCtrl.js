@@ -3,6 +3,15 @@
 app.controller('SlaveCtrl', function ($scope, $rootScope, $http, alert, authToken, $state, globalized) {
 	var actualHost = globalized;
 	var vm = this;
+
+		//DefaultSettings
+	$(document).ready(function(){
+		$('#mainHeader').show();
+		$('mainFooter').show();
+		$("body").removeClass('not-occupied');
+		$("body").removeClass('occupied');
+	});
+
 	vm.state = $state;
 	vm.urlAgenda = actualHost + '/agenda';
 	vm.urlRoom = actualHost + '/class';
@@ -101,6 +110,11 @@ app.controller('SlaveCtrl', function ($scope, $rootScope, $http, alert, authToke
 	};
 
 	vm.startSlavery = function(roomid){
+		$(document).ready(function(){
+			$('#mainHeader').hide();
+			$('mainFooter').hide();
+		});
+
 		vm.actualDate = new Date();
 		vm.getRoomByID(roomid, vm.actualDate);
 	}
@@ -127,6 +141,7 @@ app.controller('SlaveCtrl', function ($scope, $rootScope, $http, alert, authToke
 
 	vm.waitForNext = false;
 	vm.buildEmptyRoom = function(){
+		$("body").addClass('not-occupied');
 		vm.waitForNext = true;
 		vm.roomState="LIVRE";
 		var nowdate = new Date();
@@ -181,6 +196,7 @@ app.controller('SlaveCtrl', function ($scope, $rootScope, $http, alert, authToke
 				if(h.agenda != null){
 
 					vm.roomState = "OCUPADA";
+					$("body").addClass('occupied');//BACKGROUND
 					vm.getHoursFromAgenda(h.agenda);
 				} else {//FIXME QUANDO O HORARIO É APOS O ULTIMO CADASTRADO
 					

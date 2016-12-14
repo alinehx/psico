@@ -6,6 +6,14 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
   var vm = this;
   var globalTotalHours = 36;
 
+  //DefaultSettings
+  $(document).ready(function(){
+    $('#mainHeader').show();
+    $('mainFooter').show();
+    $("body").removeClass('not-occupied');
+    $("body").removeClass('occupied');
+  });
+
   vm.state = $state;
   vm.urlAgenda = actualHost + '/agenda';
   vm.urlRemaneja = actualHost + '/remaneja';

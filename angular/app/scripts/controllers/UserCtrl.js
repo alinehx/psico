@@ -7,6 +7,14 @@ app.controller('UserCtrl', function ($scope, $rootScope, $http, alert, authToken
   vm.url = actualHost + '/user';
   vm.isEdt = false;
 
+  	//DefaultSettings
+	$(document).ready(function(){
+		$('#mainHeader').show();
+		$('mainFooter').show();
+		$("body").removeClass('not-occupied');
+		$("body").removeClass('occupied');
+	});
+
   $scope.comp = null;
   $scope.user = {
     email: null,

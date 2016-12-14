@@ -6,6 +6,14 @@ app.controller('RoomCtrl', function ($scope, $rootScope, $http, alert, authToken
   vm.state = $state;
   vm.url = actualHost + '/class';
 
+  	//DefaultSettings
+	$(document).ready(function(){
+		$('#mainHeader').show();
+		$('mainFooter').show();
+		$("body").removeClass('not-occupied');
+		$("body").removeClass('occupied');
+	});
+
   $scope.room = {
       name: null,
       location: null,

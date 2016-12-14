@@ -8,6 +8,14 @@ app.controller('RemanejaCtrl', function ($scope, $rootScope, $http, alert, authT
 	vm.urlGuest = actualHost + '/guest';
 	vm.urlRemaneja = actualHost + '/remaneja';
 
+		//DefaultSettings
+	$(document).ready(function(){
+		$('#mainHeader').show();
+		$('mainFooter').show();
+		$("body").removeClass('not-occupied');
+		$("body").removeClass('occupied');
+	});
+
 	vm.setMine = false;
 	vm.byTarget = {};
 	vm.byOwner = {};
