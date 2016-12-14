@@ -43,6 +43,9 @@ app.controller('LoginCtrl', function ($scope, $rootScope, $http, alert, authToke
       $state.go('main');
     })
     .error(function (err) {
+      if(err == null){
+        alert('warning', 'Erro!', 'Problema na Conexão!');
+      }
       if(err.message === 'Usuário ou senha inválidos') {
         alert('warning', 'Erro!', 'Usuário ou senha inválidos');
       } else {
