@@ -12,7 +12,7 @@
                      <label for="inputNomeP" class="col-lg-3 control-label">Nome Completo *</label>
                      <div class="col-lg-9">
                         <input type="text" class="form-control" id="inputNomeP" placeholder="User Name Here" ng-class="vm.validateLettersField(member.name) ? 'has-success' : 'has-warning'"
-                         ng-model="member.name" ng-pattern="/^[A-Za-z \s]*$/" required>
+                         ng-model="member.name" ng-pattern="/^[A-Za-zà-úÀ-Ú \s]*$/" required>
                      </div>
                   </div>
                </fieldset>

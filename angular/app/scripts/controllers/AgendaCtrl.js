@@ -450,6 +450,7 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
           vm.loadedHours = res.sort(function(a, b) {
               return a.num - b.num;
           });
+          vm.filterAgendaHours();
         }
         vm.isDateChoosen = true;
       })
@@ -457,6 +458,38 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
         alert('warning',"Error! Não foi possivel executar a requisição. " + err.message);
       });
     }
+  };
+
+  vm.hrInQuestion = null;
+  vm.showModal = function(hr){
+    vm.hrInQuestion = hr;
+		$('#myModal').modal('show'); 
+	};
+
+  vm.filterAgendaHours = function(){
+    var actualTime = new Date();
+    var actualHour = actualTime.getHours();
+    var actualMinute = actualTime.getMinutes();
+
+    if(actualMinute >= 30){
+      actualMinute = '30';
+    } else {
+      actualMinute = '00';
+    }
+    var actualHourString = actualHour + ":" + actualMinute;
+    var newHours = [];
+    var check = false;
+    vm.loadedHours.forEach(function(item){
+      if(check){
+        newHours.push(item);
+      }
+      console.log(item.hour + " é " + actualHourString);
+      if(item.hour == actualHourString){
+        check = true;
+        console.log('aee');
+      }
+    });
+    vm.loadedHours = newHours;
   };
 
   vm.createHoursForDay = function(hour, num, day){
@@ -599,7 +632,8 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     });
   };
 
-  vm.remanejaForAgenda = function (hour){
+  vm.remanejaForAgenda = function (){
+    var hour = vm.hrInQuestion;
     var agendaUrl = vm.urlAgenda + "/a/" + hour.agenda;
     var rema = {
       agenda: hour.agenda,
@@ -703,7 +737,7 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     return newdate;
   };
 
-    vm.findAvailableRooms = function(){
+  vm.findAvailableRooms = function(){
     var selectedRange = [];
     vm.allSalas.forEach(function(sala){
 
@@ -760,17 +794,31 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     if(dt.length <1){ //To avoid breaking the code.
       dt = document.getElementById('datepicker').value;
     }
-    vm.agenda.date = dt;
     
-    vm.blockDate.labelValue = dt;
-    if(vm.agenda.date == null){
+    var actualDate = new Date();
+    var selectedDate = new Date();
+    var dates = dt.split('/');
+    selectedDate.setDate(dates[0]);
+    selectedDate.setMonth(dates[1] - 1);
+    selectedDate.setYear(dates[2]);
+    if(selectedDate.getFullYear() == actualDate.getFullYear() && 
+       selectedDate.getMonth() == actualDate.getMonth() && 
+       selectedDate.getDate() < actualDate.getDate() ){
+      alert('warning',"Atenção! A data selecionada é inválida por ser menor que a atual.");
       return false;
-    }
-    if(vm.loadedHours.length < 1){
-      return false;
-    }
+    } else {
+      vm.agenda.date = dt;
     
-    return true;
+      vm.blockDate.labelValue = dt;
+      if(vm.agenda.date == null){
+        return false;
+      }
+      if(vm.loadedHours.length < 1){
+        return false;
+      }
+      
+      return true;
+    }
   };
 
   //Used for validation in details
@@ -939,7 +987,7 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     if(info == 'null' || info == undefined)
       return false;
 
-    var re = /^[A-Za-z0-9 \s]*$/;
+    var re = /^[A-Za-zà-úÀ-Ú0-9 \s]*$/;
     return re.test(info);
   };
 
@@ -966,7 +1014,7 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     if(info == 'null' || info == undefined)
       return false;
 
-    var re = /^[A-Za-z \s]*$/;
+    var re = /^[A-Za-zà-úÀ-Ú \s]*$/;
     return re.test(info);
   };
 

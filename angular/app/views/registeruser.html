@@ -21,7 +21,7 @@
                      <label for="inputNomeP" class="col-lg-3 control-label">Nome Completo *</label>
                      <div class="col-lg-9">
                         <input type="text" class="form-control" id="inputNome" placeholder="Name Goes Here" ng-class="vm.validateLettersField(user.name) ? 'has-success' : 'has-warning'"
-                         ng-model="user.name" ng-pattern="/^[A-Za-z \s]*$/" minlength="6" maxlength="30" required>
+                         ng-model="user.name" ng-pattern="/^[A-Za-zà-úÀ-Ú \s]*$/" minlength="6" maxlength="30" required>
                      </div>
                   </div>
                </fieldset>

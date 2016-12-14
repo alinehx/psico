@@ -81,10 +81,6 @@ app.controller('RemanejaCtrl', function ($scope, $rootScope, $http, alert, authT
 		});
 	};
 
-	vm.defaultResponse = {
-		
-	}
-
 
 	vm.getByTarget = function (user){
 		var newurl = vm.urlRemaneja + "/rt/" + user;
@@ -145,10 +141,12 @@ app.controller('RemanejaCtrl', function ($scope, $rootScope, $http, alert, authT
 
 	vm.doAccept = function(item){
 		vm.updateRemaneja(item, 'A');
+		$state.go('remanejamentos');
 	}
 
 	vm.doReject = function(item){
 		vm.updateRemaneja(item, 'R');
+		$state.go('remanejamentos');
 	}
 
 	vm.isEmpty = function(item){
@@ -175,7 +173,7 @@ app.controller('RemanejaCtrl', function ($scope, $rootScope, $http, alert, authT
     if(info == 'null' || info == undefined)
       return false;
 
-    var re = /^[A-Za-z0-9 \s]*$/;
+    var re = /^[A-Za-zà-úÀ-Ú0-9 \s]*$/;
     return re.test(info);
   };
 
@@ -202,7 +200,7 @@ app.controller('RemanejaCtrl', function ($scope, $rootScope, $http, alert, authT
     if(info == 'null' || info == undefined)
       return false;
 
-    var re = /^[A-Za-z \s]*$/;
+    var re = /^[A-Za-zà-úÀ-Ú \s]*$/;
     return re.test(info);
   };
 

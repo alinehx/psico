@@ -1,3 +1,26 @@
+<div class="modal" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title text-center">ALERTA</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+			<h3>Solicitação de Remanejamento</h3>
+			<p><b>Atenção! </b> Você está prestes a solicitar um remanejamento ao usuário responsavel pelo horário já agendado.</p>
+			<p>Você tem certeza que quer continuar com a solicitação? </p>
+			<p>Se <b>sim</b>, clique em <b>confirmar</b>.</p>
+		</div>
+      </div>
+      <div class="modal-footer">
+		<button type="button" class="btn btn-success" data-dismiss="modal" ng-click="vm.remanejaForAgenda()">Confirmar</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="panel panel-default" data-ng-init="vm.initAgenda()">
 	<div class="panel-heading">
 		<div class="text-center">
@@ -52,7 +75,7 @@
 						{{vm.blockHourInit.labelText | uppercase}}
 					</div>
 					<a class="btn done-step disabled" ng-show="vm.blockHourInit.isFinished">
-						<i class="fa fa-clock-o fa-lg" aria-hidden="false"></i> {{" Inicio às " + vm.blockHourInit.labelValue + "h" | uppercase}}
+						<i class="fa fa-clock-o fa-lg" aria-hidden="false"></i> {{"Inicio às " + vm.blockHourInit.labelValue + "h" | uppercase}}
 					</a>
 				</div>
 
@@ -73,7 +96,7 @@
 									<td>{{hr.hour}}</td>
 									<!-- REMANEJAMENTO -->
 									<td ng-hide="hr.available">{{"RESERVADO"}}</td>
-									<td ng-hide="hr.available" ng-click="vm.remanejaForAgenda(hr)">REMANEJAR</td>
+									<td ng-hide="hr.available" ng-click="vm.showModal(hr)">REMANEJAR</td>
 									<!-- AGENDAMENTO -->
 									<td ng-show="hr.available">{{"LIVRE"}}</td>
 									<td ng-show="hr.available" ng-click="vm.selectHour(hr, vm.blockHourInit)">SELECIONAR</td>

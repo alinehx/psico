@@ -46,7 +46,7 @@
 			<br>
 		<div class="panel-body" ng-repeat="sala in vm.allAvailableRooms">
 			
-			<a class="btn btn-danger btn-block" ng-show="true" ng-click="vm.chooseRoom(sala.id)">
+			<a class="btn btn-success btn-block" ng-show="true" ng-click="vm.chooseRoom(sala.id)">
 				<i class="fa fa-check" aria-hidden="true"></i> {{sala.name + " [" + sala.location + "]"}}
 			</a>
 		</div>

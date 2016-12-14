@@ -129,7 +129,7 @@ app.controller('UserCtrl', function ($scope, $rootScope, $http, alert, authToken
     if(info == 'null' || info == undefined)
       return false;
 
-    var re = /^[A-Za-z0-9 \s]*$/;
+    var re = /^[A-Za-zà-úÀ-Ú0-9 \s]*$/;
     return re.test(info);
   };
 
@@ -156,7 +156,7 @@ app.controller('UserCtrl', function ($scope, $rootScope, $http, alert, authToken
     if(info == 'null' || info == undefined)
       return false;
 
-    var re = /^[A-Za-z \s]*$/;
+    var re = /^[A-Za-zà-úÀ-Ú \s]*$/;
     return re.test(info);
   };
 

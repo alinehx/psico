@@ -4,20 +4,17 @@
 </div>
 
 <div class="center-block mt-xl wd-xl" data-ng-init="vm.loadEssentialData()">
-    <div class="panel panel-inverse">
-        <div class="panel-body ">
-            <div class="btn-group btn-group-justified">
-                <a class="btn btn-success btn-block " ng-click="vm.setMine = true">
-                    <i class="fa fa-cube fa-lg" aria-hidden="true"></i> PARA MIM
-                </a>
-                <a class="btn btn-success btn-block " ng-click="vm.setMine = false">
-                    <i class="fa fa-diamond fa-lg" aria-hidden="true"></i> POR MIM
-                </a>
-            </div>
-        </div>
+    <div class="text-center">REMANEJAMENTOS QUE:</div>
+    <div class="btn-group btn-group-justified">
+        <a class="btn btn-default btn-block " ng-click="vm.setMine = true" ng-class="vm.setMine ? 'btn-primary' : 'btn-default'">
+            <i class="fa fa-cube fa-lg" aria-hidden="true"></i> SOLICITEI
+        </a>
+        <a class="btn btn-default btn-block " ng-click="vm.setMine = false" ng-class="!vm.setMine ? 'btn-primary' : 'btn-default'">
+            <i class="fa fa-diamond fa-lg" aria-hidden="true"></i> ME SOLICITARAM
+        </a>
     </div>
 </div>
-
+<br>
 <div ng-show="vm.hasNone">
     <div class="alert alert-dismissible alert-warning text-center">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -28,10 +25,6 @@
 <div ng-hide="vm.hasNone">
     <!-- REMANEJAMENTOS FEITOS PELO USER -->
     <div ng-show="vm.setMine">
-        <div class="panel-heading text-center">
-            <h5>REMANEJAMENTOS SOLICITADOS POR MIM</h5>
-        </div>
-
         <div ng-if="vm.isEmpty(vm.forMe)">
             <div class="alert alert-dismissible alert-warning text-center">
                 <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -61,10 +54,6 @@
     </div>
     <!-- REMANEJAMENTOS FEITOS PARA O USER -->
     <div ng-hide="vm.setMine">
-        <div class="panel-heading text-center">
-            <h5>MINHAS RESPOSTAS PENDENTES</h5>
-        </div>
-        
         <div ng-if="vm.isEmpty(vm.toMe)">
             <div class="alert alert-dismissible alert-warning text-center">
                 <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -78,7 +67,7 @@
                 <br>
                 <div class="single-item">
                     <div class="btn-group btn-group-justified">
-                        <a class="btn btn-default btn-block " ng-click="vm.gotoRemaneja(i.id)">
+                        <a class="btn btn-info btn-block " ng-click="vm.gotoRemaneja(i.id)">
                             <i class="fa fa-warning fa-lg" aria-hidden="true"></i> INFORMAÇÕES
                         </a>
                     </div>
