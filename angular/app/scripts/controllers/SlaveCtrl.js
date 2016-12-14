@@ -112,7 +112,7 @@ app.controller('SlaveCtrl', function ($scope, $rootScope, $http, alert, authToke
 	vm.startSlavery = function(roomid){
 		$(document).ready(function(){
 			$('#mainHeader').hide();
-			$('mainFooter').hide();
+			$('#mainFooter').hide();
 		});
 
 		vm.actualDate = new Date();
