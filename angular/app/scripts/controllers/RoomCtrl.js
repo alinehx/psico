@@ -231,7 +231,7 @@ app.controller('RoomCtrl', function ($scope, $rootScope, $http, alert, authToken
       });
   };
 
-  $scope.backToMain = function(){
+  vm.backToMain = function(){
     $state.go('main');
   };
 
