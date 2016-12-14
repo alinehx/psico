@@ -82,7 +82,8 @@
 		          <div class="form-group">
 		             <label for="inputNomeP" class="col-lg-3 control-label">Nome da Sala</label>
 		             <div class="col-lg-8">
-		                <input type="text" ng-model="vm.roomDetail.name" class="form-control" value="{{vm.roomDetail.name}}" required>
+		                <input type="text" ng-model="vm.roomDetail.name" ng-class="vm.validateAlpabeticField(vm.roomDetail.name) ? 'has-success' : 'has-warning'" 
+						class="form-control" value="{{vm.roomDetail.name}}" required>
 		             </div>
 		          </div>
 				</fieldset>
@@ -90,7 +91,8 @@
 		          <div class="form-group">
 		             <label for="inputNomeP"  class="col-lg-3 control-label">Localização</label>
 		             <div class="col-lg-8">
-		                <input type="text" ng-model="vm.roomDetail.location" class="form-control" id="focusedInput" maxlength="15" required>
+		                <input type="text" ng-model="vm.roomDetail.location" ng-class="vm.validateAlpabeticField(vm.roomDetail.location) ? 'has-success' : 'has-warning'" 
+						class="form-control" id="focusedInput" maxlength="15" required>
 		             </div>
 		          </div>
 				</fieldset>
@@ -98,7 +100,8 @@
                   <div class="form-group">
                      <label class="col-lg-3 control-label">Preço Hora</label>
                      <div class="col-lg-8">
-                        <input type="number" class="form-control" ng-model="vm.roomDetail.price" id="inputLocal" placeholder="50" mixlength="1" maxlength="4" value="{{vm.roomDetail.price}}" required>
+                        <input type="number" class="form-control" ng-model="vm.roomDetail.price" ng-class="vm.validateNumericField(vm.roomDetail.price) ? 'has-success' : 'has-warning'" 
+						 id="inputLocal" placeholder="50" mixlength="1" maxlength="4" value="{{vm.roomDetail.price}}" required>
                      </div>
                   </div>
                </fieldset>
@@ -106,7 +109,8 @@
                   <div class="form-group">
                      <label class="col-lg-3 control-label">Capacidade Max</label>
                      <div class="col-lg-8">
-                        <input type="number" class="form-control" ng-model="vm.roomDetail.size" id="inputLocal" placeholder="50" mixlength="1" maxlength="4" value="{{vm.roomDetail.size}}" required>
+                        <input type="number" class="form-control" ng-model="vm.roomDetail.size" ng-class="vm.validateNumericField(vm.roomDetail.size) ? 'has-success' : 'has-warning'" 
+						id="inputLocal" placeholder="50" mixlength="1" maxlength="4" value="{{vm.roomDetail.size}}" required>
                      </div>
                   </div>
                </fieldset>

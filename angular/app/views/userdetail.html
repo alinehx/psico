@@ -73,7 +73,8 @@
 		          <div class="form-group">
 		             <label for="inputNomeP" class="col-lg-3 control-label">CRP</label>
 		             <div class="col-lg-8">
-		                <input type="text" ng-model="vm.userDetail.crp" class="form-control" id="focusedInput" value="{{vm.userDetail.crp}}" minlength="7" maxlength="7" ng-pattern="/^[0-9]+$/" required>
+		                <input type="text" ng-model="vm.userDetail.crp" ng-class="vm.validateNumericField(vm.userDetail.crp) ? 'has-success' : 'has-warning'" 
+						class="form-control" id="focusedInput" value="{{vm.userDetail.crp}}" minlength="7" maxlength="7" ng-pattern="/^[0-9]+$/" required>
 		             </div>
 		          </div>
 				</fieldset>
@@ -81,7 +82,8 @@
 		          <div class="form-group">
 		             <label for="inputNomeP" class="col-lg-3 control-label">Email</label>
 		             <div class="col-lg-8">
-		                <input type="email" ng-model="vm.userDetail.email" class="form-control" value="{{vm.userDetail.email}}" required>
+		                <input type="email" ng-model="vm.userDetail.email" ng-class="vm.validateMailField(vm.userDetail.email) ? 'has-success' : 'has-warning'" 
+						class="form-control" value="{{vm.userDetail.email}}" required>
 		             </div>
 		          </div>
 				</fieldset>
@@ -89,7 +91,8 @@
 		          <div class="form-group">
 		             <label for="inputNomeP"  class="col-lg-3 control-label">Telefone</label>
 		             <div class="col-lg-8">
-		                <input type="text" ng-model="vm.userDetail.phone" class="form-control" id="focusedInput" value="{{vm.userDetail.phone}}" maxlength="11" required>
+		                <input type="text" ng-model="vm.userDetail.phone" ng-class="vm.validateNumericField(vm.userDetail.phone) ? 'has-success' : 'has-warning'" 
+						class="form-control" id="focusedInput" value="{{vm.userDetail.phone}}" maxlength="11" required>
 		             </div>
 		          </div>
 				</fieldset>
@@ -97,7 +100,8 @@
 		          <div class="form-group">
 		             <label for="inputNomeP" class="col-lg-3 control-label">CEP</label>
 		             <div class="col-lg-8">
-		                <input type="text" ng-model="vm.userDetail.zipCode" class="form-control" id="focusedInput" value="{{vm.userDetail.zipCode}}" minlength="8" maxlength="8" ng-pattern="/^[0-9]*$/" required>
+		                <input type="text" ng-model="vm.userDetail.zipCode" ng-class="vm.validateNumericField(vm.userDetail.zipCode) ? 'has-success' : 'has-warning'" 
+						class="form-control" id="focusedInput" value="{{vm.userDetail.zipCode}}" minlength="8" maxlength="8" ng-pattern="/^[0-9]*$/" required>
 		             </div>
 		          </div>
 				</fieldset>

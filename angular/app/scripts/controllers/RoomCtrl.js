@@ -36,10 +36,10 @@ app.controller('RoomCtrl', function ($scope, $rootScope, $http, alert, authToken
     var hasAtLeastOne = false;
     console.log(vm.check.c1);
     if(vm.check.c1){ newText = newText + "Projetor; "; hasAtLeastOne = true; }
-    if(vm.check.c2 && hasAtLeastOne){ newText = newText + "Ar Condicionado; "; hasAtLeastOne = true; }
-    if(vm.check.c3 && hasAtLeastOne){ newText = newText + "Mesa; "; hasAtLeastOne = true; }
-    if(vm.check.c4 && hasAtLeastOne){ newText = newText + "Ventilador; "; hasAtLeastOne = true; }
-    if(vm.check.c5 && hasAtLeastOne){ newText = newText + "Tomada; "; hasAtLeastOne = true; }
+    if(vm.check.c2){ newText = newText + "Ar Condicionado; "; hasAtLeastOne = true; }
+    if(vm.check.c3){ newText = newText + "Mesa; "; hasAtLeastOne = true; }
+    if(vm.check.c4){ newText = newText + "Ventilador; "; hasAtLeastOne = true; }
+    if(vm.check.c5){ newText = newText + "Tomada; "; hasAtLeastOne = true; }
     
 
     if(hasAtLeastOne == true){
@@ -166,24 +166,40 @@ app.controller('RoomCtrl', function ($scope, $rootScope, $http, alert, authToken
 
 
   vm.updateRoom = function(){
-    vm.newRoom = {
-      name: vm.roomDetail.name,
-      location: vm.roomDetail.location,
-      typeClass: vm.roomDetail.typeClass,
-      description: vm.roomDetail.description,
-      size: vm.roomDetail.size,
-      price: vm.roomDetail.price
-    };
 
-    var newurl = vm.url + "/" + vm.roomName + "&" + vm.roomLocation;
-    $http.put(newurl, vm.newRoom)
-      .success(function (res){
-        alert('success',"Dados alterados com sucesso!");
-        $state.go('listofrooms');
-      })
-      .error(function(err){
-        alert('warning', "Error! Cannot Update Room. Check your network connection.");
-      });
+    var newText = "Sala possuí ";
+    var hasAtLeastOne = false;
+    console.log(vm.check.c1);
+    if(vm.check.c1){ newText = newText + "Projetor; "; hasAtLeastOne = true; }
+    if(vm.check.c2){ newText = newText + "Ar Condicionado; "; hasAtLeastOne = true; }
+    if(vm.check.c3){ newText = newText + "Mesa; "; hasAtLeastOne = true; }
+    if(vm.check.c4){ newText = newText + "Ventilador; "; hasAtLeastOne = true; }
+    if(vm.check.c5){ newText = newText + "Tomada; "; hasAtLeastOne = true; }
+    
+
+    if(!hasAtLeastOne){
+      alert("warning", "Erro!", "O preenchimento dos itens com (*) é obrigatório. Verificar as informações dos campos em vermelho.");
+    }
+    else{
+      vm.newRoom = {
+        name: vm.roomDetail.name,
+        location: vm.roomDetail.location,
+        typeClass: vm.roomDetail.typeClass,
+        description: newText,
+        size: vm.roomDetail.size,
+        price: vm.roomDetail.price
+      };
+
+      var newurl = vm.url + "/" + vm.roomName + "&" + vm.roomLocation;
+      $http.put(newurl, vm.newRoom)
+        .success(function (res){
+          alert('success',"Dados alterados com sucesso!");
+          $state.go('listofrooms');
+        })
+        .error(function(err){
+          alert('warning', "Error! Cannot Update Room. Check your network connection.");
+        });
+    }
   };
 
   //Section DisableRoom and EnableRoom

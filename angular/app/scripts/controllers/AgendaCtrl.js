@@ -40,7 +40,7 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
 
   //Validations
   vm.validateGuestMail = function(){
-    var re = /[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}/igm;
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     var response = true;
     if (vm.guestMail.email == '' || !re.test(vm.guestMail.email)){
          response = false;

@@ -165,15 +165,17 @@
 						<div class="panel-body">
 							<div class="form-group">
 								<label class="control-label" for="inputLarge"><h3>Assunto</h3></label>
-								<input class="form-control input-lg text-center" type="text" id="inputLarge" ng-model="vm.agenda.subject">
+								<input class="form-control input-lg text-center" ng-class="vm.validateAlpabeticField(vm.agenda.subject) ? 'has-success' : 'has-warning'"
+								type="text" id="inputLarge" ng-model="vm.agenda.subject">
 							</div>
 							<div class="form-group">
 								<label class="control-label" for="inputLarge"><h5>Descrição</h5></label>
-								<textarea class="form-control text-center" rows="3" id="textArea" ng-model="vm.agenda.description"></textarea>
+								<textarea class="form-control text-center" rows="3" id="textArea" ng-class="vm.validateAlpabeticField(vm.agenda.description) ? 'has-success' : 'has-warning'"
+								 ng-model="vm.agenda.description"></textarea>
 							</div>
 							<div class="form-group">
 								<label class="control-label" for="inputLarge"><h5>Proposito</h5></label>
-								<select class="form-control" ng-model="vm.agenda.type">
+								<select class="form-control" ng-class="vm.validateIsFilled(vm.agenda.type) ? 'has-success' : 'has-warning'" ng-model="vm.agenda.type">
           							<option ng-repeat="info in vm.agendaTypes">{{info}}</option>
 								</select>
 							</div>
