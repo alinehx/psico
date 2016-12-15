@@ -49,6 +49,7 @@ app.controller('SlaveCtrl', function ($scope, $rootScope, $http, alert, authToke
 		}
 		$http.put(newurl, newObject)
 		.success(function (res){
+			alert('success',"Resposta enviada com sucesso.");
 		})
 		.error(function(err){
 			alert('warning',"Algum problema aconteceu. Favor contatar o suporte.");
