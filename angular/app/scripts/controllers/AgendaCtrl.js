@@ -614,7 +614,7 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
 
    vm.getHourForAgendaCancellation = function (agenda){
     var newUrl = vm.urlHour + "/u/" + agenda;
-    $http.get(vm.urlHour)
+    $http.get(newUrl)
     .success(function (res){
       res.forEach(function(item){
         vm.cleanHourSettings(item);
@@ -626,16 +626,13 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
   };
 
   vm.cleanHourSettings = function(hour){
-    var newUrl = vm.urlHour + "/" + hour;
+    var newUrl = vm.urlHour + "/" + hour.id;
     var newHour = {
-      available: false,
+      available: true,
       agenda: null
-    }
-    newHour.agenda=null;
-    newHour.available = true;
+    } 
     $http.put(newUrl, newHour)
     .success(function(res){
-
     })
     .error(function(err){
       alert('warning',"Error!", "Não foi possivel executar a requisição." + err.message);
