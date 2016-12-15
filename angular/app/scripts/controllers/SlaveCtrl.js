@@ -70,7 +70,6 @@ app.controller('SlaveCtrl', function ($scope, $rootScope, $http, alert, authToke
 			vm.agendaDetails = res;
 		})
 		.error(function(err){
-			alert('warning',"FAIL");
 		});
 	};
 
