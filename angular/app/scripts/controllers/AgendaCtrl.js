@@ -458,7 +458,7 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
           vm.loadedHours = res.sort(function(a, b) {
               return a.num - b.num;
           });
-          vm.filterAgendaHours();
+          vm.filterAgendaHours(vm.loadedHours);
         }
         vm.isDateChoosen = true;
       })
@@ -474,7 +474,7 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
 		$('#myModal').modal('show'); 
 	};
 
-  vm.filterAgendaHours = function(){
+  vm.filterAgendaHours = function(loadedHours){
     var actualTime = new Date();
     var actualHour = actualTime.getHours();
     var actualMinute = actualTime.getMinutes();
@@ -487,14 +487,12 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     var actualHourString = actualHour + ":" + actualMinute;
     var newHours = [];
     var check = false;
-    vm.loadedHours.forEach(function(item){
+    loadedHours.forEach(function(item){
       if(check){
         newHours.push(item);
       }
-      console.log(item.hour + " é " + actualHourString);
       if(item.hour == actualHourString){
         check = true;
-        console.log('aee');
       }
     });
     vm.loadedHours = newHours;
@@ -527,7 +525,9 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
       //altFormat: "d MM, yy" -> 18 SETEMBRO, 2016
   });
 
+  vm.isDateClicked = false;
   $('#datepicker').change(function (){
+    vm.isDateClicked = true;
     vm.validateHourSettings();
   });
 
@@ -672,9 +672,26 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
   vm.rangeHours = [];
   vm.rangeHoursEnd = [];
   vm.generateHoursToSelect = function(){
+
     var range = [];
+    var actualTime = new Date();
+    var actualHour = actualTime.getHours();
+    var actualMinute = actualTime.getMinutes();
+
+    if(actualMinute >= 30){
+      actualMinute = '30';
+    } else {
+      actualMinute = '00';
+    }
+    var actualHourString = actualHour + ":" + actualMinute;
+    var check = false;
     vm.agendaHours.forEach(function(h){
-      range.push(h[0]);
+      if(check){
+        range.push(h[0]);
+      }
+      if(h[0] == actualHourString){
+        check = true;
+      }
     });
     vm.rangeHours = range;
   };
@@ -716,7 +733,6 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
   vm.getAllSalas = function(){
     $http.get(vm.urlRoom)
     .success(function (res){
-      alert('success',"Remanejamento solicitado com sucesso!");
       vm.allSalas = res;
       vm.findAvailableRooms();
     })
@@ -796,42 +812,82 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
     vm.doFinish(vm.blockDate);
   };
 
-  //should be used to set 'next' button clickable.
-  vm.isDateSelected = function(){ 
+  vm.actualdt = new Date();
+  vm.isCalendarSelected = function(){ 
     var dt = document.getElementById('alternate').value;
     if(dt.length <1){ //To avoid breaking the code.
       dt = document.getElementById('datepicker').value;
     }
-    
-    var actualDate = new Date();
     var selectedDate = new Date();
     var dates = dt.split('/');
     selectedDate.setDate(dates[0]);
     selectedDate.setMonth(dates[1] - 1);
     selectedDate.setYear(dates[2]);
-    if(selectedDate.getFullYear() == actualDate.getFullYear() && 
-       selectedDate.getMonth() == actualDate.getMonth() && 
-       selectedDate.getDate() < actualDate.getDate() ){
-      alert('warning',"Atenção! A data selecionada é inválida por ser menor que a atual.");
-      return false;
+    var isDateOk = false;
+    var errorTxt = "Atenção!";
+    if(selectedDate.getFullYear() == vm.actualdt.getFullYear() && 
+       selectedDate.getMonth() == vm.actualdt.getMonth() && 
+       selectedDate.getDate() < vm.actualdt.getDate() ){
+      errorTxt += "\nA data selecionada é inválida por ser menor que a atual.";
     } else {
-      vm.agenda.date = dt;
-    
-      vm.blockDate.labelValue = dt;
-      if(vm.agenda.date == null){
-        return false;
+      isDateOk = true;
+    }
+
+    var isFirstHourOk = false;
+    if(vm.isFirstHourSelected()){
+      isFirstHourOk = true;
+    }else{ errorTxt += "\nSelecione a Hora de Inicio."; }
+
+    var isSecondtHourOk = false;
+    if(vm.isFirstHourSelected()){
+      isSecondtHourOk = true;
+    } else{ errorTxt += "\nSelecione a Hora de Fim."; }
+
+    if(!isDateOk || !isFirstHourOk || !isSecondtHourOk){
+      alert('warning',errorTxt);
+    } else {
+      vm.startLookingForAvailableRooms();
+    }
+  }
+
+  //should be used to set 'next' button clickable.
+  vm.isDateSelected = function(){
+    if(vm.isDateClicked){
+      var dt = document.getElementById('alternate').value;
+      if(dt.length <1){ //To avoid breaking the code.
+        dt = document.getElementById('datepicker').value;
       }
-      if(vm.loadedHours.length < 1){
+      console.log(dt);
+      var actualDate = new Date();
+      var selectedDate = new Date();
+      var dates = dt.split('/');
+      selectedDate.setDate(dates[0]);
+      selectedDate.setMonth(dates[1] - 1);
+      selectedDate.setYear(dates[2]);
+      if(selectedDate.getFullYear() == actualDate.getFullYear() && 
+        selectedDate.getMonth() == actualDate.getMonth() && 
+        selectedDate.getDate() < actualDate.getDate() ){
+        alert('warning',"Atenção! A data selecionada é inválida por ser menor que a atual.");
         return false;
-      }
+      } else {
+        vm.agenda.date = dt;
       
-      return true;
+        vm.blockDate.labelValue = dt;
+        if(vm.agenda.date == null){
+          return false;
+        }
+        if(vm.loadedHours.length < 1){
+          return false;
+        }
+        
+        return true;
+      }
     }
   };
 
   //Used for validation in details
   vm.isDataFilled = function(){
-    if(vm.agenda.subject != null && vm.agenda.description != null && vm.agenda.type != null){
+    if(vm.validateIsFilled(vm.agenda.type) && vm.validateIsVoided(vm.agenda.description) && vm.validateIsVoided(vm.agenda.subject)){
       return true;
     }
     return false;
@@ -1002,6 +1058,14 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
   vm.validateIsFilled = function(info){
 
     if(info == 'null' || info == undefined)
+      return false;
+
+    return true;
+  };
+
+  vm.validateIsVoided = function(info){
+
+    if(info == 'null' || info == undefined || info.length < 1)
       return false;
 
     return true;

@@ -165,12 +165,12 @@
 						<div class="panel-body">
 							<div class="form-group">
 								<label class="control-label" for="inputLarge"><h3>Assunto</h3></label>
-								<input class="form-control input-lg text-center" ng-class="vm.validateAlpabeticField(vm.agenda.subject) ? 'has-success' : 'has-warning'"
+								<input class="form-control input-lg text-center" ng-class="vm.validateIsVoided(vm.agenda.subject) ? 'has-success' : 'has-warning'"
 								type="text" id="inputLarge" ng-model="vm.agenda.subject">
 							</div>
 							<div class="form-group">
 								<label class="control-label" for="inputLarge"><h5>Descrição</h5></label>
-								<textarea class="form-control text-center" rows="3" id="textArea" ng-class="vm.validateAlpabeticField(vm.agenda.description) ? 'has-success' : 'has-warning'"
+								<textarea class="form-control text-center" rows="3" id="textArea" ng-class="vm.validateIsVoided(vm.agenda.description) ? 'has-success' : 'has-warning'"
 								 ng-model="vm.agenda.description"></textarea>
 							</div>
 							<div class="form-group">

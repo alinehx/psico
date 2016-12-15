@@ -34,10 +34,10 @@
 			</div>
 		</div>
 		<div class="btn-group btn-group-justified">
-			<a class="btn btn-primary" ng-show="vm.isDateSelected()" ng-click="vm.unFinish(null)">
+			<a class="btn btn-primary" ng-click="vm.unFinish(null)">
 				<i class="fa fa-arrow-left" aria-hidden="true"></i> {{"Voltar"}}
 			</a>
-			<a class="btn btn-success" ng-show="vm.isDateSelected()" ng-click="vm.startLookingForAvailableRooms()">
+			<a class="btn btn-success" ng-click="vm.isCalendarSelected()">
 				{{"Prosseguir"}} <i class="fa fa-arrow-right" aria-hidden="true"></i>
 			</a>
 		</div>
@@ -53,7 +53,7 @@
 			</a>
 		</div>
 		<div class="btn-group btn-group-justified">
-			<a class="btn btn-primary" ng-show="vm.isDateSelected()" ng-click="vm.unFinish(null)">
+			<a class="btn btn-primary" ng-click="vm.unFinish(null)">
 				<i class="fa fa-arrow-left" aria-hidden="true"></i> {{"Voltar"}}
 			</a>
 		</div>
@@ -63,15 +63,17 @@
 		preencha todas as informações para prosseguir
 		<div class="form-group">
 			<label class="control-label" for="inputLarge"><h3>assunto</h3></label>
-			<input class="form-control input-lg text-center" type="text" id="inputLarge" ng-model="vm.agenda.subject">
+			<input class="form-control input-lg text-center" type="text" ng-class="vm.validateIsVoided(vm.agenda.subject) ? 'has-success' : 'has-warning'"
+			 id="inputLarge" ng-model="vm.agenda.subject">
 		</div>
 		<div class="form-group">
 			<label class="control-label" for="inputLarge"><h5>descrição</h5></label>
-			<textarea class="form-control text-center" rows="3" id="textArea" ng-model="vm.agenda.description"></textarea>
+			<textarea class="form-control text-center" rows="3" ng-class="vm.validateIsVoided(vm.agenda.description) ? 'has-success' : 'has-warning'" 
+			id="textArea" ng-model="vm.agenda.description"></textarea>
 		</div>
 		<div class="form-group">
 			<label class="control-label" for="inputLarge"><h5>proposito</h5></label>
-			<select class="form-control" ng-model="vm.agenda.type">
+			<select class="form-control" ng-class="vm.validateIsFilled(vm.agenda.type) ? 'has-success' : 'has-warning'" ng-model="vm.agenda.type">
 				<option ng-repeat="info in vm.agendaTypes">{{info}}</option>
 			</select>
 		</div>
