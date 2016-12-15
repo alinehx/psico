@@ -187,6 +187,7 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
       .success(function(res){
         succ = true;
         var mailUrl = item + "&" + agendaID;
+        console.log(':)');
         vm.sendConfirmMail(mailUrl, guest); //Sending Confim Mails
       })
       .error(function(err){
