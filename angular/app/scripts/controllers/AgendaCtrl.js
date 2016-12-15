@@ -162,12 +162,14 @@ app.controller('AgendaCtrl', function ($scope, $rootScope, $http, alert, authTok
   vm.sendConfirmMail = function(page, guest){
 		var obj = {
 			page: page,
-			email: guest.guest
+			email: guest.guest,
+      subj: vm.agenda.subject,
+      desc: vm.agenda.description
 		};
 		var newurl = vm.urlContants + "/sendconfirm";
 		$http.post(newurl, obj)
 		.success(function (res){
-			console.log("Email Enviado", res);
+			
 		})
 		.error(function(err){
 			alert('warning',"Error! Não foi possivel executar a requisição.");

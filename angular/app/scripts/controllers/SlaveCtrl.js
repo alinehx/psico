@@ -16,6 +16,7 @@ app.controller('SlaveCtrl', function ($scope, $rootScope, $http, alert, authToke
 	vm.urlAgenda = actualHost + '/agenda';
 	vm.urlRoom = actualHost + '/class';
 	vm.urlGuest = actualHost + '/guest';
+	vm.urlOutsider = actualHost + '/outsider';
 	vm.urlHour = actualHost + '/hours';
 	vm.urlUser = actualHost + '/user';
 
@@ -42,18 +43,15 @@ app.controller('SlaveCtrl', function ($scope, $rootScope, $http, alert, authToke
 		var agenda = vm.state.params.agenda;
 		var guest = vm.state.params.guest;
 
-		var newurl = vm.urlGuest + "/" + agenda + "&" + guest;
+		var newurl = vm.urlOutsider + "/" + agenda + "&" + guest;
 		var newObject = {
 			accepted: status
 		}
 		$http.put(newurl, newObject)
 		.success(function (res){
-			$state.go('agendadetails',{
-				agendaID: agenda
-			});
 		})
 		.error(function(err){
-			alert('warning',"FAIL");
+			alert('warning',"Algum problema aconteceu. Favor contatar o suporte.");
 		});
 	};
 

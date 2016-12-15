@@ -83,6 +83,7 @@ module.exports.routes = {
   'post /guest': 'GuestController.create',
   'delete /guest/:agenda&:guest': 'GuestController.deleteGuest',
   'put /guest/:agenda&:guest': 'GuestController.update',
+  'put /outsider/:agenda&:guest': 'OutsiderController.update',
   'get /guest/:agenda': 'GuestController.get',
   'get /guest/g/:agenda&:guest': 'GuestController.getOne',
 
@@ -93,7 +94,9 @@ module.exports.routes = {
   'get /remaneja/rt/:target': 'RemanejaController.getForTarget',
   'get /remaneja/ro/:owner': 'RemanejaController.getForOwner',
   'get /remaneja/extract/:init&:end': 'RemanejaController.getByRange',
-  'put /remaneja/:id': 'RemanejaController.updateRemaneja'
+  'put /remaneja/:id': 'RemanejaController.updateRemaneja',
+
+  
 
   /***************************************************************************
   *                                                                          *

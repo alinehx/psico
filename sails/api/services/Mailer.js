@@ -34,7 +34,11 @@ function sendAcceptMail(mailObject){
 		subject: "Convite para comparecimento à reunião",
 		generateTextFromHTML: true,
 		html: 	"<div style='font-family: calibri light; color: #222'>" + 
-				"<h3>Olá! Gostariamos de informar que você foi convidado para uma reunião através do <u> easymeet </u.</h3>" + 
+				"<h3>Olá! Gostariamos de informar que você foi convidado para uma reunião através do <u> easymeet </u>.</h3>" + 
+				"<br/>" +
+				"<h3>Assunto da reunião: <b>" + mailObject.subj + "</b></h3>" + 
+				"<h3>Descrição: <b>" + mailObject.desc + "</b></h3>" + 
+				"<br/>" +
 				"<h3>Para confirmar o comparecimento à reunião, ou cancelar seu comparecimento basta <a href='" + page + "'> Clicar aqui! </a></h3>" + 
 				"<br/>" +
 				"<h4>Atenciosamente, grupo easymeet.</h4>" + 
