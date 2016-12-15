@@ -4,8 +4,8 @@
   <img src="img/opendoorlogo.png" alt="Image" class="center-block img-rounded" height="100px"/>
   <br>
   <div ng-hide="vm.guestObject.accepted == true">
-    <h4>Olá, {{vm.agendaDetails.responsable}} convidou você para comparecer à uma reunião.</h4>
-    <h5>Ela acontecerá em {{vm.agendaDetails.date | date : format : timezone}} das {{vm.agendaDetails.initTime}}h, às {{vm.agendaDetails.endTime}}h. </h5>
+    <!--<h4>Olá, {{vm.agendaDetails.responsable}} convidou você para comparecer à uma reunião.</h4>
+    <h5>Ela acontecerá em {{vm.agendaDetails.date | date : format : timezone}} das {{vm.agendaDetails.initTime}}h, às {{vm.agendaDetails.endTime}}h. </h5> -->
     <a class="btn btn-success btn-block " ng-show="true" ng-click="vm.updateGuestAcceptFlag(true)">
         <i class="fa fa-check fa-lg" aria-hidden="true"></i> Confirmar Presença
     </a>

@@ -29,6 +29,24 @@
    }
  }
  
+ function getGuest(req, res) {
+    var idAgenda = req.param('agenda');
+    var guest = req.param('guest');
+    GuestsService.findGuest(guest, idAgenda, function(err, guests) { // busca um deste objeto na base.
+      if (err) {
+        return res.status(503).send({
+          message: err
+        });
+      }
+      if (guests) { // se for encontrado o mesmo é retornado
+        return res.status(200).send(guests);
+      }
+    });
+ }
+
+
+
 module.exports = {
-   update: update
+   update: update,
+   getGuest: getGuest
 }

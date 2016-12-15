@@ -78,13 +78,13 @@ app.controller('SlaveCtrl', function ($scope, $rootScope, $http, alert, authToke
 	};
 
 	vm.getGuest = function(agenda, guest){
-		var newurl = vm.urlGuest + "/g/" + agenda + "&" + guest;
+		var newurl = vm.urlOutsider + "/g/" + agenda + "&" + guest;
 		$http.get(newurl)
 		.success(function (res){
+			console.log(res);
 			vm.guestObject = res;
 		})
 		.error(function(err){
-			alert('warning',"FAIL");
 		});
 	};
 
@@ -107,7 +107,6 @@ app.controller('SlaveCtrl', function ($scope, $rootScope, $http, alert, authToke
 			vm.roomList = res;
 		})
 		.error(function(err){
-			alert('warning',"FAIL");
 		});
 	};
 
@@ -169,7 +168,6 @@ app.controller('SlaveCtrl', function ($scope, $rootScope, $http, alert, authToke
 			}
 		})
 		.error(function(err){
-			alert('warning',"FAIL");
 		});
 	};
 
@@ -217,7 +215,6 @@ app.controller('SlaveCtrl', function ($scope, $rootScope, $http, alert, authToke
 			vm.getAgendaDetail(agenda);
 		})
 		.error(function(err){
-			alert('warning',"FAIL");
 		});
 	};
 
@@ -231,7 +228,6 @@ app.controller('SlaveCtrl', function ($scope, $rootScope, $http, alert, authToke
 			vm.setHourCounter(res.endTime);
 		})
 		.error(function(err){
-			alert('warning',"FAIL");
 		});
 	};
 
@@ -242,7 +238,6 @@ app.controller('SlaveCtrl', function ($scope, $rootScope, $http, alert, authToke
 			vm.reflectedUser = res;
 		})
 		.error(function(err){
-			alert('warning',"FAIL");
 		});
 	};
 
@@ -253,7 +248,6 @@ app.controller('SlaveCtrl', function ($scope, $rootScope, $http, alert, authToke
 			vm.guestList = res;
 		})
 		.error(function(err){
-			alert('warning',"FAIL");
 		});
 	};
 

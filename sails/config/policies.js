@@ -46,6 +46,9 @@ module.exports.policies = {
   },
   'ClassController': {
     '*': 'jwtAuth'
+  },
+  'OutsiderController': {
+    '*': true
   }
 
 

@@ -83,9 +83,11 @@ module.exports.routes = {
   'post /guest': 'GuestController.create',
   'delete /guest/:agenda&:guest': 'GuestController.deleteGuest',
   'put /guest/:agenda&:guest': 'GuestController.update',
-  'put /outsider/:agenda&:guest': 'OutsiderController.update',
   'get /guest/:agenda': 'GuestController.get',
   'get /guest/g/:agenda&:guest': 'GuestController.getOne',
+
+  'put /outsider/:agenda&:guest': 'OutsiderController.update',
+  'get /outsider/g/:agenda&:guest': 'OutsiderController.getGuest',
 
   'post /remaneja': 'RemanejaController.createRemaneja',
   'get /remaneja': 'RemanejaController.getAll',
